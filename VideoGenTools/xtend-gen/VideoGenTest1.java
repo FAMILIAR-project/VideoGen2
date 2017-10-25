@@ -8,7 +8,7 @@ import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 public class VideoGenTest1 {
   @Test
   public void testLoadModel() {
-    final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example1.videogen"));
+    final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"));
     Assert.assertNotNull(videoGen);
     InputOutput.<String>println(videoGen.getInformation().getAuthorName());
   }
