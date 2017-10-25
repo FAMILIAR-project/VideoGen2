@@ -38,7 +38,7 @@ VideoDescription:
 	'videoseq' (videoid=ID)? location=STRING
 	(LEFT_BRACKET
 	 ('duration' duration=INT)?
-	 ('probability' probability=PERCENTAGE)? // percentage 
+	 ('probability' probability=INT)? // percentage // PERCENTAGE 
 	 // (note: probability does not make any sense for mandatory medias... 
 	 // we can refactor the grammar or handle this situation with a model transformation) 
 	 ('description' description=STRING)?
@@ -78,4 +78,4 @@ FlipFilter:
 
 terminal LEFT_BRACKET: '{' ;
 terminal RIGHT_BRACKET: '}';
-terminal PERCENTAGE returns ecore::EInt: ('1'..'9')('0'..'9')? | '100';
+//terminal PERCENTAGE returns ecore::EInt: ('1'..'9')('0'..'9')? | '100';

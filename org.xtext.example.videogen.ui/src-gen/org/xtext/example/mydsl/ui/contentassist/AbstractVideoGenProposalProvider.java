@@ -147,7 +147,4 @@ public abstract class AbstractVideoGenProposalProvider extends TerminalsProposal
 	public void complete_RIGHT_BRACKET(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		// subclasses may override
 	}
-	public void complete_PERCENTAGE(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		// subclasses may override
-	}
 }

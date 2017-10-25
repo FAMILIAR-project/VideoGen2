@@ -347,7 +347,7 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
 		private final Keyword cProbabilityKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
 		private final Assignment cProbabilityAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
-		private final RuleCall cProbabilityPERCENTAGETerminalRuleCall_3_2_1_0 = (RuleCall)cProbabilityAssignment_3_2_1.eContents().get(0);
+		private final RuleCall cProbabilityINTTerminalRuleCall_3_2_1_0 = (RuleCall)cProbabilityAssignment_3_2_1.eContents().get(0);
 		private final Group cGroup_3_3 = (Group)cGroup_3.eContents().get(3);
 		private final Keyword cDescriptionKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
 		private final Assignment cDescriptionAssignment_3_3_1 = (Assignment)cGroup_3_3.eContents().get(1);
@@ -363,12 +363,12 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRIGHT_BRACKETTerminalRuleCall_3_6 = (RuleCall)cGroup_3.eContents().get(6);
 		
 		//VideoDescription:
-		//	'videoseq' videoid=ID? location=STRING (LEFT_BRACKET ('duration' duration=INT)? ('probability'
-		//	probability=PERCENTAGE)? ('description' description=STRING)? ('filter' filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
+		//	'videoseq' videoid=ID? location=STRING (LEFT_BRACKET ('duration' duration=INT)? ('probability' probability=INT)?
+		//	('description' description=STRING)? ('filter' filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
 		//	RIGHT_BRACKET)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'videoseq' videoid=ID? location=STRING (LEFT_BRACKET ('duration' duration=INT)? ('probability' probability=PERCENTAGE)?
+		//'videoseq' videoid=ID? location=STRING (LEFT_BRACKET ('duration' duration=INT)? ('probability' probability=INT)?
 		//('description' description=STRING)? ('filter' filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
 		//RIGHT_BRACKET)?
 		public Group getGroup() { return cGroup; }
@@ -388,8 +388,8 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getLocationSTRINGTerminalRuleCall_2_0() { return cLocationSTRINGTerminalRuleCall_2_0; }
 		
-		//(LEFT_BRACKET ('duration' duration=INT)? ('probability' probability=PERCENTAGE)? ('description' description=STRING)?
-		//('filter' filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
+		//(LEFT_BRACKET ('duration' duration=INT)? ('probability' probability=INT)? ('description' description=STRING)? ('filter'
+		//filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
 		//RIGHT_BRACKET)?
 		public Group getGroup_3() { return cGroup_3; }
 		
@@ -408,17 +408,17 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 		//INT
 		public RuleCall getDurationINTTerminalRuleCall_3_1_1_0() { return cDurationINTTerminalRuleCall_3_1_1_0; }
 		
-		//('probability' probability=PERCENTAGE)?
+		//('probability' probability=INT)?
 		public Group getGroup_3_2() { return cGroup_3_2; }
 		
 		//'probability'
 		public Keyword getProbabilityKeyword_3_2_0() { return cProbabilityKeyword_3_2_0; }
 		
-		//probability=PERCENTAGE
+		//probability=INT
 		public Assignment getProbabilityAssignment_3_2_1() { return cProbabilityAssignment_3_2_1; }
 		
-		//PERCENTAGE
-		public RuleCall getProbabilityPERCENTAGETerminalRuleCall_3_2_1_0() { return cProbabilityPERCENTAGETerminalRuleCall_3_2_1_0; }
+		//INT
+		public RuleCall getProbabilityINTTerminalRuleCall_3_2_1_0() { return cProbabilityINTTerminalRuleCall_3_2_1_0; }
 		
 		//('description' description=STRING)?
 		public Group getGroup_3_3() { return cGroup_3_3; }
@@ -683,7 +683,6 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 	private final FlipFilterElements pFlipFilter;
 	private final TerminalRule tLEFT_BRACKET;
 	private final TerminalRule tRIGHT_BRACKET;
-	private final TerminalRule tPERCENTAGE;
 	
 	private final Grammar grammar;
 	
@@ -711,7 +710,6 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFlipFilter = new FlipFilterElements();
 		this.tLEFT_BRACKET = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.VideoGen.LEFT_BRACKET");
 		this.tRIGHT_BRACKET = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.VideoGen.RIGHT_BRACKET");
-		this.tPERCENTAGE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.VideoGen.PERCENTAGE");
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -825,8 +823,8 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//VideoDescription:
-	//	'videoseq' videoid=ID? location=STRING (LEFT_BRACKET ('duration' duration=INT)? ('probability'
-	//	probability=PERCENTAGE)? ('description' description=STRING)? ('filter' filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
+	//	'videoseq' videoid=ID? location=STRING (LEFT_BRACKET ('duration' duration=INT)? ('probability' probability=INT)?
+	//	('description' description=STRING)? ('filter' filter=Filter)? ('text' text=VideoText)? // incrust a text into a video
 	//	RIGHT_BRACKET)?;
 	public VideoDescriptionElements getVideoDescriptionAccess() {
 		return pVideoDescription;
@@ -911,12 +909,6 @@ public class VideoGenGrammarAccess extends AbstractGrammarElementFinder {
 	//	'}';
 	public TerminalRule getRIGHT_BRACKETRule() {
 		return tRIGHT_BRACKET;
-	}
-	
-	//terminal PERCENTAGE returns ecore::EInt:
-	//	'1'..'9' '0'..'9'? | '100';
-	public TerminalRule getPERCENTAGERule() {
-		return tPERCENTAGE;
 	}
 	
 	//terminal ID:

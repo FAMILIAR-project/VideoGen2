@@ -669,9 +669,9 @@ ruleVideoDescription returns [EObject current=null]
 				}
 				(
 					(
-						lv_probability_7_0=RULE_PERCENTAGE
+						lv_probability_7_0=RULE_INT
 						{
-							newLeafNode(lv_probability_7_0, grammarAccess.getVideoDescriptionAccess().getProbabilityPERCENTAGETerminalRuleCall_3_2_1_0());
+							newLeafNode(lv_probability_7_0, grammarAccess.getVideoDescriptionAccess().getProbabilityINTTerminalRuleCall_3_2_1_0());
 						}
 						{
 							if ($current==null) {
@@ -681,7 +681,7 @@ ruleVideoDescription returns [EObject current=null]
 								$current,
 								"probability",
 								lv_probability_7_0,
-								"org.xtext.example.mydsl.VideoGen.PERCENTAGE");
+								"org.eclipse.xtext.common.Terminals.INT");
 						}
 					)
 				)
@@ -1104,8 +1104,6 @@ ruleFlipFilter returns [EObject current=null]
 RULE_LEFT_BRACKET : '{';
 
 RULE_RIGHT_BRACKET : '}';
-
-RULE_PERCENTAGE : ('1'..'9' ('0'..'9')?|'100');
 
 RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 

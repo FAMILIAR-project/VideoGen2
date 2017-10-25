@@ -2844,9 +2844,9 @@ rule__VideoDescription__ProbabilityAssignment_3_2_1
 	}
 :
 	(
-		{ before(grammarAccess.getVideoDescriptionAccess().getProbabilityPERCENTAGETerminalRuleCall_3_2_1_0()); }
-		RULE_PERCENTAGE
-		{ after(grammarAccess.getVideoDescriptionAccess().getProbabilityPERCENTAGETerminalRuleCall_3_2_1_0()); }
+		{ before(grammarAccess.getVideoDescriptionAccess().getProbabilityINTTerminalRuleCall_3_2_1_0()); }
+		RULE_INT
+		{ after(grammarAccess.getVideoDescriptionAccess().getProbabilityINTTerminalRuleCall_3_2_1_0()); }
 	)
 ;
 finally {
@@ -2976,8 +2976,6 @@ finally {
 RULE_LEFT_BRACKET : '{';
 
 RULE_RIGHT_BRACKET : '}';
-
-RULE_PERCENTAGE : ('1'..'9' ('0'..'9')?|'100');
 
 RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 
