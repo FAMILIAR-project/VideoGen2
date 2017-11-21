@@ -13,5 +13,9 @@ org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/labeling/.git
 org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/outline/.gitignore
 org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/quickfix/.gitignore
 org.xtext.example.videogen/bin/.gitignore
-													
+org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/.gitignore
+org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/generator/.gitignore
+org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/scoping/.gitignore
+org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/validation/.gitignore
+
 
