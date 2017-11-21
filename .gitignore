@@ -1,0 +1,17 @@
+*.xtendbin
+VideoGenTools/bin/.gitignore
+VideoGenTools/xtend-gen/.gitignore
+org.xtext.example.videogen.ide/bin/.gitignore
+org.xtext.example.videogen.ide/xtend-gen/org/xtext/example/mydsl/ide/.gitignore
+org.xtext.example.videogen.tests/bin/.gitignore
+org.xtext.example.videogen.tests/xtend-gen/org/xtext/example/mydsl/tests/.gitignore
+org.xtext.example.videogen.ui.tests/bin/.gitignore
+org.xtext.example.videogen.ui/bin/.gitignore
+org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/.gitignore
+org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/contentassist/.gitignore
+org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/labeling/.gitignore
+org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/outline/.gitignore
+org.xtext.example.videogen.ui/xtend-gen/org/xtext/example/mydsl/ui/quickfix/.gitignore
+org.xtext.example.videogen/bin/.gitignore
+													
+
