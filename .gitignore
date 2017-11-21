@@ -1,0 +1,142 @@
+######################
+# Project Specific
+######################
+/petitpaget/src/main/webapp/content/css/main.css
+/petitpaget/target/www/**
+/petitpaget/src/test/javascript/coverage/
+
+######################
+# Node
+######################
+/petitpaget/node/
+/petitpaget/node_tmp/
+/petitpaget/node_modules/
+/petitpaget/npm-debug.log.*
+
+######################
+# SASS
+######################
+/petitpaget/.sass-cache/
+
+######################
+# Eclipse
+######################
+/petitpaget/*.pydevproject
+/petitpaget/.project
+/petitpaget/.metadata
+/petitpaget/tmp/
+/petitpaget/tmp/**/*
+/petitpaget/*.tmp
+/petitpaget/*.bak
+/petitpaget/*.swp
+/petitpaget/*~.nib
+/petitpaget/local.properties
+/petitpaget/.classpath
+/petitpaget/.settings/
+/petitpaget/.loadpath
+/petitpaget/.factorypath
+/petitpaget/src/main/resources/rebel.xml
+
+# External tool builders
+/petitpaget/.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+/petitpaget/*.launch
+
+# CDT-specific
+/petitpaget/.cproject
+
+# PDT-specific
+/petitpaget/.buildpath
+
+######################
+# Intellij
+######################
+/petitpaget/.idea/
+/petitpaget/*.iml
+/petitpaget/*.iws
+/petitpaget/*.ipr
+/petitpaget/*.ids
+/petitpaget/*.orig
+/petitpaget/classes/
+
+######################
+# Visual Studio Code
+######################
+/petitpaget/.vscode/
+
+######################
+# Maven
+######################
+/petitpaget/log/
+/petitpaget/target/
+
+######################
+# Gradle
+######################
+/petitpaget/.gradle/
+/petitpaget/build/
+
+######################
+# Package Files
+######################
+/petitpaget/*.jar
+/petitpaget/*.war
+/petitpaget/*.ear
+/petitpaget/*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
+/petitpaget/Thumbs.db
+
+# Folder config file
+/petitpaget/Desktop.ini
+
+######################
+# Mac OSX
+######################
+/petitpaget/.DS_Store
+/petitpaget/.svn
+
+# Thumbnails
+/petitpaget/._*
+
+# Files that might appear on external disk
+/petitpaget/.Spotlight-V100
+/petitpaget/.Trashes
+
+######################
+# Directories
+######################
+/petitpaget/bin/
+/petitpaget/deploy/
+
+######################
+# Logs
+######################
+/petitpaget/*.log
+
+######################
+# Others
+######################
+/petitpaget/*.class
+/petitpaget/*.*~
+/petitpaget/*~
+/petitpaget/.merge_file*
+
+######################
+# Gradle Wrapper
+######################
+/petitpaget/!gradle/wrapper/gradle-wrapper.jar
+
+######################
+# Maven Wrapper
+######################
+/petitpaget/!.mvn/wrapper/maven-wrapper.jar
+
+######################
+# ESLint
+######################
+/petitpaget/.eslintcache
