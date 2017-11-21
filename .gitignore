@@ -140,3 +140,4 @@
 # ESLint
 ######################
 /petitpaget/.eslintcache
+/.metadata/
