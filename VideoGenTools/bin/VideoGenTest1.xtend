@@ -17,26 +17,19 @@ class VideoGenTest1 {
 		assertNotNull(videoGen)
 		
 		var playlists = new ArrayList<List<MediaDescription>>
-		var nbPlaylists = 1
-		var nbVideos = 0
 		playlists.add(new ArrayList<MediaDescription>())
 		for(media : videoGen.medias){
 			if (media instanceof MandatoryMedia){
 				if(media.description instanceof VideoDescription){
-					nbVideos++
 					for(playlist : playlists){
 						playlist.add(media.description);
 					}
 				}
 			}else if(media instanceof AlternativesMedia){
-					nbPlaylists *= media.eContents.size
-					nbVideos += media.eContents.size
 					playlists = populatePlaylists(playlists, media)
 				
 			}else if(media instanceof OptionalMedia){
 				if(media.description instanceof VideoDescription){
-					nbPlaylists *= 2
-					nbVideos++
 					playlists = populatePlaylists(playlists, media)
 				}		
 			}
