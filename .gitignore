@@ -143,3 +143,11 @@
 /.metadata/
 
 VideoGenTools/xtend-gen/
+
+VideoGenTools/bin/
+
+*._trace
+
+*.class
+
+*.xtendbin
