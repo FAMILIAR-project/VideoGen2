@@ -1,0 +1,6 @@
+org.xtext.example.videogen.ui.tests/
+VideoGenTools/
+org.xtext.example.videogen.ui/
+org.xtext.example.videogen.tests/
+org.xtext.example.videogen.ide/
+org.xtext.example.videogen/
