@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	div.title_panel
+		p #{title}
+	div.under_title
+		p Made by #{author} with <font color="red" size="5">♥</font>
+	div.content
+		button(class="button" onclick='{generate()}') Generate
+		div.graphic
+
+	div.footer
+		p #{author} - IDM Project - ISTIC RENNES (FR) - 2017/2018
+

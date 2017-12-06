@@ -1,0 +1,66 @@
+body {
+  background-color: black;
+  color: white;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  float: center;
+}
+
+.title_panel{
+	height: 60px;
+	width: 350px;
+	font-size: 300%;
+	font-weight: bold;
+	text-align: center;
+	display: inline-block;
+}
+.under_title{
+	margin-top: 30px;
+}
+.content{
+	margin-top: 30px;
+}
+.graphic{
+	margin-top: 30px;
+	color: white;
+}
+.footer{
+	position:fixed;
+    left:0px;
+    bottom:0px;
+    height:35px;
+    width:100%;
+    background:#999;
+	background-color: #999999;
+	color : black;
+}
+
+/* IE 6 */
+* html #footer {
+   position:absolute;
+   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
+}
+
+
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #666;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
