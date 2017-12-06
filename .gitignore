@@ -1,8 +1,6 @@
-VideoGenTools/
-org.xtext.example.videogen.ui.tests/
-org.xtext.example.videogen.ui/
-org.xtext.example.videogen.tests/
-org.xtext.example.videogen.ide/
-org.xtext.example.videogen/
-
 loic_beaulieu_xtext_project/bin/
+loic_beaulieu_xtext_project/video/
+loic_beaulieu_xtext_project/output_video/
+
+*.xtendbin
+*.videogen
