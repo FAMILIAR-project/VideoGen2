@@ -1,8 +1,12 @@
 
-VideoGenTools/
+VideoGenTools/*
 
-org\.xtext\.example\.videogen/
+org\.xtext\.example\.videogen/*
 
-org\.xtext\.example\.videogen\.ide/
+org\.xtext\.example\.videogen\.ide/*
 
-org\.xtext\.example\.videogen\.ui/
+org\.xtext\.example\.videogen\.ui/*
+
+org\.xtext\.example\.videogen\.tests/*
+
+\.project
