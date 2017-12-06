@@ -12,3 +12,9 @@ org\.xtext\.example\.videogen\.tests/*
 \.project
 
 VideoGenTools/
+
+antoineC/\.classpath
+
+antoineC/bin/
+
+antoineC/xtend-gen/

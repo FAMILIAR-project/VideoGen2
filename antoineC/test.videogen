@@ -1,3 +1,30 @@
+@author "Antoine Charpentier"
+@version "0.5.0"
+@creation "14/11/17"
+
+
 VideoGen {
-	mandatory videoseq 'truc'
+	mandatory image "image.png" {
+		toptext ""
+		bottomtext "Test Video"	
+	}
+	
+	
+	mandatory videoseq "welcome.mkv"
+	
+	optional videoseq "at_this_moment.mkv"
+	
+	alternatives {
+		videoseq "joke1.mkv" {
+			probability 50
+		}
+		videoseq "joke2.mkv" {
+			probability 25
+		}
+		videoseq "joke3.mkv" {
+			probability 25
+		}
+	}
+	
+	mandatory videoseq "end.mkv"
 }
