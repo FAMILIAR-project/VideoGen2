@@ -60,6 +60,43 @@ class Test {
         p.waitFor    
     }
     
+    def public static longestVariant() {
+    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"))
+		assertNotNull(videoGen)
+		var List<MediaDescription> playlist = new ArrayList
+		
+		for(media : videoGen.medias) {
+			if(media instanceof MandatoryMedia) {
+				playlist.add(media.description)
+			}
+			
+			else if(media instanceof OptionalMedia) {
+				playlist.add(media.description)
+			}
+			
+			else if(media instanceof AlternativesMedia) {
+				var durations = media.medias.map [ m |
+					Integer.parseInt(ffmpegComputeDuration(m.location).toString)
+				]
+				
+				var max = 0
+				
+				for(var i = 0; i < durations.size; i++) {
+					if(durations.get(max) < durations.get(i)) {
+						max = i
+					}
+				}
+				
+				playlist.add(media.medias.get(max))
+			}
+		}
+		
+		return playlist
+    }
+    
+    def static ffmpegComputeDuration(String locationVideo)
+    '''/usr/local/bin/ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 Â«locationVideoÂ»'''
+    
     def static ffmpegConcatenateCommand(String mpegPlaylistFile, String outputPath) 
-    '''/usr/bin/ffmpeg -y -f concat -safe 0 -i «mpegPlaylistFile» -c copy «outputPath»'''
+    '''/usr/bin/ffmpeg -y -f concat -safe 0 -i ï¿½mpegPlaylistFileï¿½ -c copy ï¿½outputPathï¿½'''
 }
