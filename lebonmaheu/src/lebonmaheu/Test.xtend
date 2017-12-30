@@ -15,6 +15,15 @@ import org.xtext.example.mydsl.videoGen.ImageDescription
 import org.xtext.example.mydsl.videoGen.VideoDescription
 
 class Test {
+	def private static getMediaId(MediaDescription m) {
+		if(m instanceof VideoDescription)
+			return m.videoid
+		else if(m instanceof ImageDescription)
+			return m.imageid
+		
+		throw new NullPointerException
+	}
+	
 	def public static void main(String[] args) {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"))
 		assertNotNull(videoGen)
@@ -59,18 +68,13 @@ class Test {
         var command = ffmpegConcatenateCommand("playlist.txt",  "o.mp4")
         var p = Runtime.runtime.exec(command.toString)
         
-        val all = getAllVariants()
+        val all = getAllVariants("example2.videogen")
         all.forEach [variant |
-        	variant.forEach [ m |
-        		if(m instanceof VideoDescription)
-        			print(m.videoid + " ")
-        		else if(m instanceof ImageDescription)
-        			print(m.imageid + " ")
-        	]
-        	
+        	variant.forEach [ m | print(getMediaId(m) + " ") ]
         	println("")
         ]
         
+        makeCSV("example2.videogen")
         p.waitFor    
     }
     
@@ -84,8 +88,8 @@ class Test {
     	return newAll
     }
     
-    def public static getAllVariants() {
-    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"))
+    def public static getAllVariants(String inputFile) {
+    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(inputFile))
 		assertNotNull(videoGen)
 		val all = new ArrayList<List<MediaDescription>>
 		all.add(new ArrayList<MediaDescription>)
@@ -118,8 +122,58 @@ class Test {
 		return all
     }
     
-    def public static longestVariant() {
-    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"))
+    def public static getAllIds(String inputFile) {
+    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(inputFile))
+		assertNotNull(videoGen)
+		
+		val ids = new ArrayList<String>
+		
+		videoGen.medias.forEach[ m |
+			if(m instanceof MandatoryMedia)
+				ids.add(getMediaId(m.description))
+			else if(m instanceof OptionalMedia)
+				ids.add(getMediaId(m.description))
+			else if(m instanceof AlternativesMedia) {
+				m.medias.forEach [ alt | ids.add(getMediaId(alt)) ]
+			}
+		]
+		
+		return ids
+    }
+    
+    def public static makeCSV(String inputFile) {
+    	val all = getAllVariants(inputFile)
+    	val seqs = getAllIds(inputFile)
+    	
+    	val file = new File("playlist.csv")
+        file.createNewFile
+        
+        val writer = new FileWriter(file)
+        
+        writer.write("id")
+        seqs.forEach [ id | writer.write(";" + id) ]
+        writer.write(";size\n")
+        
+        for(var i = 0; i < all.size; i++) {
+        	val List<MediaDescription> variant = all.get(i)
+        	writer.write(Integer.toString(i + 1) + ";")
+        	val ids = variant.map [ m | getMediaId(m) ]
+        	seqs.forEach [ id |
+        		if(ids.contains(id))
+        			writer.write("TRUE")
+        		else
+        			writer.write("FALSE")
+        		writer.write(";")
+        	]
+        	writer.write("0\n")
+        }
+        
+        writer.flush
+        writer.close
+    }
+    
+    def public static longestVariant(String inputFile) {
+    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(inputFile))
 		assertNotNull(videoGen)
 		var List<MediaDescription> playlist = new ArrayList
 		
