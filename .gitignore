@@ -18,3 +18,7 @@ antoineC/\.classpath
 antoineC/bin/
 
 antoineC/xtend-gen/
+
+org\.xtext\.example\.videogen/
+
+org\.xtext\.example\.videogen\.ide/
