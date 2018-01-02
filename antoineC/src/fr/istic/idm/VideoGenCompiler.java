@@ -9,6 +9,10 @@ import java.util.function.Consumer;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xtext.example.mydsl.videoGen.AlternativesMedia;
+import org.xtext.example.mydsl.videoGen.MandatoryMedia;
+import org.xtext.example.mydsl.videoGen.Media;import org.xtext.example.mydsl.videoGen.MediaDescription;
+import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 import fr.istic.idm.model.MediaSequence;
@@ -47,52 +51,98 @@ public class VideoGenCompiler {
 	}
 	
 	public void generateModel() {
-//		for(int i = 0 ; i < this.model.getMedias() ; i++) {
-//			
-//		}
 		
-		try {
+		long startTime = System.currentTimeMillis();
+		List<List<MediaSequence>> variantes = variantes(this.model.getMedias());
+		
+		long endTime = System.currentTimeMillis();
 
-			combinations(Arrays.asList(2, 1, 3, 2));
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+		
+		logger.info("Combination algorithm duration: {} ms, with {} variants", duration, variantes.size());
 	}
 	
-	private void combinations(List<Integer> integers) {
-		List<List<Integer>> variantes = new ArrayList<>();
-		for(int i = 0 ; i < integers.size() ; i++) {
-			int current = integers.get(i);
+	private List<MediaDescription> generateVariante() {
+		List<MediaDescription> variante = new ArrayList<>();
+		
+		for(Media media : this.model.getMedias()) {
+			if(media instanceof MandatoryMedia) {
+				variante.add(((MandatoryMedia) media).getDescription());
+			} else if(media instanceof OptionalMedia) {
+				//compute random if between 0.5 and 1 do:
+				variante.add(((OptionalMedia) media).getDescription());
+			} else if(media instanceof AlternativesMedia) {
+				//compute random and return appropriate MediaDescription:
+			}
+		}
+		
+		return variante;
+	}
+	
+	private List<List<MediaSequence>> variantes(List<Media> medias) {
+		List<List<MediaSequence>> variantes = new ArrayList<>();
+		for(int i = 0 ; i < medias.size() ; i++) {
+			Media current = medias.get(i);
 			
-			if(current == 1) {
+			if(current instanceof MandatoryMedia) {
 				
 				if(variantes.size() == 0) {
-					variantes.add(new ArrayList<>(Arrays.asList(current)));
+					variantes.add(new ArrayList<>(Arrays.asList(new MediaSequence(current, ((MandatoryMedia) current).getDescription()))));
 				} else {
 					for(int varianteIndex = 0 ; varianteIndex < variantes.size() ; varianteIndex++) {
-						variantes.get(varianteIndex).add(current);
+						variantes.get(varianteIndex).add(new MediaSequence(current, ((MandatoryMedia) current).getDescription()));;
 					}
 				}
 				
-			} else {
-				
+			} else if(current instanceof OptionalMedia) {
+				OptionalMedia optional = (OptionalMedia) current;
 				if(variantes.size() == 0) {
-					for(int j = 0 ; j < current ; j++) {
-						variantes.add(new ArrayList<>(Arrays.asList(j+1)));
-					}
-					
+					variantes.add(new ArrayList<>(Arrays.asList(new MediaSequence(optional, optional.getDescription()))));
+					variantes.add(new ArrayList<>(Arrays.asList(new MediaSequence(optional, null))));
 					continue;
 				}
-				List<List<Integer>> clone = new ArrayList<>(variantes);
-				List<List<Integer>> variantesToCompute = new ArrayList<>();
-				for(int j = 0 ; j < current ; j++) {
+				
+				List<List<MediaSequence>> clone = new ArrayList<>(variantes);
+				List<List<MediaSequence>> variantesToCompute = new ArrayList<>();
+				
+				for(int j = 0 ; j < 2 ; j++) {
 					
 					int currentIndex = j;
 					
 					
 					clone.forEach((variante) -> {
-						List<Integer> varianteClone = new ArrayList<>(variante);
-						varianteClone.add(currentIndex+1);
+						List<MediaSequence> varianteClone = new ArrayList<>(variante);
+						
+						if(currentIndex == 1)
+							varianteClone.add(new MediaSequence(optional, optional.getDescription()));
+						else
+							varianteClone.add(new MediaSequence(optional, null));
+						variantesToCompute.add(varianteClone);
+					});
+				}
+				
+				variantes = new ArrayList<>(variantesToCompute);
+			} else if(current instanceof AlternativesMedia) { 
+				AlternativesMedia alternative = (AlternativesMedia) current;
+				if(variantes.size() == 0) {
+					
+					for(int j = 0 ; j < alternative.getMedias().size() ; j++) {
+						variantes.add(new ArrayList<>(Arrays.asList(new MediaSequence(alternative, alternative.getMedias().get(j)))));
+					}
+					
+					continue;
+				}
+				
+				List<List<MediaSequence>> clone = new ArrayList<>(variantes);
+				List<List<MediaSequence>> variantesToCompute = new ArrayList<>();
+				for(int j = 0 ; j < alternative.getMedias().size() ; j++) {
+					
+					int currentIndex = j;
+					
+					
+					clone.forEach((variante) -> {
+						List<MediaSequence> varianteClone = new ArrayList<>(variante);
+						varianteClone.add(new MediaSequence(alternative, alternative.getMedias().get(currentIndex)));
 						variantesToCompute.add(varianteClone);
 					});
 				}
@@ -103,6 +153,7 @@ public class VideoGenCompiler {
 		
 		logger.info("Variantes computed: {}", variantes.size());
 		logger.info("{}", variantes);
+		return variantes;
 	}
 	
 	
