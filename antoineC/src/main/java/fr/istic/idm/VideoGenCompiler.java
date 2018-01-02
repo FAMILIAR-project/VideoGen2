@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
@@ -15,36 +17,36 @@ import org.xtext.example.mydsl.videoGen.Media;import org.xtext.example.mydsl.vid
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
+import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.MediaSequence;
 
 public class VideoGenCompiler {
 
-	private static Logger logger = LoggerFactory.getLogger(VideoGenCompiler.class);
-
+	private static Logger log = LoggerFactory.getLogger(VideoGenCompiler.class);
 	private VideoGeneratorModel model;
-	private List<MediaSequence> variantes;
+	private List<List<MediaSequence>> variantes;
 	
 	public VideoGenCompiler(VideoGeneratorModel model) {
 		this.model = model;
-		this.variantes = new ArrayList<MediaSequence>();
+		this.variantes = new ArrayList<List<MediaSequence>>();
 	}
 	
 	public static void main(String[] args) {
 		if(args.length != 1) {
-			logger.error("Un argument doit être fournit à ce programme correspondant à la grammaire *.videogen qui sera compilé");	
+			log.error("Un argument doit être fournit à ce programme correspondant à la grammaire *.videogen qui sera compilé");	
 			return;
 		}
 		
 		File videoGenFile = new File(args[0]);
 		
 		if(!videoGenFile.exists() || !videoGenFile.isFile()) {
-			logger.error("Le fichier {} n'existe pas", args[0]);
+			log.error("Le fichier {} n'existe pas", args[0]);
 			return;
 		}
 		
 		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(videoGenFile.getPath()));
 		VideoGenCompiler compiler = new VideoGenCompiler(videoGen);
-		logger.info("File loaded successfully");
+		log.info("File loaded successfully");
 		
 		
 		compiler.generateModel();
@@ -52,27 +54,46 @@ public class VideoGenCompiler {
 	
 	public void generateModel() {
 		
-		long startTime = System.currentTimeMillis();
-		List<List<MediaSequence>> variantes = variantes(this.model.getMedias());
+//		long startTime = System.currentTimeMillis();
+		variantes = variantes(this.model.getMedias());
 		
-		long endTime = System.currentTimeMillis();
-
-		long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+		try {
+			List<MediaSequence> variante = generateVariante();
+			log.info("Generated Variante: {}", variante);
+			log.info("Variante previously found ? {}", variantes.contains(variante));
+		} catch (InvalidVideoGenGrammarException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled()) {
+				e.printStackTrace();
+			}
+		}
+//		
+//		long endTime = System.currentTimeMillis();
+//
+//		long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 		
-		logger.info("Combination algorithm duration: {} ms, with {} variants", duration, variantes.size());
+//		logger.info("Combination algorithm duration: {} ms, with {} variants", duration, variantes.size());
 	}
 	
-	private List<MediaDescription> generateVariante() {
-		List<MediaDescription> variante = new ArrayList<>();
+	private List<MediaSequence> generateVariante() throws InvalidVideoGenGrammarException {
+		List<MediaSequence> variante = new ArrayList<>();
 		
 		for(Media media : this.model.getMedias()) {
 			if(media instanceof MandatoryMedia) {
-				variante.add(((MandatoryMedia) media).getDescription());
+				variante.add(new MediaSequence(media, ((MandatoryMedia) media).getDescription()));
 			} else if(media instanceof OptionalMedia) {
-				//compute random if between 0.5 and 1 do:
-				variante.add(((OptionalMedia) media).getDescription());
+				
+				Optional<MediaSequence> optionalMedia = RandomMediaSelector.selectOptionalMedia((OptionalMedia) media);
+				
+				if(optionalMedia.isPresent()) {
+					variante.add(optionalMedia.get());
+				}
+				
 			} else if(media instanceof AlternativesMedia) {
-				//compute random and return appropriate MediaDescription:
+				Optional<MediaSequence> description = RandomMediaSelector.selectAlternativesMedia((AlternativesMedia) media);
+				if(description.isPresent())
+					variante.add(description.get());
 			}
 		}
 		
@@ -151,8 +172,8 @@ public class VideoGenCompiler {
 			}
 		}
 		
-		logger.info("Variantes computed: {}", variantes.size());
-		logger.info("{}", variantes);
+		log.info("Variantes computed: {}", variantes.size());
+		log.info("{}", variantes);
 		return variantes;
 	}
 	
