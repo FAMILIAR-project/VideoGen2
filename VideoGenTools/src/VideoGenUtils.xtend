@@ -32,7 +32,7 @@ class VideoGenUtils {
 		return playlists
 	}
 	
-	static def ArrayList<List<MediaDescription>> populatePlaylists(List<List<MediaDescription>> playlists, OptionalMedia opt){
+	static private def ArrayList<List<MediaDescription>> populatePlaylists(List<List<MediaDescription>> playlists, OptionalMedia opt){
 		val newPlaylists = new ArrayList<List<MediaDescription>>
 		for(playlist : playlists){
 			var list1 = new ArrayList<MediaDescription>(playlist)
@@ -119,7 +119,7 @@ class VideoGenUtils {
 		return createCSV(loadPlaylists(videoGen))
 	}
 	
-	static private def List<String> createCSV(List<List<MediaDescription>> playlists){
+	static def List<String> createCSV(List<List<MediaDescription>> playlists){
 		var csv = new ArrayList<String>()
 		csv.add(createCSVHeader(playlists))
 		var index = 0
@@ -139,5 +139,75 @@ class VideoGenUtils {
 			}
 		}
 		return variant
+	}
+	
+	static def void genPlaylist(String[] filenames, String outputfilename){
+		val COMMAND = new ArrayList<String>
+		var filter = ""
+		COMMAND.add("ffmpeg")
+		COMMAND.add("-y")
+		var i = 0
+		for(file : filenames){
+			COMMAND.add("-i")
+			COMMAND.add(file)
+			filter += "[" + i + ":v:0][" + i + ":a:0]"
+			i++
+		}
+		COMMAND.add("-filter_complex")
+		filter += "concat=n=" + i + ":v=1:a=1[outv][outa]"
+		COMMAND.add(filter)
+		COMMAND.add("-map")
+		COMMAND.add("[outv]")
+		COMMAND.add("-map")
+		COMMAND.add("[outa]")
+		COMMAND.add(outputfilename)
+		
+		for(arg : COMMAND){
+			println(arg)
+		}
+		
+		ProcessExec.executeCommand(COMMAND)
+		println(outputfilename + " created")
+	}
+	
+	static def int[] getResolution(String videoFile){
+		val COMMAND = new ArrayList
+		COMMAND.add("ffmpeg")
+		COMMAND.add("-i")
+		COMMAND.add(videoFile)
+		val IO = ProcessExec.executeCommandIO(COMMAND)
+		val resolution = new ArrayList
+		for(line : IO){
+			if(line.contains("Stream #0:0(und):")){
+				val res = line.split(", ").get(2).split(" ").get(0).split("x")
+				resolution.add(Integer.parseInt(res.get(0)))
+				resolution.add(Integer.parseInt(res.get(1)))
+			}
+		}
+		
+		return resolution
+	}
+	
+	static def String resize(String filename, int input_width, int input_height, int output_width, int output_height){
+		if(input_width == output_width && input_height == output_height){
+			println(filename + " already at right size")
+			return filename
+		}
+		var file = filename.replace(".","@#").split("@#")
+		var COMMAND = new ArrayList
+		COMMAND.add("ffmpeg")
+		COMMAND.add("-y")
+        COMMAND.add("-i")
+        COMMAND.add(filename)
+        COMMAND.add("-vf")
+        COMMAND.add("pad=" + output_width + ":" + output_height + ":" + (output_width - input_width) / 2 + ":" + (output_height - input_height) / 2)
+        val output_file = file.get(0) + "_o." + file.get(1)
+        COMMAND.add(output_file)
+        for(c : COMMAND){
+        	println(c)
+        }
+        ProcessExec.executeCommand(COMMAND)
+        println(filename + " resized")
+        return output_file
 	}
 }

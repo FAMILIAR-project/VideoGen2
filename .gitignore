@@ -151,3 +151,5 @@ VideoGenTools/bin/
 *.class
 
 *.xtendbin
+
+*.mp4

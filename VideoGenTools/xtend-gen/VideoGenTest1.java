@@ -1,36 +1,45 @@
 import java.util.ArrayList;
-import java.util.List;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.InputOutput;
-import org.junit.Assert;
 import org.junit.Test;
-import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 @SuppressWarnings("all")
 public class VideoGenTest1 {
   @Test
   public void testLoadModel() {
-    ArrayList<String> videosFiles = CollectionLiterals.<String>newArrayList("example1.videogen", "example2.videogen");
-    for (final String file : videosFiles) {
+    final ArrayList<int[]> res = new ArrayList<int[]>();
+    final ArrayList<String> videos = new ArrayList<String>();
+    videos.add("jaunatan.mp4");
+    videos.add("sheep.mp4");
+    videos.add("wave.mp4");
+    videos.add("stan.mp4");
+    for (final String video : videos) {
+      res.add(VideoGenUtils.getResolution(video));
+    }
+    int output_width = 0;
+    int output_height = 0;
+    for (final int[] r : res) {
       {
-        final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(file));
-        List<String> csv = VideoGenUtils.createCSV(videoGen);
-        int variants = VideoGenUtils.genNbVariant(videoGen);
-        final List<String> _converted_csv = (List<String>)csv;
-        int _length = ((Object[])Conversions.unwrapArray(_converted_csv, Object.class)).length;
-        int _minus = (_length - 1);
-        String _plus = ((file + " : csv size -> ") + Integer.valueOf(_minus));
-        String _plus_1 = (_plus + " nbVariants -> ");
-        String _plus_2 = (_plus_1 + Integer.valueOf(variants));
-        InputOutput.<String>println(_plus_2);
-        final List<String> _converted_csv_1 = (List<String>)csv;
-        int _length_1 = ((Object[])Conversions.unwrapArray(_converted_csv_1, Object.class)).length;
-        int _minus_1 = (_length_1 - 1);
-        boolean _equals = (_minus_1 == variants);
-        Assert.assertTrue(_equals);
+        int _get = r[0];
+        boolean _greaterThan = (_get > output_width);
+        if (_greaterThan) {
+          output_width = r[0];
+        }
+        int _get_1 = r[1];
+        boolean _greaterThan_1 = (_get_1 > output_height);
+        if (_greaterThan_1) {
+          output_height = r[1];
+        }
       }
     }
+    int i = 0;
+    final ArrayList<String> playlist = new ArrayList<String>();
+    for (final String video_1 : videos) {
+      {
+        int _plusPlus = i++;
+        final int[] r_1 = res.get(_plusPlus);
+        playlist.add(VideoGenUtils.resize(video_1, r_1[0], r_1[1], output_width, output_height));
+      }
+    }
+    VideoGenUtils.genPlaylist(((String[])Conversions.unwrapArray(playlist, String.class)), "playlist.mp4");
   }
 }
