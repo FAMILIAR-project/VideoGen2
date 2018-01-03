@@ -47,7 +47,7 @@ public class RandomMediaSelector {
 		return Optional.ofNullable(null);
 	}
 	
-	public static Optional<MediaSequence> selectOptionalMedia(OptionalMedia optionalMedia) throws InvalidVideoGenGrammarException {
+	public static MediaSequence selectOptionalMedia(OptionalMedia optionalMedia) throws InvalidVideoGenGrammarException {
 		int random = rand.nextInt(101);
 		
 		if(optionalMedia.getDescription() instanceof VideoDescription) {
@@ -56,14 +56,16 @@ public class RandomMediaSelector {
 			if(probability.isPresent()) {
 				
 				if(random <= probability.get()) {
-					return Optional.ofNullable(new MediaSequence(optionalMedia, optionalMedia.getDescription()));
+					return new MediaSequence(optionalMedia, Optional.ofNullable(optionalMedia.getDescription()));
+				} else {
+					return new MediaSequence(optionalMedia, null);
 				}
 			}
 			
 		}
 		
 		
-		return random > 50 ? Optional.ofNullable(null) : Optional.ofNullable(new MediaSequence(optionalMedia, optionalMedia.getDescription()));
+		return random > 50 ? new MediaSequence(optionalMedia, Optional.ofNullable(null)) : new MediaSequence(optionalMedia, Optional.ofNullable(optionalMedia.getDescription()));
 	}
 	
 	public static Optional<MediaSequence> selectAlternativesMedia(AlternativesMedia alternatives) throws InvalidVideoGenGrammarException {
@@ -111,7 +113,7 @@ public class RandomMediaSelector {
 					}
 					
 					if(probabilityCounter > random)
-						return Optional.ofNullable(new MediaSequence(alternatives, probabilities.get(probability)));
+						return Optional.ofNullable(new MediaSequence(alternatives, Optional.ofNullable(probabilities.get(probability))));
 					
 				}
 			}	
@@ -121,8 +123,8 @@ public class RandomMediaSelector {
 		return Optional.ofNullable(
 				new MediaSequence(
 						alternatives, 
-						alternatives.getMedias().get(
+						Optional.ofNullable(alternatives.getMedias().get(
 								rand.nextInt(
-										alternatives.getMedias().size()))));
+										alternatives.getMedias().size())))));
 	}
 }
