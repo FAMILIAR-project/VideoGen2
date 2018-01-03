@@ -153,3 +153,5 @@ VideoGenTools/bin/
 *.xtendbin
 
 *.mp4
+
+VideoGenTools/\.idea/

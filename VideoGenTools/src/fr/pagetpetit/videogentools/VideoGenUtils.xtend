@@ -1,3 +1,5 @@
+package fr.pagetpetit.videogentools
+
 import java.util.ArrayList
 import java.util.List
 import org.xtext.example.mydsl.videoGen.AlternativesMedia
@@ -141,7 +143,7 @@ class VideoGenUtils {
 		return variant
 	}
 	
-	static def void genPlaylist(String[] filenames, String outputfilename){
+	static def String concatVideos(String[] filenames, String outputfilename){
 		val COMMAND = new ArrayList<String>
 		var filter = ""
 		COMMAND.add("ffmpeg")
@@ -168,6 +170,8 @@ class VideoGenUtils {
 		
 		ProcessExec.executeCommand(COMMAND)
 		println(outputfilename + " created")
+		
+		return outputfilename
 	}
 	
 	static def int[] getResolution(String videoFile){
@@ -201,7 +205,7 @@ class VideoGenUtils {
         COMMAND.add(filename)
         COMMAND.add("-vf")
         COMMAND.add("pad=" + output_width + ":" + output_height + ":" + (output_width - input_width) / 2 + ":" + (output_height - input_height) / 2)
-        val output_file = file.get(0) + "_o." + file.get(1)
+        val output_file = "output/" + file.get(0) + "_o." + file.get(1)
         COMMAND.add(output_file)
         for(c : COMMAND){
         	println(c)
@@ -210,4 +214,34 @@ class VideoGenUtils {
         println(filename + " resized")
         return output_file
 	}
+	
+	static def String generatePlaylist(String[] videos){
+		val res = new ArrayList
+		
+		for(video : videos){
+			res.add(VideoGenUtils.getResolution(video))
+		}
+		
+		var output_width = 0
+		var output_height = 0
+		
+		for(r : res){
+			if(r.get(0) > output_width){
+				output_width = r.get(0)
+			}
+			if(r.get(1) > output_height){
+				output_height = r.get(1)
+			}
+		}
+		var i = 0;
+		val playlist = new ArrayList
+		for(video : videos){
+			val r = res.get(i++)
+			playlist.add(VideoGenUtils.resize(video, r.get(0), r.get(1), output_width, output_height))
+		}
+		
+		return VideoGenUtils.concatVideos(playlist, "output/playlist.mp4")
+		
+	}
 }
+		

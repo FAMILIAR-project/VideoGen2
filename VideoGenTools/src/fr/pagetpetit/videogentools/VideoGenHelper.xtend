@@ -1,3 +1,5 @@
+package fr.pagetpetit.videogentools
+
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
