@@ -1,6 +1,7 @@
 package fr.istic.idm.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,10 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia;
 
 import fr.istic.idm.RandomMediaSelector;
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
+import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
+import fr.istic.idm.model.mediasequence.MediaSequence;
+import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 
 /**
  * 
@@ -42,13 +47,27 @@ public class Variante {
 		this.variante.add(sequence);
 	}
 	
+	/**
+	 * This method generate a video file using ffmpeg tool.
+	 */
+	public void makeVideo() {
+		MediaSequenceVisitor visitor = VisitorFactory.createFFMPEGMediaSequenceVisitor();
+		
+		Iterator<MediaSequence> iterator = this.variante.iterator();
+		
+		while(iterator.hasNext())
+			iterator.next().accept(visitor);
+		
+		visitor.build();
+	}
+	
 	
 	public static Variante generate(List<Media> medias) throws InvalidVideoGenGrammarException {
 		Variante variante = new Variante();
 		
 		for(Media media : medias) {
 			if(media instanceof MandatoryMedia) {
-				variante.add(new MediaSequence(media, Optional.ofNullable(((MandatoryMedia) media).getDescription())));
+				variante.add(new MandatoryMediaSequence((MandatoryMedia) media, Optional.ofNullable(((MandatoryMedia) media).getDescription())));
 			} else if(media instanceof OptionalMedia) {
 				
 				MediaSequence optionalMedia = RandomMediaSelector.selectOptionalMedia((OptionalMedia) media);

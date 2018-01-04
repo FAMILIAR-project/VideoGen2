@@ -1,9 +1,11 @@
-package fr.istic.idm.model;
+package fr.istic.idm.model.mediasequence;
 
 import java.util.Optional;
 
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
+
+import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
 
 /**
  * 
@@ -11,7 +13,7 @@ import org.xtext.example.mydsl.videoGen.MediaDescription;
  * A MediaSequence object is a couple of two object, the Media and It's MediaDescription.
  * It is used during the computation of all Variantes of videos.
  */
-public class MediaSequence {
+public abstract class MediaSequence {
 	private Media media;
 	private Optional<MediaDescription> description;
 	
@@ -21,7 +23,6 @@ public class MediaSequence {
 		this.media = media;
 		this.description = description;
 	}
-	
 	
 	public Media getMedia() {
 		return media;
@@ -36,7 +37,8 @@ public class MediaSequence {
 		return description;
 	}
 
-
+	public abstract void accept(MediaSequenceVisitor visitor);
+	
 	/**
 	 * Update equals alongs with hashcode methods to say to the jvm 
 	 * that two object or identical in term of reference when they have the same Media and MediaDescription

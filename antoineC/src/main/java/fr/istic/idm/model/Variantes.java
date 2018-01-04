@@ -12,6 +12,10 @@ import org.xtext.example.mydsl.videoGen.MandatoryMedia;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 
+import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
+import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
+import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
+
 /**
  * @author Antoine Charpentier
  * Variantes object that holds all variantes of current videogen file being compiled
@@ -41,18 +45,18 @@ public class Variantes {
 			if(current instanceof MandatoryMedia) {
 				
 				if(variantes.size() == 0) {
-					variantes.add(new Variante(Arrays.asList(new MediaSequence(current, Optional.ofNullable(((MandatoryMedia) current).getDescription())))));
+					variantes.add(new Variante(Arrays.asList(new MandatoryMediaSequence((MandatoryMedia) current, Optional.ofNullable(((MandatoryMedia) current).getDescription())))));
 				} else {
 					for(int varianteIndex = 0 ; varianteIndex < variantes.size() ; varianteIndex++) {
-						variantes.get(varianteIndex).add(new MediaSequence(current, Optional.ofNullable(((MandatoryMedia) current).getDescription())));;
+						variantes.get(varianteIndex).add(new MandatoryMediaSequence((MandatoryMedia) current, Optional.ofNullable(((MandatoryMedia) current).getDescription())));;
 					}
 				}
 				
 			} else if(current instanceof OptionalMedia) {
 				OptionalMedia optional = (OptionalMedia) current;
 				if(variantes.size() == 0) {
-					variantes.add(new Variante(Arrays.asList(new MediaSequence(optional, Optional.ofNullable(optional.getDescription())))));
-					variantes.add(new Variante(Arrays.asList(new MediaSequence(optional, Optional.ofNullable(null)))));
+					variantes.add(new Variante(Arrays.asList(new OptionalMediaSequence(optional, Optional.ofNullable(optional.getDescription())))));
+					variantes.add(new Variante(Arrays.asList(new OptionalMediaSequence(optional, Optional.ofNullable(null)))));
 					continue;
 				}
 				
@@ -68,9 +72,9 @@ public class Variantes {
 						Variante varianteClone = new Variante(variante);
 						
 						if(currentIndex == 1)
-							varianteClone.add(new MediaSequence(optional, Optional.ofNullable(optional.getDescription())));
+							varianteClone.add(new OptionalMediaSequence(optional, Optional.ofNullable(optional.getDescription())));
 						else
-							varianteClone.add(new MediaSequence(optional, Optional.ofNullable(null)));
+							varianteClone.add(new OptionalMediaSequence(optional, Optional.ofNullable(null)));
 						variantesToCompute.variantes.add(varianteClone);
 					});
 				}
@@ -81,7 +85,7 @@ public class Variantes {
 				if(variantes.size() == 0) {
 					
 					for(int j = 0 ; j < alternative.getMedias().size() ; j++) {
-						variantes.add(new Variante(Arrays.asList(new MediaSequence(alternative, Optional.ofNullable(alternative.getMedias().get(j))))));
+						variantes.add(new Variante(Arrays.asList(new AlternativeMediaSequence(alternative, Optional.ofNullable(alternative.getMedias().get(j))))));
 					}
 					
 					continue;
@@ -96,7 +100,7 @@ public class Variantes {
 					
 					clone.variantes.forEach((variante) -> {
 						Variante varianteClone = new Variante(variante);
-						varianteClone.add(new MediaSequence(alternative, Optional.ofNullable(alternative.getMedias().get(currentIndex))));
+						varianteClone.add(new AlternativeMediaSequence(alternative, Optional.ofNullable(alternative.getMedias().get(currentIndex))));
 						variantesToCompute.variantes.add(varianteClone);
 					});
 				}
