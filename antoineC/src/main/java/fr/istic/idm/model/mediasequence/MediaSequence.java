@@ -1,5 +1,6 @@
 package fr.istic.idm.model.mediasequence;
 
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import org.xtext.example.mydsl.videoGen.Media;
@@ -37,7 +38,7 @@ public abstract class MediaSequence {
 		return description;
 	}
 
-	public abstract void accept(MediaSequenceVisitor visitor);
+	public abstract void accept(MediaSequenceVisitor visitor) throws FileNotFoundException;
 	
 	/**
 	 * Update equals alongs with hashcode methods to say to the jvm 

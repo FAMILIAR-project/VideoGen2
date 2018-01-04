@@ -1,5 +1,6 @@
 package fr.istic.idm.model;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,8 +56,17 @@ public class Variante {
 		
 		Iterator<MediaSequence> iterator = this.variante.iterator();
 		
-		while(iterator.hasNext())
-			iterator.next().accept(visitor);
+		try {
+			while(iterator.hasNext())
+				iterator.next().accept(visitor);
+		} catch(FileNotFoundException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+			
+			throw new RuntimeException("Compiler aborted due to: " + e.getMessage());
+		}
 		
 		visitor.build();
 	}

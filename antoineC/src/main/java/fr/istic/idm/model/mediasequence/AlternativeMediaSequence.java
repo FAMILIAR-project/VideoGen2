@@ -1,5 +1,6 @@
 package fr.istic.idm.model.mediasequence;
 
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
@@ -13,7 +14,7 @@ public class AlternativeMediaSequence extends MediaSequence{
 	}
 
 	@Override
-	public void accept(MediaSequenceVisitor visitor) {
+	public void accept(MediaSequenceVisitor visitor) throws FileNotFoundException {
 		visitor.visit(this);
 	}
 	

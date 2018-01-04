@@ -1,6 +1,9 @@
 package fr.istic.idm;
 
 import java.io.File;
+
+import javax.swing.text.html.HTMLDocument.RunElement;
+
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +42,11 @@ public class VideoGenCompiler {
 		VideoGenCompiler compiler = new VideoGenCompiler(videoGen);
 		log.info("File loaded successfully");
 		
-		
-		compiler.compile();
+		try {
+			compiler.compile();
+		} catch(RuntimeException e) {
+			log.error(e.getMessage());
+		}
 	}
 	
 	private void compile() {
