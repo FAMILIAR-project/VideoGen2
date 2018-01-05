@@ -1,8 +1,11 @@
 package fr.istic.idm.model.mediasequence.visitors;
 
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.ecore.EClass;
@@ -11,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
+
+import com.google.common.util.concurrent.ExecutionError;
 
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
@@ -67,6 +72,66 @@ public class FFMPEGMediaSequenceVisitor extends MediaSequenceVisitor {
 			throw new FileNotFoundException("The file '" + image.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
+		StringBuilder commandBuilder = new StringBuilder("ffmpeg -i " + image.getPath() + " -vf ");
+		
+		String drawTextTemplate = "drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x=\"(w-text_w)/2\":y=\"${y}\":text=\"${text}\"";
+		StringBuilder filtersBuilder = new StringBuilder();
+		
+		if(description.getBottom() != null && description.getBottom() != "") {
+			filtersBuilder.append(drawTextTemplate
+					.replace("${fontfile}", "src/main/resources/arial.ttf")
+					.replace("${fontcolor}", "white")
+					.replace("${fontsize}", "72")
+					.replace("${y}", "h-text_h")
+					.replace("${text}", description.getBottom())
+			);
+		}
+		
+		if(description.getTop() != null && description.getTop() != "") {
+			if(filtersBuilder.length() != 0)
+				filtersBuilder.append(",");
+			
+			filtersBuilder.append(drawTextTemplate
+					.replace("${fontfile}", "src/main/resources/arial.ttf")
+					.replace("${fontcolor}", "white")
+					.replace("${fontsize}", "72")
+					.replace("${y}", "0")
+					.replace("${text}", description.getTop())
+			);
+		}
+		
+		commandBuilder.append(filtersBuilder.toString()).append(" -y output.jpg");
+		
+		// TODO: WARNING test in a unix system because development is made in windows, and it must work in unix.
+		// Bottom: ffmpeg -i image.png -vf drawtext=fontfile=src/main/resources/arial.ttf:fontcolor=white:fontsize=74:x="(w-text_w)/2":y="(h-text_h)":text="Bottom Text" -y bottom.png
+		// TP: ffmpeg -i image.png -vf drawtext=fontfile=src/main/resources/arial.ttf:fontcolor=white:fontsize=74:x="(w-text_w)/2":y=0:text="Top Text" -y top.png
+		
+		try {
+			log.info("Command to be proccessed: {}", commandBuilder.toString());
+			Process p = Runtime.getRuntime().exec(commandBuilder.toString());
+			
+			if(p.waitFor() != 0) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+				
+				String line = "";
+				while((line = reader.readLine()) != null)  {
+					log.error(line);
+				}
+				
+				reader.close();
+				
+				throw new Exception("Unable to generate image");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 //		description.getImageid() nullable, 
 //		description.getLocation() always set, 
 //		description.getTop() nullable, 

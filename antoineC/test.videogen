@@ -5,6 +5,7 @@
 
 VideoGen {
 	mandatory image "image.png" {
+		toptext "Top Text"
 		bottomtext "Test Video"	
 	}
 	
