@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.ecore.EClass;
@@ -15,6 +17,7 @@ import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ExecutionError;
 
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
@@ -77,27 +80,25 @@ public class FFMPEGMediaSequenceVisitor extends MediaSequenceVisitor {
 		String drawTextTemplate = "drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x=\"(w-text_w)/2\":y=\"${y}\":text=\"${text}\"";
 		StringBuilder filtersBuilder = new StringBuilder();
 		
+		
 		if(description.getBottom() != null && description.getBottom() != "") {
-			filtersBuilder.append(drawTextTemplate
-					.replace("${fontfile}", "src/main/resources/arial.ttf")
-					.replace("${fontcolor}", "white")
-					.replace("${fontsize}", "72")
-					.replace("${y}", "h-text_h")
-					.replace("${text}", description.getBottom())
-			);
+			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
+					"${fontfile}", "src/main/resources/arial.ttf",
+					"${fontcolor}", "white",
+					"${fontsize}", "72",
+					"${y}", "h-text_h",
+					"${text}", description.getBottom()
+			));
 		}
 		
 		if(description.getTop() != null && description.getTop() != "") {
-			if(filtersBuilder.length() != 0)
-				filtersBuilder.append(",");
-			
-			filtersBuilder.append(drawTextTemplate
-					.replace("${fontfile}", "src/main/resources/arial.ttf")
-					.replace("${fontcolor}", "white")
-					.replace("${fontsize}", "72")
-					.replace("${y}", "0")
-					.replace("${text}", description.getTop())
-			);
+			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
+					"${fontfile}", "src/main/resources/arial.ttf",
+					"${fontcolor}", "white",
+					"${fontsize}", "72",
+					"${y}", "0",
+					"${text}", description.getTop()
+			));
 		}
 		
 		commandBuilder.append(filtersBuilder.toString()).append(" -y output.jpg");
@@ -136,6 +137,24 @@ public class FFMPEGMediaSequenceVisitor extends MediaSequenceVisitor {
 //		description.getLocation() always set, 
 //		description.getTop() nullable, 
 //		description.getBottom() nullable
+	}
+
+	/**
+	 * Build a FFMPEG filter, must be extracted in a specific class later, but for now it's good enough
+	 * @param filters
+	 * @param filterTemplate
+	 * @param replacements
+	 */
+	private void addFFMPEGFilter(StringBuilder filters, String filterTemplate, Map<String, String> replacements) {
+		if(filters.length() != 0)
+			filters.append(",");
+		
+		String filter = filterTemplate;
+		for(String templateVariable : replacements.keySet()) {
+			filter = filter.replace(templateVariable, replacements.get(templateVariable));
+		}
+		
+		filters.append(filter);
 	}
 	
 	private void workOnVideoDescription(Media media, VideoDescription description) throws FileNotFoundException {
