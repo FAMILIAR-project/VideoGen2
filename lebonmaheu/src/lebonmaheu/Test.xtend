@@ -13,6 +13,8 @@ import java.io.File
 import java.io.FileWriter
 import org.xtext.example.mydsl.videoGen.ImageDescription
 import org.xtext.example.mydsl.videoGen.VideoDescription
+import java.io.Reader
+import java.util.Scanner
 
 class Test {
 	def private static getMediaId(MediaDescription m) {
@@ -180,11 +182,37 @@ class Test {
         			writer.write("FALSE")
         		writer.write(";")
         	]
-        	writer.write("0\n")
+        	writer.write('''«variantSize(variant)»'''.toString + "\n")
         }
         
         writer.flush
         writer.close
+    }
+    
+    def public static variantDuration(List<MediaDescription> variant) {
+    	var duration = 0
+    	
+    	for (media : variant) {
+			var command = ffmpegComputeDuration(media.location)
+			var p = Runtime.runtime.exec(command.toString)
+
+			p.waitFor()
+
+			duration += (new Scanner(p.inputStream)).nextInt
+    	}
+    	
+    	return duration
+    }
+    
+    def public static variantSize(List<MediaDescription> variant) {
+    	var size = 0L
+    	
+    	for (media : variant) {
+			val file = new File(media.location)
+			size += file.length
+    	}
+    	
+    	return size
     }
     
     def public static longestVariant(String inputFile) {
@@ -203,7 +231,12 @@ class Test {
 			
 			else if(media instanceof AlternativesMedia) {
 				var durations = media.medias.map [ m |
-					Integer.parseInt(ffmpegComputeDuration(m.location).toString)
+					var command = ffmpegComputeDuration(m.location)
+        			var p = Runtime.runtime.exec(command.toString)
+        			
+        			p.waitFor()
+        			
+					(new Scanner(p.inputStream)).nextInt
 				]
 				
 				var max = 0
