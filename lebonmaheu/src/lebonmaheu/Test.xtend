@@ -25,7 +25,17 @@ class Test {
 	}
 	
 	def public static void main(String[] args) {
-		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"))
+		var input = ""
+		var output = ""
+		
+		if (args.length != 2) {
+			return
+		}
+		
+		input = args.get(0)
+		output = args.get(1)
+		
+		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(input))
 		assertNotNull(videoGen)
 		
         //println(videoGen.information.authorName)        
@@ -65,16 +75,21 @@ class Test {
         writer.flush()
         writer.close()
         
-        var command = ffmpegConcatenateCommand("playlist.txt",  "o.mp4")
+        var command = ffmpegConcatenateCommand("playlist.txt",  output)
         var p = Runtime.runtime.exec(command.toString)
         
-        val all = getAllVariants("example2.videogen")
+        val all = getAllVariants(input)
         all.forEach [variant |
         	variant.forEach [ m | print(getMediaId(m) + " ") ]
         	println("")
         ]
         
-        makeCSV("example2.videogen")
+        makeCSV(input)
+        p.waitFor
+        
+        command = ffmpegConvertToGIF(output)
+        p = Runtime.runtime.exec(command.toString)
+        
         p.waitFor    
     }
     
@@ -210,5 +225,8 @@ class Test {
     '''/usr/local/bin/ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 «locationVideo»'''
     
     def static ffmpegConcatenateCommand(String mpegPlaylistFile, String outputPath) 
-    '''/usr/bin/ffmpeg -y -f concat -safe 0 -i �mpegPlaylistFile� -c copy �outputPath�'''
+    '''/usr/bin/ffmpeg -y -f concat -safe 0 -i «mpegPlaylistFile» -c copy «outputPath»'''
+    
+    def static ffmpegConvertToGIF(String input)
+    '''ffmpeg -i «input» -vf scale=320:-1 -r 10 -f image2pipe -vcodec ppm - | convert -delay 5 -loop 0 - «input».gif'''
 }
