@@ -1,5 +1,6 @@
 package fr.istic.idm.model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class Variante {
 	/**
 	 * This method compile a video file using a tool like ffmpeg.
 	 */
-	public void compile() {
+	public File compile() {
 		VideoGenCompilerVisitor visitor = VisitorFactory.createCompilerVisitor();
 		
 		Iterator<MediaSequence> iterator = this.variante.iterator();
@@ -71,7 +72,7 @@ public class Variante {
 		}
 		
 		try {
-			visitor.build();
+			return visitor.build();
 		} catch(IOException e) {
 			log.error(e.getMessage());
 			

@@ -213,6 +213,8 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		this.concatenationInstructionsWriter.close();
 		
-		return null;
+		
+		log.info("Video File successfully generated");
+		return FileUtils.getFile(VideoGenCompiler.TEMP_DIR_PATH + "concatenated.mp4");
 	}
 }

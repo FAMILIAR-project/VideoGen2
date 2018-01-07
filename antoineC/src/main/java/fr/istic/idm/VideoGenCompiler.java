@@ -2,6 +2,7 @@ package fr.istic.idm;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
@@ -86,8 +87,13 @@ public class VideoGenCompiler {
 				if(!variantes.contains(variante))
 					throw new InvalidVarianteGeneration("Try to generate a variant that doesn't exist");
 				
-				variante.compile();
-			} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration e) {
+				File video = variante.compile();
+				
+				File concatenedFile = FileUtils.getFile(UUID.randomUUID() + ".mp4");
+				FileUtils.moveFile(video, concatenedFile);
+				
+				log.info("Result available here {}", concatenedFile.getAbsolutePath());
+			} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration | IOException e) {
 				log.error(e.getMessage());
 				
 				if(log.isDebugEnabled()) {
