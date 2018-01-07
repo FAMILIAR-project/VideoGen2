@@ -150,3 +150,5 @@ VideoGenTools/bin/
 *.mp4
 
 VideoGenTools/\.idea/
+
+\.idea/workspace\.xml
