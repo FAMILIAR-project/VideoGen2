@@ -58,7 +58,6 @@
 /petitpaget/*.ipr
 /petitpaget/*.ids
 /petitpaget/*.orig
-/petitpaget/classes/
 
 ######################
 # Visual Studio Code
@@ -69,7 +68,6 @@
 # Maven
 ######################
 /petitpaget/log/
-/petitpaget/target/
 
 ######################
 # Gradle
@@ -121,7 +119,6 @@
 ######################
 # Others
 ######################
-/petitpaget/*.class
 /petitpaget/*.*~
 /petitpaget/*~
 /petitpaget/.merge_file*
@@ -147,8 +144,6 @@ VideoGenTools/xtend-gen/
 VideoGenTools/bin/
 
 *._trace
-
-*.class
 
 *.xtendbin
 
