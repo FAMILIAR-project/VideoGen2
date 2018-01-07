@@ -1,6 +1,7 @@
 package fr.istic.idm.model;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
 import fr.istic.idm.model.mediasequence.MediaSequence;
 import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VideoGenCompilerVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 
 /**
@@ -49,10 +51,10 @@ public class Variante {
 	}
 	
 	/**
-	 * This method generate a video file using ffmpeg tool.
+	 * This method compile a video file using a tool like ffmpeg.
 	 */
-	public void makeVideo() {
-		MediaSequenceVisitor visitor = VisitorFactory.createFFMPEGMediaSequenceVisitor();
+	public void compile() {
+		VideoGenCompilerVisitor visitor = VisitorFactory.createCompilerVisitor();
 		
 		Iterator<MediaSequence> iterator = this.variante.iterator();
 		
@@ -68,7 +70,16 @@ public class Variante {
 			throw new RuntimeException("Compiler aborted due to: " + e.getMessage());
 		}
 		
-		visitor.build();
+		try {
+			visitor.build();
+		} catch(IOException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+			
+			throw new RuntimeException("Aborted due to previous logged exception");
+		}
 	}
 	
 	

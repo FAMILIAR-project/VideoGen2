@@ -3,14 +3,20 @@ package fr.istic.idm.model.mediasequence.visitors;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.io.PrintStream;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.emf.ecore.EClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
@@ -18,16 +24,37 @@ import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.ExecutionError;
 
+import fr.istic.idm.VideoGenCompiler;
+import fr.istic.idm.ffmpeg.FFMPEGCommand;
+import fr.istic.idm.ffmpeg.StreamHandler;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
-import fr.istic.idm.model.mediasequence.MediaSequence;
 import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
 
-public class FFMPEGMediaSequenceVisitor extends MediaSequenceVisitor {
-	
+public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 	private static Logger log = LoggerFactory.getLogger(FFMPEGMediaSequenceVisitor.class);
+	
+	private LinkedList<File> videoParts;
+	private File videoConcatenationInstructionsFile;
+	private FileWriter concatenationInstructionsWriter;
+	
+	
+	public FFMPEGMediaSequenceVisitor() {
+		this.videoParts = new LinkedList<>();
+		this.videoConcatenationInstructionsFile = FileUtils.getFile(VideoGenCompiler.TEMP_DIR_PATH + "concatenate.txt");
+		
+		try {
+			this.videoConcatenationInstructionsFile.createNewFile();
+			this.concatenationInstructionsWriter = new FileWriter(this.videoConcatenationInstructionsFile);
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+		}
+		
+	}
 	
 	@Override
 	public void visit(AlternativeMediaSequence sequence) throws FileNotFoundException {
@@ -101,42 +128,50 @@ public class FFMPEGMediaSequenceVisitor extends MediaSequenceVisitor {
 			));
 		}
 		
-		commandBuilder.append(filtersBuilder.toString()).append(" -y output.jpg");
+		File output = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".jpg");
+		commandBuilder.append(filtersBuilder.toString()).append(" -y ").append(output.getAbsolutePath());
 		
 		// TODO: WARNING test in a unix system because development is made in windows, and it must work in unix.
 		// Bottom: ffmpeg -i image.png -vf drawtext=fontfile=src/main/resources/arial.ttf:fontcolor=white:fontsize=74:x="(w-text_w)/2":y="(h-text_h)":text="Bottom Text" -y bottom.png
 		// TP: ffmpeg -i image.png -vf drawtext=fontfile=src/main/resources/arial.ttf:fontcolor=white:fontsize=74:x="(w-text_w)/2":y=0:text="Top Text" -y top.png
 		
-		try {
-			log.info("Command to be proccessed: {}", commandBuilder.toString());
-			Process p = Runtime.getRuntime().exec(commandBuilder.toString());
-			
-			if(p.waitFor() != 0) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-				
-				String line = "";
-				while((line = reader.readLine()) != null)  {
-					log.error(line);
-				}
-				
-				reader.close();
-				
-				throw new Exception("Unable to generate image");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(!new FFMPEGCommand(commandBuilder.toString()).execute()) {
+			throw new RuntimeException("Cannot generate image with text from '" + image.getAbsolutePath() + "'");
 		}
-
-//		description.getImageid() nullable, 
-//		description.getLocation() always set, 
-//		description.getTop() nullable, 
-//		description.getBottom() nullable
+		
+		File videoOutput = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
+		videoParts.add(videoOutput);
+		
+		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"trunc(iw/2)*2:trunc(ih/2)*2\" -t 3 -y " + videoOutput.getAbsolutePath();
+		
+		if(!new FFMPEGCommand(command).execute()) {
+			throw new RuntimeException("Cannot generate video from image '" + image.getAbsolutePath() + "'");
+		}
+	}
+	
+	private void workOnVideoDescription(Media media, VideoDescription description) throws FileNotFoundException {
+		log.info("Video with this details: {}, {}, {}, {}, {}", description.getVideoid(), description.getLocation(), description.getProbability(), description.getDuration(), description.getDescription());
+		
+		File video = null;
+		if(!(video = FileUtils.getFile(description.getLocation())).exists()) {
+			throw new FileNotFoundException("The file '" + video.getAbsolutePath() + "' is nowhere to be found");
+		}
+		
+		
+		File output = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
+		this.videoParts.add(output);
+		String command = "ffmpeg -i " + video.getAbsolutePath() + " " + output.getAbsolutePath() + " -y -hide_banner";
+		
+		
+		if(!new FFMPEGCommand(command).execute()) {
+			throw new RuntimeException("Cannot transcode '" + video.getAbsolutePath() + "' into mp4");
+		}
+		
+//		description.getVideoid() nullable, 
+//		description.getLocation() always defined, 
+//		description.getProbability() zero, 
+//		description.getDuration() 0, 
+//		description.getDescription() nullable
 	}
 
 	/**
@@ -157,27 +192,27 @@ public class FFMPEGMediaSequenceVisitor extends MediaSequenceVisitor {
 		filters.append(filter);
 	}
 	
-	private void workOnVideoDescription(Media media, VideoDescription description) throws FileNotFoundException {
-		log.info("Video with this details: {}, {}, {}, {}, {}", description.getVideoid(), description.getLocation(), description.getProbability(), description.getDuration(), description.getDescription());
+	@Override
+	public File build() throws IOException {
 		
-		File video = null;
-		if(!(video = FileUtils.getFile(description.getLocation())).exists()) {
-			throw new FileNotFoundException("The file '" + video.getAbsolutePath() + "' is nowhere to be found");
+		this.concatenationInstructionsWriter.append("# VideoGen Compiler Concatenation File\n");
+		
+		while(!this.videoParts.isEmpty()){
+			File videoPart = this.videoParts.removeFirst();
+			this.concatenationInstructionsWriter.append("file '" + videoPart.getAbsolutePath() + "'\n");
 		}
 		
-//		description.getVideoid() nullable, 
-//		description.getLocation() always defined, 
-//		description.getProbability() zero, 
-//		description.getDuration() 0, 
-//		description.getDescription() nullable
-	}
-	
-	
-
-	@Override
-	public Object build() {
-		log.debug("Build something");
+		this.concatenationInstructionsWriter.flush();
+		log.info("Concatenation file is served '{}'", videoConcatenationInstructionsFile.getAbsolutePath()) ;
+		log.info("Start to generate Video File, this can take severall minutes based on generated video file size.");
+		
+		String command = "ffmpeg -f concat -safe 0 -i " + this.videoConcatenationInstructionsFile.getAbsolutePath() + " -c copy " + VideoGenCompiler.TEMP_DIR_PATH + "concatenated.mp4";
+		
+		if(!new FFMPEGCommand(command).execute())
+			throw new RuntimeException("Cannot create video file");
+		
+		this.concatenationInstructionsWriter.close();
+		
 		return null;
 	}
-
 }

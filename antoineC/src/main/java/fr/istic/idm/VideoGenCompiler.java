@@ -1,9 +1,9 @@
 package fr.istic.idm;
 
 import java.io.File;
+import java.io.IOException;
 
-import javax.swing.text.html.HTMLDocument.RunElement;
-
+import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +15,30 @@ import fr.istic.idm.model.Variante;
 import fr.istic.idm.model.Variantes;
 
 public class VideoGenCompiler {
-
+	private static final String TEMP_DIR_NAME = "VideoGenTemp";
+	private static final File TEMP_DIR = FileUtils.getFile(FileUtils.getTempDirectoryPath() + TEMP_DIR_NAME);
+	
+	// TODO: Update this if linux failed to work
+	public static final String TEMP_DIR_PATH = TEMP_DIR.getAbsolutePath() + "\\";
+	
 	private static Logger log = LoggerFactory.getLogger(VideoGenCompiler.class);
 	
 	private VideoGeneratorModel model;
 	private Variantes variantes;
 	
 	public VideoGenCompiler(VideoGeneratorModel model) {
+		if(!TEMP_DIR.exists()) {
+			TEMP_DIR.mkdir();
+		}
+		
+		try {
+			FileUtils.cleanDirectory(TEMP_DIR);
+		} catch(IOException e) {
+			log.error(e.getMessage());
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+		}
+		
 		this.model = model;
 	}
 	
@@ -40,7 +57,7 @@ public class VideoGenCompiler {
 		
 		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(videoGenFile.getPath()));
 		VideoGenCompiler compiler = new VideoGenCompiler(videoGen);
-		log.info("File loaded successfully");
+		log.info("VideoGen SourceCode loaded successfully");
 		
 		try {
 			compiler.compile();
@@ -69,7 +86,7 @@ public class VideoGenCompiler {
 				if(!variantes.contains(variante))
 					throw new InvalidVarianteGeneration("Try to generate a variant that doesn't exist");
 				
-				variante.makeVideo();
+				variante.compile();
 			} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration e) {
 				log.error(e.getMessage());
 				

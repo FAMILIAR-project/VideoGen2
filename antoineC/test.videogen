@@ -4,27 +4,13 @@
 
 
 VideoGen {
-	mandatory image "image.png" {
+	mandatory image "avatar.jpg" {
 		toptext "Top Text"
 		bottomtext "Test Video"	
 	}
 	
 	
-	mandatory videoseq "welcome.mkv"
+	mandatory videoseq "welcome.mp4"
 	
-	optional videoseq "at_this_moment.mkv"
-	
-	alternatives {
-		videoseq "joke1.mkv" {
-			probability 50
-		}
-		videoseq "joke2.mkv" {
-			probability 25
-		}
-		videoseq "joke3.mkv" {
-			probability 25
-		}
-	}
-	
-	mandatory videoseq "end.mkv"
+	mandatory videoseq "who.mp4"
 }
