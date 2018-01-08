@@ -44,6 +44,12 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    GoSelection() {
+        //il faut aller sur une nouvelle page avec le choix des différentes vidéos (voir avec mael pour recuperer la liste des videos)
+        this.principal.hasAnyAuthority() ;
+
+    }
+
     isAuthenticated() {
         return this.principal.isAuthenticated();
     }
