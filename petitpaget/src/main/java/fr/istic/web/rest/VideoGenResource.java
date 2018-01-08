@@ -18,7 +18,7 @@ public class VideoGenResource {
     private final VideoGenHelper videogenHelper;
 
     public VideoGenResource(){
-        this.videogenHelper = new VideoGenHelper();
+        this.videogenHelper = new VideoGenHelper(); 
     }
 
     @GetMapping("/videogen/{filepath}")

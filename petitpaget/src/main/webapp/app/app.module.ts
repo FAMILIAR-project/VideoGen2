@@ -24,6 +24,8 @@ import {
     ErrorComponent
 } from './layouts';
 
+import {VideoGenService} from './videogen/videogen.service';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -47,7 +49,8 @@ import {
         ProfileService,
         customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        VideoGenService
     ],
     bootstrap: [ JhiMainComponent ]
 })

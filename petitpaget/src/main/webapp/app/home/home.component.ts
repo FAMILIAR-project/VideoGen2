@@ -3,6 +3,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
+import {VideoGenService} from '../videogen/videogen.service';
 
 @Component({
     selector: 'jhi-home',
@@ -19,7 +20,8 @@ export class HomeComponent implements OnInit {
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private videogenService: VideoGenService
     ) {
     }
 
@@ -28,6 +30,10 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+        console.log('LOADING MODEL');
+        this.videogenService.find('example1').subscribe((model) => {
+            console.log(model);
+        });
     }
 
     registerAuthenticationSuccess() {
