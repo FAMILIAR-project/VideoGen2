@@ -5,15 +5,22 @@ import java.util.ArrayList
 
 class FFMPEGHelper {
 	
-	def void run(List<String> playlistFile, String outputFile){
+	def void runPlayList(List<String> playlistFile, String outputFile){
+		//val command = new ArrayList<String>
+		
 		var process = Runtime.runtime.exec("/usr/bin/ffmpeg -y -f concat -safe 0 -i " + playlistFile + " -c copy " + outputFile)
 		process.waitFor
 	}
 	
-	def void makeThumbnail(String videoLocation, int thumbTime, String thumbFolder, String thumbName){
-		var process = Runtime.runtime.exec("/usr/bin/ffmpeg -y -i " + videoLocation +  
-			" -r 1 -t 00:00:01 -ss 00:00:" + thumbTime + " -f image2 " + thumbFolder + "/" + thumbName + ".png")
-		process.waitFor
+	def void generateThumbnail(String videoLocation, String thumbFolder, String thumbName){
+		
+		val command = new ArrayList<String>
+		command.add("ffmpeg")
+		command.add("-y")
+		command.add("-i")
+		command.add(videoLocation)
+		command.add(" -r 1 -t 00:00:01 -ss 00:00:02 -f image2 " + thumbFolder + "/" + thumbName + ".png")
+		ProcessHelper.execute(command)
 	}
 	
 	

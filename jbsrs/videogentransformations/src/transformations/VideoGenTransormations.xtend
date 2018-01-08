@@ -17,4 +17,12 @@ class VideoGenTransormations {
 		
 	}
 	
+	def void getSizes(VideoGeneratorModel videoGen){
+		
+	}
+	
+	def void videoGenToGif(VideoGeneratorModel videoGen){
+		
+	}
+	
 }

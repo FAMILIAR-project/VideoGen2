@@ -49,6 +49,6 @@ class VideoGenPlayerTransformation {
 	
 	def void playWithFFMPEG(List<String> playListFile, String outPutFile){
 		var helper = new FFMPEGHelper()
-		helper.run(playListFile, outPutFile);
+		//helper.run(playListFile, outPutFile);
 	}
 }
