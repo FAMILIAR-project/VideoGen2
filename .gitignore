@@ -68,6 +68,13 @@
 # Maven
 ######################
 /petitpaget/log/
+/petitpaget/target/generated-sources/
+/petitpaget/target/generated-test-sources/
+/petitpaget/target/maven-status/
+/petitpaget/target/test-classes/
+/petitpaget/target/www/
+/petitpaget/target/Dockerfile
+/petitpaget/target/.dockerignore
 
 ######################
 # Gradle
