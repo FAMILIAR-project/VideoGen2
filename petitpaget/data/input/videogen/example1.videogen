@@ -1,3 +1,4 @@
+@authors "mael"
 VideoGen {
 	mandatory videoseq v0 "v0.mp4"
 	mandatory videoseq v01 "v01.mp4"

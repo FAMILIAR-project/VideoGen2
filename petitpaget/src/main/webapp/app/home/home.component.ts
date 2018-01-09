@@ -4,6 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
 import {VideoGenService} from '../videogen/videogen.service';
+import {AlternativesMedia, MandatoryMedia} from '../videogen/model/videogen.model';
 
 @Component({
     selector: 'jhi-home',
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
-        private videogenService: VideoGenService
+        private videoGenService: VideoGenService
     ) {
     }
 
@@ -31,8 +32,12 @@ export class HomeComponent implements OnInit {
         });
         this.registerAuthenticationSuccess();
         console.log('LOADING MODEL');
-        this.videogenService.find('example1').subscribe((model) => {
+        this.videoGenService.find('example1').subscribe((model) => {
             console.log(model);
+            /*for (const media of model.medias){
+                console.log((media as MandatoryMedia).description);
+                console.log((media as AlternativesMedia).medias);
+            }*/
         });
     }
 
@@ -45,8 +50,8 @@ export class HomeComponent implements OnInit {
     }
 
     GoSelection() {
-        //il faut aller sur une nouvelle page avec le choix des différentes vidéos (voir avec mael pour recuperer la liste des videos)
-        this.principal.hasAnyAuthority() ;
+        // il faut aller sur une nouvelle page avec le choix des différentes vidéos (voir avec mael pour recuperer la liste des videos)
+        // this.principal.hasAnyAuthority() ;
 
     }
 
