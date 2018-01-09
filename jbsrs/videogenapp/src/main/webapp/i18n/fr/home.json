@@ -1,13 +1,13 @@
 {
     "home": {
-        "title": "Bienvenue, Java Hipster !",
-        "subtitle": "Ceci est votre page d'accueil",
+        "title": "Bienvenue sur, Video Generator !",
+        "subtitle": "Votre générateur/configurateur Web de vidéos",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },
         "question": "Si vous avez des questions à propos de JHipster :",
         "link": {
-            "homepage": "Page d'accueil de JHipster",
+            "homepage": "Page d'accueil de Video Generator",
             "stackoverflow": "JHipster sur Stack Overflow",
             "bugtracker": "JHipster bug tracker",
             "chat": "JHipster public chat room",
