@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { SERVER_API_URL } from '../app.constants';
 import {VideoGeneratorModel} from './model/videogen.model';
+import {ResponseWrapper} from '../shared/model/response-wrapper.model';
 
 @Injectable()
 export class VideoGenService {
@@ -11,8 +12,17 @@ export class VideoGenService {
 
     constructor(private http: Http) { }
 
-    find(filename: string): Observable<VideoGeneratorModel> {
+    getModel(filename: string): Observable<VideoGeneratorModel> {
         return this.http.get(`${this.resourceUrl}/${filename}`).map((res: Response) => res.json());
     }
 
+    generatePlaylist(videos: string[]): any {
+        return this.http.post(this.resourceUrl, videos)
+            .map((res: Response) => res);
+    }
+
+    /*private convertResponse(res: Response): ResponseWrapper {
+        const jsonResponse = res.json();
+        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+    }*/
 }

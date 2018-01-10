@@ -192,12 +192,13 @@ class VideoGenUtils {
 		return resolution
 	}
 	
-	static def String resize(String filename, int input_width, int input_height, int output_width, int output_height){
+	static def String resize(String filename, int input_width, int input_height, int output_width, int output_height, String outputFolder){
 		if(input_width == output_width && input_height == output_height){
 			println(filename + " already at right size")
 			return filename
 		}
-		var file = filename.replace(".","@#").split("@#")
+		var path = filename.split("/")
+		var file = path.get(path.length - 1).replace(".","@#").split("@#")
 		var COMMAND = new ArrayList
 		COMMAND.add("ffmpeg")
 		COMMAND.add("-y")
@@ -205,7 +206,7 @@ class VideoGenUtils {
         COMMAND.add(filename)
         COMMAND.add("-vf")
         COMMAND.add("pad=" + output_width + ":" + output_height + ":" + (output_width - input_width) / 2 + ":" + (output_height - input_height) / 2)
-        val output_file = "output/" + file.get(0) + "_o." + file.get(1)
+        val output_file = outputFolder + "/" + file.get(file.length - 2) + "_o." + file.get(file.length - 1)
         COMMAND.add(output_file)
         for(c : COMMAND){
         	println(c)
@@ -215,7 +216,7 @@ class VideoGenUtils {
         return output_file
 	}
 	
-	static def String generatePlaylist(String[] videos){
+	static def String generatePlaylist(String[] videos, String outputFolder){
 		val res = new ArrayList
 		
 		for(video : videos){
@@ -237,10 +238,10 @@ class VideoGenUtils {
 		val playlist = new ArrayList
 		for(video : videos){
 			val r = res.get(i++)
-			playlist.add(VideoGenUtils.resize(video, r.get(0), r.get(1), output_width, output_height))
+			playlist.add(VideoGenUtils.resize(video, r.get(0), r.get(1), output_width, output_height, outputFolder))
 		}
 		
-		return VideoGenUtils.concatVideos(playlist, "output/playlist.mp4")
+		return VideoGenUtils.concatVideos(playlist, outputFolder + "/output.mp4")
 		
 	}
 }

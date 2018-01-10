@@ -240,12 +240,15 @@ public class VideoGenUtils {
     return ((int[])Conversions.unwrapArray(resolution, int.class));
   }
   
-  public static String resize(final String filename, final int input_width, final int input_height, final int output_width, final int output_height) {
+  public static String resize(final String filename, final int input_width, final int input_height, final int output_width, final int output_height, final String outputFolder) {
     if (((input_width == output_width) && (input_height == output_height))) {
       InputOutput.<String>println((filename + " already at right size"));
       return filename;
     }
-    String[] file = filename.replace(".", "@#").split("@#");
+    String[] path = filename.split("/");
+    int _length = path.length;
+    int _minus = (_length - 1);
+    String[] file = path[_minus].replace(".", "@#").split("@#");
     ArrayList<String> COMMAND = new ArrayList<String>();
     COMMAND.add("ffmpeg");
     COMMAND.add("-y");
@@ -253,10 +256,14 @@ public class VideoGenUtils {
     COMMAND.add(filename);
     COMMAND.add("-vf");
     COMMAND.add(((((((("pad=" + Integer.valueOf(output_width)) + ":") + Integer.valueOf(output_height)) + ":") + Integer.valueOf(((output_width - input_width) / 2))) + ":") + Integer.valueOf(((output_height - input_height) / 2))));
-    String _get = file[0];
-    String _plus = ("output/" + _get);
+    int _length_1 = file.length;
+    int _minus_1 = (_length_1 - 2);
+    String _get = file[_minus_1];
+    String _plus = ((outputFolder + "/") + _get);
     String _plus_1 = (_plus + "_o.");
-    String _get_1 = file[1];
+    int _length_2 = file.length;
+    int _minus_2 = (_length_2 - 1);
+    String _get_1 = file[_minus_2];
     final String output_file = (_plus_1 + _get_1);
     COMMAND.add(output_file);
     for (final String c : COMMAND) {
@@ -268,7 +275,7 @@ public class VideoGenUtils {
     return output_file;
   }
   
-  public static String generatePlaylist(final String[] videos) {
+  public static String generatePlaylist(final String[] videos, final String outputFolder) {
     final ArrayList<int[]> res = new ArrayList<int[]>();
     for (final String video : videos) {
       res.add(VideoGenUtils.getResolution(video));
@@ -295,9 +302,9 @@ public class VideoGenUtils {
       {
         int _plusPlus = i++;
         final int[] r_1 = res.get(_plusPlus);
-        playlist.add(VideoGenUtils.resize(video_1, r_1[0], r_1[1], output_width, output_height));
+        playlist.add(VideoGenUtils.resize(video_1, r_1[0], r_1[1], output_width, output_height, outputFolder));
       }
     }
-    return VideoGenUtils.concatVideos(((String[])Conversions.unwrapArray(playlist, String.class)), "output/playlist.mp4");
+    return VideoGenUtils.concatVideos(((String[])Conversions.unwrapArray(playlist, String.class)), (outputFolder + "/output.mp4"));
   }
 }

@@ -31,13 +31,18 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-        console.log('LOADING MODEL');
-        this.videoGenService.find('example1').subscribe((model) => {
+        /*console.log('LOADING MODEL');
+        this.videoGenService.getModel('example1').subscribe((model) => {
             console.log(model);
-            /*for (const media of model.medias){
-                console.log((media as MandatoryMedia).description);
-                console.log((media as AlternativesMedia).medias);
-            }*/
+        });*/
+        var videos:string[] = [
+            "data/input/video/jaunatan.mp4",
+            "data/input/video/sheep.mp4"
+        ];
+        console.log("GENERATING PLAYLIST");
+        this.videoGenService.generatePlaylist(videos).subscribe((response) => {
+            console.log(response);
+            console.log("PLAYLIST GENERATED");
         });
     }
 

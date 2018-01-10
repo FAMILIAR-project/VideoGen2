@@ -1,16 +1,17 @@
 package fr.istic.web.rest;
 
+import fr.istic.web.rest.util.HeaderUtil;
 import fr.pagetpetit.videogentools.VideoGenHelper;
+import fr.pagetpetit.videogentools.VideoGenUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.xtext.example.mydsl.videoGen.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,14 @@ public class VideoGenResource {
         log.debug("getVideoGenModel : " + filepath);
         //return addClues(videogenHelper.loadVideoGenerator(URI.createURI(filepath)));
         return wrap(videogenHelper.loadVideoGenerator(URI.createURI(filepath)));
+    }
+
+    @PostMapping("/videogen")
+    public ResponseEntity generatePlaylist(@Valid @RequestBody List<String> videos){
+        String location = VideoGenUtils.generatePlaylist(videos.toArray(new String[0]), "data/output");
+        return ResponseEntity.accepted()
+            .headers(HeaderUtil.createAlert( "A playlist was generated at ", location))
+            .body(location);
     }
 
     @Deprecated
