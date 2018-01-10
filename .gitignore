@@ -75,6 +75,14 @@
 /petitpaget/target/www/
 /petitpaget/target/Dockerfile
 /petitpaget/target/.dockerignore
+/petitpaget/target/classes/fr/istic/
+/petitpaget/target/classes/config/
+/petitpaget/target/classes/i18n/
+/petitpaget/target/classes/mails/
+/petitpaget/target/classes/templates/
+/petitpaget/target/classes/swagger/
+/petitpaget/target/classes/banner.txt
+/petitpaget/target/classes/logback-spring.xml
 
 ######################
 # Gradle
