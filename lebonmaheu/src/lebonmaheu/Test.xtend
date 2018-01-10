@@ -14,6 +14,7 @@ import java.io.FileWriter
 import org.xtext.example.mydsl.videoGen.ImageDescription
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
+import java.util.LinkedList
 
 class Test {
 	def private static getMediaId(MediaDescription m) {
@@ -51,15 +52,24 @@ class Test {
             }
             
             else if(media instanceof OptionalMedia){
-                if(ThreadLocalRandom.current.nextInt(0,1)==1){
+            	val probability = (media.description as VideoDescription).probability
+                if(ThreadLocalRandom.current.nextInt(0,100) < probability){
                     playlist.add(media.description)
                 }
             }
         
             else if(media instanceof AlternativesMedia)
             {
-                var rand = ThreadLocalRandom.current.nextInt(0,media.medias.size)
-                playlist.add(media.medias.get(rand))
+            	if (! probabilitiesAreCorrect(media.medias)) {
+                	val rand = ThreadLocalRandom.current.nextInt(0,media.medias.size)
+                	playlist.add(media.medias.get(rand))
+                } else {
+                	val medias = fillProbabilities(media.medias)
+                	val rand = ThreadLocalRandom.current.nextInt(0, 100)
+                	
+                	val m = medias.findFirst [ m | (m as VideoDescription).probability > rand ]
+                	playlist.add(m)
+                }
             }
         }
         
@@ -227,5 +237,53 @@ class Test {
 		}
 		
 		return playlist
+    }
+    
+    def public static probabilitiesAreCorrect(List<MediaDescription> medias) {
+    	var hasFallback = false
+    	var amount = 0
+    	
+    	for(media : medias) {
+    		if(media instanceof VideoDescription) {
+    			val prob = media.probability
+    			if (prob == 0)
+    				hasFallback = true
+    			else
+    				amount += prob
+    		}
+    	}
+    	
+    	return (amount == 100) || (amount < 100 && hasFallback)
+    }
+    
+    def public static fillProbabilities(List<MediaDescription> medias) {
+    	var empty = new LinkedList<MediaDescription>
+    	var done = new LinkedList<MediaDescription>
+    	
+    	var amount = 0
+    	
+    	for (media : medias) {
+    		if(media instanceof VideoDescription) {
+    			if(media.probability == 0)
+    				empty.add(media)
+    			else {
+    				amount += media.probability
+    				media.probability = amount
+    				done.add(media)
+    			}
+    		}
+    	}
+    	
+    	val part = (100 - amount) / empty.size
+    	
+    	for (media : empty) {
+    		if (media instanceof VideoDescription) {
+    			amount += part
+    			media.probability = amount
+    		}
+    	}
+    	
+    	done.addAll(empty)
+    	return done
     }
 }
