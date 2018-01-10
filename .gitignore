@@ -167,3 +167,5 @@ VideoGenTools/bin/
 VideoGenTools/\.idea/
 
 \.idea/workspace\.xml
+
+petitpaget/target/classes/META-INF/
