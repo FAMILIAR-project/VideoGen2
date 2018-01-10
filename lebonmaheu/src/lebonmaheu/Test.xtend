@@ -13,8 +13,7 @@ import java.io.File
 import java.io.FileWriter
 import org.xtext.example.mydsl.videoGen.ImageDescription
 import org.xtext.example.mydsl.videoGen.VideoDescription
-import java.io.Reader
-import java.util.Scanner
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 
 class Test {
 	def private static getMediaId(MediaDescription m) {
@@ -77,22 +76,17 @@ class Test {
         writer.flush()
         writer.close()
         
-        var command = ffmpegConcatenateCommand("playlist.txt",  output)
-        var p = Runtime.runtime.exec(command.toString)
+        FFMPEG.ffmpegConcatenateCommand("playlist.txt",  output)
         
-        val all = getAllVariants(input)
+        val all = getAllVariants(videoGen, input)
         all.forEach [variant |
         	variant.forEach [ m | print(getMediaId(m) + " ") ]
         	println("")
         ]
         
-        makeCSV(input)
-        p.waitFor
+        makeCSV(videoGen, input)
         
-        command = ffmpegConvertToGIF(output)
-        p = Runtime.runtime.exec(command.toString)
-        
-        p.waitFor    
+        FFMPEG.ffmpegConvertToGIF(output)
     }
     
     def private static copyVariantList(List<List<MediaDescription>> all) {
@@ -105,9 +99,7 @@ class Test {
     	return newAll
     }
     
-    def public static getAllVariants(String inputFile) {
-    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(inputFile))
-		assertNotNull(videoGen)
+    def public static getAllVariants(VideoGeneratorModel videoGen, String inputFile) {
 		val all = new ArrayList<List<MediaDescription>>
 		all.add(new ArrayList<MediaDescription>)
 		
@@ -139,11 +131,8 @@ class Test {
 		return all
     }
     
-    def public static getAllIds(String inputFile) {
-    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(inputFile))
-		assertNotNull(videoGen)
-		
-		val ids = new ArrayList<String>
+    def public static getAllIds(VideoGeneratorModel videoGen, String inputFile) {
+    	val ids = new ArrayList<String>
 		
 		videoGen.medias.forEach[ m |
 			if(m instanceof MandatoryMedia)
@@ -158,9 +147,9 @@ class Test {
 		return ids
     }
     
-    def public static makeCSV(String inputFile) {
-    	val all = getAllVariants(inputFile)
-    	val seqs = getAllIds(inputFile)
+    def public static makeCSV(VideoGeneratorModel videoGen, String inputFile) {
+    	val all = getAllVariants(videoGen, inputFile)
+    	val seqs = getAllIds(videoGen, inputFile)
     	
     	val file = new File("playlist.csv")
         file.createNewFile
@@ -193,12 +182,7 @@ class Test {
     	var duration = 0
     	
     	for (media : variant) {
-			var command = ffmpegComputeDuration(media.location)
-			var p = Runtime.runtime.exec(command.toString)
-
-			p.waitFor()
-
-			duration += (new Scanner(p.inputStream)).nextInt
+			duration += FFMPEG.ffmpegComputeDuration(media.location)
     	}
     	
     	return duration
@@ -215,9 +199,7 @@ class Test {
     	return size
     }
     
-    def public static longestVariant(String inputFile) {
-    	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(inputFile))
-		assertNotNull(videoGen)
+    def public static longestVariant(VideoGeneratorModel videoGen, String inputFile) {
 		var List<MediaDescription> playlist = new ArrayList
 		
 		for(media : videoGen.medias) {
@@ -230,14 +212,7 @@ class Test {
 			}
 			
 			else if(media instanceof AlternativesMedia) {
-				var durations = media.medias.map [ m |
-					var command = ffmpegComputeDuration(m.location)
-        			var p = Runtime.runtime.exec(command.toString)
-        			
-        			p.waitFor()
-        			
-					(new Scanner(p.inputStream)).nextInt
-				]
+				var durations = media.medias.map [ m | FFMPEG.ffmpegComputeDuration(m.location) ]
 				
 				var max = 0
 				
@@ -253,13 +228,4 @@ class Test {
 		
 		return playlist
     }
-    
-    def static ffmpegComputeDuration(String locationVideo)
-    '''/usr/local/bin/ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 «locationVideo»'''
-    
-    def static ffmpegConcatenateCommand(String mpegPlaylistFile, String outputPath) 
-    '''/usr/bin/ffmpeg -y -f concat -safe 0 -i «mpegPlaylistFile» -c copy «outputPath»'''
-    
-    def static ffmpegConvertToGIF(String input)
-    '''ffmpeg -i «input» -vf scale=320:-1 -r 10 -f image2pipe -vcodec ppm - | convert -delay 5 -loop 0 - «input».gif'''
 }
