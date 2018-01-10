@@ -14,4 +14,8 @@ class CommonUtils {
         }
         outputFile
 	}
+	
+	static def String writeFile(String file){
+		
+	}
 }

@@ -5,8 +5,6 @@ import utils.VideoGenUtils
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import java.util.List
 import org.xtext.example.mydsl.videoGen.MediaDescription
-import java.util.ArrayList
-import helper.FFMPEGHelper
 
 class VideoGenAnalysisTransformation {
 	
@@ -80,21 +78,11 @@ class VideoGenAnalysisTransformation {
 	}
 	
 	static def double getRealSize(List<MediaDescription> playlist, String playlistName){
-		VideoGenUtils.getVideoSize(VideoGenUtils.generatePlaylist(playlist, playlistName))
+		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, playlistName))
 	}
 	
-	static def List<String> getGif(VideoGeneratorModel videoGen, int width, int heigth){
-		var playlistsGif = new ArrayList
-		var playlists = VideoGenUtils.generatePlaylists(videoGen)
-		var playlistIndex = 0
-		for(playlist: playlists){
-			playlistsGif.add(getGif(playlist, "output/gifs/playlist_" + playlistIndex, width, heigth))
-		}
-		playlistsGif
-	}
-	
-	static def String getGif(List<MediaDescription> playlist, String playlistName, int width, int heigth){
-		FFMPEGHelper.videoToGif(VideoGenUtils.generatePlaylist(playlist, playlistName), width, heigth)
+	static def double getRealSize(String playlistLocation){
+		VideoGenUtils.getVideoSize(playlistLocation)
 	}
 
 }

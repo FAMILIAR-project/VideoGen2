@@ -1,0 +1,11 @@
+VideoGen {
+	mandatory videoseq v0 "/home/ismael/videogen/v01.mp4" {filter negate}
+	mandatory image i0 "/home/ismael/videogen/i0.jpg"
+	mandatory videoseq v01 "/home/ismael/videogen/v01.mp4"
+	alternatives v1 {
+		videoseq v11 "/home/ismael/videogen/v01.mp4"
+		videoseq v12 "/home/ismael/videogen/v01.mp4"
+		videoseq v13 "/home/ismael/videogen/v01.mp4"
+	}
+	optional videoseq v2 "/home/ismael/videogen/v01.mp4"
+}
