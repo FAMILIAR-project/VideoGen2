@@ -1,12 +1,10 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { registerLocaleData } from '@angular/common';
-import locale from '@angular/common/locales/fr';
+import locale from '@angular/common/locales/en';
 
 import {
     VideogenappSharedLibsModule,
-    JhiLanguageHelper,
-    FindLanguageFromKeyPipe,
     JhiAlertComponent,
     JhiAlertErrorComponent
 } from './';
@@ -16,21 +14,18 @@ import {
         VideogenappSharedLibsModule
     ],
     declarations: [
-        FindLanguageFromKeyPipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ],
     providers: [
-        JhiLanguageHelper,
         Title,
         {
             provide: LOCALE_ID,
-            useValue: 'fr'
+            useValue: 'en'
         },
     ],
     exports: [
         VideogenappSharedLibsModule,
-        FindLanguageFromKeyPipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]
