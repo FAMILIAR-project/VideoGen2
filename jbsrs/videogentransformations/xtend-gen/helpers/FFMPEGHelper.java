@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.xtext.example.mydsl.videoGen.BlackWhiteFilter;
 import org.xtext.example.mydsl.videoGen.Filter;
@@ -28,7 +27,6 @@ public class FFMPEGHelper {
       command.add("-i");
       command.add(videoLocation);
       String outputFile = CommonUtils.getOutPutFileName("output/thumbs/thumb.png");
-      InputOutput.<String>println(("Thumbs " + outputFile));
       command.add("-r 1");
       command.add("-t 00:00:01 -ss 00:00:02 -f image2");
       command.add(outputFile);

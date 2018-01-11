@@ -23,7 +23,6 @@ class FFMPEGHelper {
 		command.add("-i")
 		command.add(videoLocation)
 		var outputFile = CommonUtils.getOutPutFileName("output/thumbs/thumb.png")
-		println("Thumbs " + outputFile)
 		command.add("-r 1")
 		command.add("-t 00:00:01 -ss 00:00:02 -f image2")
 		command.add(outputFile)

@@ -18,6 +18,7 @@ org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/generator/.gitignor
 org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/scoping/.gitignore
 org.xtext.example.videogen/xtend-gen/org/xtext/example/mydsl/validation/.gitignore
 
+output/
 
 # Created by https://www.gitignore.io/api/java,xtext,angular,eclipse,intellij
 

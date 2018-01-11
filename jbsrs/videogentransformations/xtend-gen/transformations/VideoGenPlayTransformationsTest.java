@@ -24,7 +24,7 @@ public class VideoGenPlayTransformationsTest {
   
   @Test
   public void makeThumbnails() {
-    final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example3.videogen"));
+    final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("samples/example3.videogen"));
     VideoGenPlayTransformations.makeThumbnails(videoGen);
   }
 }

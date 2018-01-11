@@ -30,7 +30,7 @@ class VideoGenPlayTransformationsTest {
 	
 	@Test
 	def void makeThumbnails(){
-		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example3.videogen"))
+		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("samples/example3.videogen"))
 		VideoGenPlayTransformations.makeThumbnails(videoGen)
 	}
 	
