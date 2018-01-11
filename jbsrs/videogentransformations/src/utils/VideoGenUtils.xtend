@@ -10,6 +10,8 @@ import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import helpers.FFMPEGHelper
 import java.io.File
 import configs.VideoGenConfigs
+import org.xtext.example.mydsl.videoGen.VideoDescription
+import java.util.Random
 
 class VideoGenUtils {
 	
@@ -144,5 +146,36 @@ class VideoGenUtils {
 	
 	static def String getGif(List<MediaDescription> playlist, String playlistName, int width, int heigth){
 		FFMPEGHelper.videoToGif(makePlaylist(playlist, playlistName), width, heigth)
+	}
+	
+	static def VideoDescription getRandom(List<VideoDescription> videos){
+		var random = new Random();
+		var totalSum = 0
+		for(video: videos){
+			totalSum += video.probability
+		}
+		
+		if(totalSum == 0){
+        	if(videos.get(videos.size - 1) instanceof AlternativesMedia){
+        		var alternativesIndex = (Math.random() * videos.size) as int
+        		return videos.get(alternativesIndex)
+        	}
+        	else{
+        		if(Math.random() * 2 < 1){
+						return videos.get(0)
+				}
+				else
+					return null
+        	}
+        	
+        }
+		
+		var index = random.nextInt(totalSum)
+        var sum = 0
+        var i=0
+        while(sum < index ) {
+             sum = sum + videos.get(i++).probability
+        }
+        videos.get(Math.max(0,i-1))
 	}
 }

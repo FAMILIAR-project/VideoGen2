@@ -28,18 +28,11 @@ public class VideoGenPlayTransformations {
       for (final Media media : _medias) {
         {
           if ((media instanceof MandatoryMedia)) {
-            MediaDescription _description = ((MandatoryMedia)media).getDescription();
-            if ((_description instanceof ImageDescription)) {
-              playlist.add(((MandatoryMedia)media).getDescription());
-            }
-            MediaDescription _description_1 = ((MandatoryMedia)media).getDescription();
-            if ((_description_1 instanceof VideoDescription)) {
-              playlist.add(((MandatoryMedia)media).getDescription());
-            }
+            playlist.add(((MandatoryMedia)media).getDescription());
           }
           if ((media instanceof OptionalMedia)) {
-            MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
-            if ((_description_2 instanceof ImageDescription)) {
+            MediaDescription _description = ((OptionalMedia)media).getDescription();
+            if ((_description instanceof ImageDescription)) {
               double _random = Math.random();
               double _multiply = (_random * 2);
               boolean _lessThan = (_multiply < 1);
@@ -47,15 +40,15 @@ public class VideoGenPlayTransformations {
                 playlist.add(((OptionalMedia)media).getDescription());
               }
             }
-            MediaDescription _description_3 = ((OptionalMedia)media).getDescription();
-            if ((_description_3 instanceof VideoDescription)) {
-              MediaDescription _description_4 = ((OptionalMedia)media).getDescription();
-              final VideoDescription vdescription = ((VideoDescription) _description_4);
-              double _random_1 = Math.random();
-              double _multiply_1 = (_random_1 * 2);
-              boolean _lessThan_1 = (_multiply_1 < 1);
-              if (_lessThan_1) {
-                playlist.add(((OptionalMedia)media).getDescription());
+            MediaDescription _description_1 = ((OptionalMedia)media).getDescription();
+            if ((_description_1 instanceof VideoDescription)) {
+              ArrayList<VideoDescription> list = new ArrayList<VideoDescription>();
+              MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
+              final VideoDescription optionalVideo = ((VideoDescription) _description_2);
+              list.add(optionalVideo);
+              final VideoDescription video = VideoGenUtils.getRandom(list);
+              if ((video != null)) {
+                playlist.add(video);
               }
             }
           }
@@ -65,13 +58,25 @@ public class VideoGenPlayTransformations {
             if ((_get instanceof ImageDescription)) {
               isImageDescription = true;
             }
-            double _random_2 = Math.random();
-            int _size = ((AlternativesMedia)media).getMedias().size();
-            double _multiply_2 = (_random_2 * _size);
-            int alternativesIndex = ((int) _multiply_2);
-            MediaDescription _get_1 = ((AlternativesMedia)media).getMedias().get(alternativesIndex);
-            final MediaDescription mdescription = ((MediaDescription) _get_1);
-            playlist.add(mdescription);
+            if (isImageDescription) {
+              double _random_1 = Math.random();
+              int _size = ((AlternativesMedia)media).getMedias().size();
+              double _multiply_1 = (_random_1 * _size);
+              int alternativesIndex = ((int) _multiply_1);
+              MediaDescription _get_1 = ((AlternativesMedia)media).getMedias().get(alternativesIndex);
+              final MediaDescription mdescription = ((MediaDescription) _get_1);
+              playlist.add(mdescription);
+            } else {
+              ArrayList<VideoDescription> list_1 = new ArrayList<VideoDescription>();
+              EList<MediaDescription> _medias_1 = ((AlternativesMedia)media).getMedias();
+              for (final MediaDescription alternative : _medias_1) {
+                {
+                  final VideoDescription alternaiveVideo = ((VideoDescription) alternative);
+                  list_1.add(alternaiveVideo);
+                }
+              }
+              playlist.add(VideoGenUtils.getRandom(list_1));
+            }
           }
         }
       }
@@ -146,9 +151,88 @@ public class VideoGenPlayTransformations {
     return _xblockexpression;
   }
   
-  public static String makeWebPage(final VideoGeneratorModel videoGen) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nno viable alternative at input \'}\'");
+  public static List<String> makeWebPage(final VideoGeneratorModel videoGen) {
+    ArrayList<String> _xblockexpression = null;
+    {
+      ArrayList<String> html = new ArrayList<String>();
+      html.add("<div id=\"gallery\">");
+      EList<Media> _medias = videoGen.getMedias();
+      for (final Media media : _medias) {
+        {
+          if ((media instanceof AlternativesMedia)) {
+            html.add("  <div class=\"row alternatives\">");
+            EList<MediaDescription> _medias_1 = ((AlternativesMedia)media).getMedias();
+            for (final MediaDescription alternativeMedia : _medias_1) {
+              {
+                if ((alternativeMedia instanceof VideoDescription)) {
+                  String _serverIP = VideoGenConfigs.getServerIP();
+                  String _plus = ("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP);
+                  String _generateThumbnail = FFMPEGHelper.generateThumbnail(((VideoDescription)alternativeMedia).getLocation());
+                  String _plus_1 = (_plus + _generateThumbnail);
+                  String _plus_2 = (_plus_1 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                  html.add(_plus_2);
+                }
+                if ((alternativeMedia instanceof ImageDescription)) {
+                  String _serverIP_1 = VideoGenConfigs.getServerIP();
+                  String _plus_3 = ("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_1);
+                  String _location = ((ImageDescription)alternativeMedia).getLocation();
+                  String _plus_4 = (_plus_3 + _location);
+                  String _plus_5 = (_plus_4 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                  html.add(_plus_5);
+                }
+                html.add("    </div>");
+              }
+            }
+            html.add("  </div>");
+          }
+          if ((media instanceof MandatoryMedia)) {
+            MediaDescription _description = ((MandatoryMedia)media).getDescription();
+            if ((_description instanceof VideoDescription)) {
+              String _serverIP = VideoGenConfigs.getServerIP();
+              String _plus = ("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP);
+              String _generateThumbnail = FFMPEGHelper.generateThumbnail(((MandatoryMedia)media).getDescription().getLocation());
+              String _plus_1 = (_plus + _generateThumbnail);
+              String _plus_2 = (_plus_1 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+              html.add(_plus_2);
+            }
+            MediaDescription _description_1 = ((MandatoryMedia)media).getDescription();
+            if ((_description_1 instanceof ImageDescription)) {
+              String _serverIP_1 = VideoGenConfigs.getServerIP();
+              String _plus_3 = ("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_1);
+              String _location = ((MandatoryMedia)media).getDescription().getLocation();
+              String _plus_4 = (_plus_3 + _location);
+              String _plus_5 = (_plus_4 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+              html.add(_plus_5);
+            }
+            html.add("  </div>");
+          }
+          if ((media instanceof OptionalMedia)) {
+            MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
+            if ((_description_2 instanceof VideoDescription)) {
+              String _serverIP_2 = VideoGenConfigs.getServerIP();
+              String _plus_6 = ("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_2);
+              String _generateThumbnail_1 = FFMPEGHelper.generateThumbnail(((OptionalMedia)media).getDescription().getLocation());
+              String _plus_7 = (_plus_6 + _generateThumbnail_1);
+              String _plus_8 = (_plus_7 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+              html.add(_plus_8);
+            }
+            MediaDescription _description_3 = ((OptionalMedia)media).getDescription();
+            if ((_description_3 instanceof ImageDescription)) {
+              String _serverIP_3 = VideoGenConfigs.getServerIP();
+              String _plus_9 = ("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_3);
+              String _location_1 = ((OptionalMedia)media).getDescription().getLocation();
+              String _plus_10 = (_plus_9 + _location_1);
+              String _plus_11 = (_plus_10 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+              html.add(_plus_11);
+            }
+            html.add("  </div>");
+          }
+        }
+      }
+      html.add("</div>");
+      _xblockexpression = html;
+    }
+    return _xblockexpression;
   }
   
   public static List<String> videoGensToGifs(final VideoGeneratorModel videoGen) {

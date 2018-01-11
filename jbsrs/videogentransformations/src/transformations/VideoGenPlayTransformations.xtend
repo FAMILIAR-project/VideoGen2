@@ -24,14 +24,8 @@ class VideoGenPlayTransformations {
 		for(media: videoGen.medias){
 			if(media instanceof MandatoryMedia){
 				
-				if(media.description instanceof ImageDescription){
 					playlist.add(media.description)
-				}
-				
-				if(media.description instanceof VideoDescription){
 
-					playlist.add(media.description)
-				}
 			}
 			if(media instanceof OptionalMedia){
 				if(media.description instanceof ImageDescription){
@@ -41,21 +35,33 @@ class VideoGenPlayTransformations {
 				}
 				
 				if(media.description instanceof VideoDescription){
-					val vdescription = (media.description as VideoDescription)
-					if(Math.random() * 2 < 1){
-						playlist.add(media.description)
-					}
+					
+					var list = new ArrayList
+					val optionalVideo = (media.description as VideoDescription)
+					list.add(optionalVideo)
+
+					val video = VideoGenUtils.getRandom(list)
+					if(video !== null)
+						playlist.add(video)
 				}				
 			}
 			if(media instanceof AlternativesMedia){
 				var isImageDescription = false
 				if(media.medias.get(0) instanceof ImageDescription)
 					isImageDescription = true
-				//if(isImageDescription){
+				if(isImageDescription){
 					var alternativesIndex = (Math.random() * media.medias.size) as int
 					val mdescription = (media.medias.get(alternativesIndex)) as MediaDescription
 					playlist.add(mdescription)
-				//}
+				}
+				else{
+					var list = new ArrayList
+					for(alternative: media.medias){
+						val alternaiveVideo = alternative as VideoDescription
+						list.add(alternaiveVideo)
+					}
+					playlist.add(VideoGenUtils.getRandom(list))
+				}
 				
 			}
 		}
@@ -114,27 +120,39 @@ class VideoGenPlayTransformations {
 		thumbs
 	}
 	
-	static def String makeWebPage(VideoGeneratorModel videoGen){
-		var html = "<div>"
+	static def List<String> makeWebPage(VideoGeneratorModel videoGen){
+		var html = new ArrayList
+		html.add("<div id=\"gallery\">")
 		for(media: videoGen.medias){
 			if(media instanceof AlternativesMedia){
+				html.add("  <div class=\"row alternatives\">")
 				for(alternativeMedia: media.medias){
 					if(alternativeMedia instanceof VideoDescription)
-					
+						html.add("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + FFMPEGHelper.generateThumbnail(alternativeMedia.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
+					if(alternativeMedia instanceof ImageDescription)
+						html.add("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + alternativeMedia.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
+					html.add("    </div>")
 				}
+				html.add("  </div>")
 			}
 			if(media instanceof MandatoryMedia){
-				if(media.description instanceof VideoDescription){
-					
-				}
+				
+				if(media.description instanceof VideoDescription)
+					html.add("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + FFMPEGHelper.generateThumbnail(media.description.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
+				if(media.description instanceof ImageDescription)
+					html.add("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + media.description.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
+				html.add("  </div>")
+				
 			}
 			if(media instanceof OptionalMedia){
-				if(media.description instanceof VideoDescription){
-					
-				}
+				if(media.description instanceof VideoDescription)
+					html.add("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + FFMPEGHelper.generateThumbnail(media.description.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
+				if(media.description instanceof ImageDescription)
+					html.add("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + media.description.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
+				html.add("  </div>")
 			}
 		}
-		html += "</div>"
+		html.add("</div>")
 		html	
 	}
 	

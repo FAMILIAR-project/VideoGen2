@@ -8,6 +8,8 @@ public class VideoGenConfigs {
   
   private static int[] gifResolutions = new int[2];
   
+  private static String serverIP = "";
+  
   public static void setOutPutFoulder(final String outPutFolder) {
     File _file = new File(outPutFolder);
     VideoGenConfigs.outPutFolder = _file;
@@ -24,5 +26,13 @@ public class VideoGenConfigs {
   
   public static int[] getGifResolutions() {
     return VideoGenConfigs.gifResolutions;
+  }
+  
+  public static void setServerIP(final String ip) {
+    VideoGenConfigs.serverIP = ip;
+  }
+  
+  public static String getServerIP() {
+    return VideoGenConfigs.serverIP;
   }
 }

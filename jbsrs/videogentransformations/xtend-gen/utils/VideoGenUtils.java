@@ -5,6 +5,7 @@ import helpers.FFMPEGHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
@@ -12,6 +13,7 @@ import org.xtext.example.mydsl.videoGen.MandatoryMedia;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
+import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 @SuppressWarnings("all")
@@ -164,5 +166,50 @@ public class VideoGenUtils {
   
   public static String getGif(final List<MediaDescription> playlist, final String playlistName, final int width, final int heigth) {
     return FFMPEGHelper.videoToGif(VideoGenUtils.makePlaylist(playlist, playlistName), width, heigth);
+  }
+  
+  public static VideoDescription getRandom(final List<VideoDescription> videos) {
+    VideoDescription _xblockexpression = null;
+    {
+      Random random = new Random();
+      int totalSum = 0;
+      for (final VideoDescription video : videos) {
+        int _talSum = totalSum;
+        int _probability = video.getProbability();
+        totalSum = (_talSum + _probability);
+      }
+      if ((totalSum == 0)) {
+        int _size = videos.size();
+        int _minus = (_size - 1);
+        VideoDescription _get = videos.get(_minus);
+        if ((_get instanceof AlternativesMedia)) {
+          double _random = Math.random();
+          int _size_1 = videos.size();
+          double _multiply = (_random * _size_1);
+          int alternativesIndex = ((int) _multiply);
+          return videos.get(alternativesIndex);
+        } else {
+          double _random_1 = Math.random();
+          double _multiply_1 = (_random_1 * 2);
+          boolean _lessThan = (_multiply_1 < 1);
+          if (_lessThan) {
+            return videos.get(0);
+          } else {
+            return null;
+          }
+        }
+      }
+      int index = random.nextInt(totalSum);
+      int sum = 0;
+      int i = 0;
+      while ((sum < index)) {
+        int _plusPlus = i++;
+        int _probability_1 = videos.get(_plusPlus).getProbability();
+        int _plus = (sum + _probability_1);
+        sum = _plus;
+      }
+      _xblockexpression = videos.get(Math.max(0, (i - 1)));
+    }
+    return _xblockexpression;
   }
 }

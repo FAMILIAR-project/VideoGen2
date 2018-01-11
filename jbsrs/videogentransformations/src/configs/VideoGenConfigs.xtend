@@ -6,6 +6,7 @@ class VideoGenConfigs {
 	
 	static var File outPutFolder
 	static var int[] gifResolutions = newIntArrayOfSize(2)
+	static var String serverIP = ""
 	
 	static def void setOutPutFoulder(String outPutFolder){
 		outPutFolder = new File(outPutFolder)
@@ -22,5 +23,13 @@ class VideoGenConfigs {
 	
 	static def int[] getGifResolutions(){
 		gifResolutions
+	}
+	
+	static def void setServerIP(String ip){
+		serverIP = ip
+	}
+	
+	static def String getServerIP(){
+		serverIP
 	}
 }	
