@@ -5,8 +5,51 @@ import utils.VideoGenUtils
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import java.util.List
 import org.xtext.example.mydsl.videoGen.MediaDescription
+import utils.CommonUtils
+import configs.VideoGenConfigs
+import helpers.FFMPEGHelper
+import org.xtext.example.mydsl.videoGen.MandatoryMedia
+import org.xtext.example.mydsl.videoGen.OptionalMedia
+import org.xtext.example.mydsl.videoGen.AlternativesMedia
 
 class VideoGenAnalysisTransformation {
+	
+	
+	static def int getMaxDuration(VideoGeneratorModel videoGen){
+		
+		var maxDuration = 0;
+		for(media: videoGen.medias){
+			if(media instanceof AlternativesMedia){
+				var alternativeMedia = media as AlternativesMedia
+				var maxAlternativeDuration = 0;
+				for(alternative: alternativeMedia.medias){
+					if(alternative instanceof VideoDescription){
+						var videoDescription = alternative as VideoDescription
+						var alternativeDuration = FFMPEGHelper.getVideoDuration(videoDescription.location)
+						if(maxAlternativeDuration < alternativeDuration)
+							maxAlternativeDuration = alternativeDuration
+					}
+				}
+				maxDuration += maxAlternativeDuration
+			}
+			
+			if(media instanceof MandatoryMedia){
+				if(media.description instanceof VideoDescription){
+					var videoDescription = media.description as VideoDescription
+					maxDuration += FFMPEGHelper.getVideoDuration(videoDescription.location)
+				}
+			}
+			if(media instanceof OptionalMedia){
+				if(media.description instanceof VideoDescription){
+					var videoDescription = media.description as VideoDescription
+					maxDuration += FFMPEGHelper.getVideoDuration(videoDescription.location)
+				}
+			}
+
+		}
+
+		maxDuration
+	}
 	
 	static def double getMinimalSize(VideoGeneratorModel videoGen){
 		
@@ -71,14 +114,14 @@ class VideoGenAnalysisTransformation {
 		var playlists = VideoGenUtils.generatePlaylists(videoGen)
 		var playlistIndex = 0;
 		for(playlist: playlists){
-			realSize += getRealSize(playlist, "playlist_" + playlistIndex)
+			realSize += getRealSize(playlist)
 			playlistIndex++
 		}
 		realSize
 	}
 	
-	static def double getRealSize(List<MediaDescription> playlist, String playlistName){
-		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, playlistName))
+	static def double getRealSize(List<MediaDescription> playlist){
+		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
 	}
 	
 	static def double getRealSize(String playlistLocation){

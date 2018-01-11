@@ -1,5 +1,6 @@
 package utils;
 
+import configs.VideoGenConfigs;
 import helpers.FFMPEGHelper;
 import java.io.File;
 import java.util.ArrayList;
@@ -151,7 +152,10 @@ public class VideoGenUtils {
       List<List<MediaDescription>> playlists = VideoGenUtils.generatePlaylists(videoGen);
       int playlistIndex = 0;
       for (final List<MediaDescription> playlist : playlists) {
-        playlistsGif.add(VideoGenUtils.getGif(playlist, ("output/gifs/playlist_" + Integer.valueOf(playlistIndex)), width, heigth));
+        File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+        String _plus = (_outPutFoulder + "/gifs/playlist_");
+        String _plus_1 = (_plus + Integer.valueOf(playlistIndex));
+        playlistsGif.add(VideoGenUtils.getGif(playlist, _plus_1, width, heigth));
       }
       _xblockexpression = playlistsGif;
     }

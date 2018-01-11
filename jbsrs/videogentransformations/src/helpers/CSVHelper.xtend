@@ -7,6 +7,8 @@ import java.util.ArrayList
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import utils.VideoGenUtils
 import transformations.VideoGenAnalysisTransformation
+import configs.VideoGenConfigs
+import utils.CommonUtils
 
 class CSVHelper {
 	
@@ -25,9 +27,9 @@ class CSVHelper {
 			}
 		}
 		if(isGif)
-			return line + size + ";" + VideoGenAnalysisTransformation.getRealSize(playlist, "playlist_" + index)
+			return line + size + ";" + VideoGenAnalysisTransformation.getRealSize(playlist)
 		else
-			return line + size + ";" + VideoGenAnalysisTransformation.getRealSize(VideoGenUtils.getGif(playlist, "playlist_" + index, 190, 60))
+			return line + size + ";" + VideoGenAnalysisTransformation.getRealSize(VideoGenUtils.getGif(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"), 190, 60))
 	}
 	
 	static private def String addHeader(List<List<MediaDescription>> playlists){

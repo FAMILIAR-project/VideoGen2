@@ -6,12 +6,23 @@ import java.io.File;
 public class VideoGenConfigs {
   private static File outPutFolder;
   
-  public static File setOutPutFoulder(final String outPutFolder) {
+  private static int[] gifResolutions = new int[2];
+  
+  public static void setOutPutFoulder(final String outPutFolder) {
     File _file = new File(outPutFolder);
-    return VideoGenConfigs.outPutFolder = _file;
+    VideoGenConfigs.outPutFolder = _file;
   }
   
   public static File getOutPutFoulder() {
     return VideoGenConfigs.outPutFolder;
+  }
+  
+  public static void setGifResolutions(final int width, final int heigth) {
+    VideoGenConfigs.gifResolutions[0] = width;
+    VideoGenConfigs.gifResolutions[1] = heigth;
+  }
+  
+  public static int[] getGifResolutions() {
+    return VideoGenConfigs.gifResolutions;
   }
 }

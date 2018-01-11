@@ -7,6 +7,7 @@ import static org.junit.Assert.*
 import org.junit.Before
 import org.junit.After
 import helpers.VideoGenHelper
+import configs.VideoGenConfigs
 
 class VideoGenPlayTransformationsTest {
 
@@ -31,7 +32,27 @@ class VideoGenPlayTransformationsTest {
 	@Test
 	def void makeThumbnails(){
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("samples/example3.videogen"))
-		VideoGenPlayTransformations.makeThumbnails(videoGen)
+		VideoGenConfigs.setOutPutFoulder("output")
+		VideoGenConfigs.setGifResolutions(190, 60)
+		val thumbs = VideoGenPlayTransformations.makeThumbnails(videoGen)
+		println(thumbs.size)
+		println("Alt size" +thumbs.get("Alternatives").size)
+		println("Man size" +thumbs.get("Mandatory").size)
+		println("Op size" +thumbs.get("Optional").size)
+	}
+	
+	@Test
+	def void videoMaxDuration(){
+		//val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("samples/example3.videogen"))
+		//println(VideoGenAnalysisTransformations.getMaxDuration(videoGen))
+	}
+	
+	@Test
+	def void videoToGif(){
+		/*val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("samples/example3.videogen"))
+		VideoGenConfigs.setOutPutFoulder("output")
+		VideoGenConfigs.setGifResolutions(190, 60)
+		VideoGenPlayTransformations.videoGensToGifs(videoGen)*/
 	}
 	
 }

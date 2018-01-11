@@ -1,5 +1,6 @@
 package helpers;
 
+import configs.VideoGenConfigs;
 import helpers.ProcessHelper;
 import java.io.File;
 import java.util.ArrayList;
@@ -26,9 +27,21 @@ public class FFMPEGHelper {
       command.add("-y");
       command.add("-i");
       command.add(videoLocation);
-      String outputFile = CommonUtils.getOutPutFileName("output/thumbs/thumb.png");
-      command.add("-r 1");
-      command.add("-t 00:00:01 -ss 00:00:02 -f image2");
+      command.add("-r");
+      command.add("1");
+      command.add("-t");
+      command.add("00:00:01");
+      command.add("-ss");
+      double _random = Math.random();
+      int _round = Math.round(Float.parseFloat(FFMPEGHelper.getVideoDurationString(videoLocation).split(":")[2]));
+      double _multiply = (_random * _round);
+      String _plus = ("00:00:0" + Double.valueOf(_multiply));
+      command.add(_plus);
+      command.add("-f");
+      command.add("image2");
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus_1 = (_outPutFoulder + "/thumbs/thumb.png");
+      String outputFile = CommonUtils.getOutPutFileName(_plus_1);
       command.add(outputFile);
       ProcessHelper.execute(command);
       _xblockexpression = outputFile;
@@ -141,25 +154,65 @@ public class FFMPEGHelper {
     } else {
       command.add(((((((("pad=" + Integer.valueOf(outputWidth)) + ":") + Integer.valueOf(outputHeight)) + ":") + Integer.valueOf(((outputWidth - inputWidth) / 2))) + ":") + Integer.valueOf(((outputHeight - inputHeight) / 2))));
     }
+    File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+    String _plus = (_outPutFoulder + "/resizes/");
     String _get = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(new File(filename).getAbsolutePath().replace("\\", "/").split("/")))).replace(".", "@").split("@")[0];
-    String _plus = ("output/resizes/" + _get);
-    String _plus_1 = (_plus + "_o.");
+    String _plus_1 = (_plus + _get);
+    String _plus_2 = (_plus_1 + "_o.");
     String _get_1 = file[1];
-    String _plus_2 = (_plus_1 + _get_1);
-    final String outputFile = CommonUtils.getOutPutFileName(_plus_2);
+    String _plus_3 = (_plus_2 + _get_1);
+    final String outputFile = CommonUtils.getOutPutFileName(_plus_3);
     command.add(outputFile);
     ProcessHelper.execute(command);
     return outputFile;
   }
   
-  public static float getVideoDuration(final String videoLocation) {
-    final ArrayList<String> command = new ArrayList<String>();
-    command.add("ffmpeg");
-    command.add("-i");
-    command.add(videoLocation);
-    command.add("2>&1 | grep Duration | cut -d \' \' -f 4 | sed s/,// |\n\t\t\t\t\t sed \'s@\\..*@@g\' | awk \'{ split($1, A, \":\"); split(A[3], B, \".\");\n\t\t\t\t\t print 3600*A[1] + 60*A[2] + B[1] }\'");
-    final String[] iostream = ProcessHelper.executeAndGetIOStream(command);
-    return (Float.valueOf(iostream[0])).floatValue();
+  public static int getVideoDuration(final String videoLocation) {
+    int _xblockexpression = (int) 0;
+    {
+      final ArrayList<String> command = new ArrayList<String>();
+      command.add("ffmpeg");
+      command.add("-i");
+      command.add(videoLocation);
+      final String[] IO = ProcessHelper.executeAndGetIOStream(command);
+      int duration = 0;
+      for (final String line : IO) {
+        boolean _contains = line.contains("Duration:");
+        if (_contains) {
+          final String stringduration = line.trim().split(",")[0].split(" ")[1];
+          int _round = Math.round(Float.parseFloat(stringduration.split(":")[0]));
+          int _multiply = (3600 * _round);
+          int _round_1 = Math.round(Float.parseFloat(stringduration.split(":")[1]));
+          int _multiply_1 = (60 * _round_1);
+          int _plus = (_multiply + _multiply_1);
+          int _round_2 = Math.round(Float.parseFloat(stringduration.split(":")[2]));
+          int _plus_1 = (_plus + _round_2);
+          duration = _plus_1;
+        }
+      }
+      _xblockexpression = duration;
+    }
+    return _xblockexpression;
+  }
+  
+  public static String getVideoDurationString(final String videoLocation) {
+    String _xblockexpression = null;
+    {
+      final ArrayList<String> command = new ArrayList<String>();
+      command.add("ffmpeg");
+      command.add("-i");
+      command.add(videoLocation);
+      final String[] IO = ProcessHelper.executeAndGetIOStream(command);
+      String duration = "";
+      for (final String line : IO) {
+        boolean _contains = line.contains("Duration:");
+        if (_contains) {
+          duration = line.trim().split(",")[0].split(" ")[1];
+        }
+      }
+      _xblockexpression = duration;
+    }
+    return _xblockexpression;
   }
   
   public static String videoToGif(final String videoLocation, final int width, final int height) {
@@ -170,10 +223,12 @@ public class FFMPEGHelper {
       command.add("ffmpeg");
       command.add("-i");
       command.add(videoLocation);
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus = (_outPutFoulder + "/gifs/");
       String _get = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(new File(videoLocation).getAbsolutePath().replace("\\", "/").split("/")))).replace(".", "@").split("@")[0];
-      String _plus = ("output/gifs/" + _get);
-      String _plus_1 = (_plus + ".gif");
-      final String outputFile = CommonUtils.getOutPutFileName(_plus_1);
+      String _plus_1 = (_plus + _get);
+      String _plus_2 = (_plus_1 + ".gif");
+      final String outputFile = CommonUtils.getOutPutFileName(_plus_2);
       command.add("-vf");
       command.add(((("scale=" + Integer.valueOf(width)) + ":") + Integer.valueOf(height)));
       command.add(outputFile);
@@ -195,10 +250,12 @@ public class FFMPEGHelper {
       filtercommand.add("-2");
       filtercommand.add("-vf");
       filtercommand.add(filter);
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus = (_outPutFoulder + "/filtered/");
       String _location = media.getLocation();
       String _last = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(new File(_location).getAbsolutePath().replace("\\", "/").split("/"))));
-      String _plus = ("output/filtered/" + _last);
-      String outputFile = CommonUtils.getOutPutFileName(_plus);
+      String _plus_1 = (_plus + _last);
+      String outputFile = CommonUtils.getOutPutFileName(_plus_1);
       filtercommand.add(outputFile);
       ProcessHelper.execute(filtercommand);
       media.setLocation(outputFile);

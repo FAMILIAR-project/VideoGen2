@@ -1,5 +1,7 @@
 package helpers;
 
+import configs.VideoGenConfigs;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
@@ -7,6 +9,7 @@ import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 import org.xtext.example.mydsl.videoGen.VideoText;
 import transformations.VideoGenAnalysisTransformation;
+import utils.CommonUtils;
 import utils.VideoGenUtils;
 
 @SuppressWarnings("all")
@@ -31,10 +34,12 @@ public class CSVHelper {
       }
     }
     if (isGif) {
-      double _realSize = VideoGenAnalysisTransformation.getRealSize(playlist, ("playlist_" + Integer.valueOf(index)));
+      double _realSize = VideoGenAnalysisTransformation.getRealSize(playlist);
       return (((line + Double.valueOf(size)) + ";") + Double.valueOf(_realSize));
     } else {
-      double _realSize_1 = VideoGenAnalysisTransformation.getRealSize(VideoGenUtils.getGif(playlist, ("playlist_" + Integer.valueOf(index)), 190, 60));
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
+      double _realSize_1 = VideoGenAnalysisTransformation.getRealSize(VideoGenUtils.getGif(playlist, CommonUtils.getOutPutFileName(_plus), 190, 60));
       return (((line + Double.valueOf(size)) + ";") + Double.valueOf(_realSize_1));
     }
   }

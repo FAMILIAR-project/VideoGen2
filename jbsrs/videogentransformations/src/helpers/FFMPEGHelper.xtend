@@ -5,12 +5,12 @@ import java.util.ArrayList
 import java.io.File
 import utils.CommonUtils
 import java.util.regex.Pattern
-import java.util.regex.Matcher
 import org.xtext.example.mydsl.videoGen.MediaDescription
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import org.xtext.example.mydsl.videoGen.BlackWhiteFilter
 import org.xtext.example.mydsl.videoGen.NegateFilter
 import org.xtext.example.mydsl.videoGen.FlipFilter
+import configs.VideoGenConfigs
 
 class FFMPEGHelper {
 	
@@ -22,9 +22,16 @@ class FFMPEGHelper {
 		command.add("-y")
 		command.add("-i")
 		command.add(videoLocation)
-		var outputFile = CommonUtils.getOutPutFileName("output/thumbs/thumb.png")
-		command.add("-r 1")
-		command.add("-t 00:00:01 -ss 00:00:02 -f image2")
+		command.add("-r")
+		command.add("1")
+		command.add("-t") 
+		command.add("00:00:01")
+		command.add("-ss")
+		
+		command.add("00:00:0" + Math.random() * Math.round(Float.parseFloat(getVideoDurationString(videoLocation).split(":").get(2))))
+		command.add("-f")
+		command.add("image2")
+		var outputFile = CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/thumbs/thumb.png")
 		command.add(outputFile)
 		ProcessHelper.execute(command)
 		outputFile
@@ -137,7 +144,7 @@ class FFMPEGHelper {
         
         
         val outputFile =  CommonUtils.getOutPutFileName(
-        "output/resizes/" + new File(filename).absolutePath.replace("\\", "/").split("/").last.replace(".", "@").split("@").get(0) + "_o." + file.get(1)
+        VideoGenConfigs.outPutFoulder + "/resizes/" + new File(filename).absolutePath.replace("\\", "/").split("/").last.replace(".", "@").split("@").get(0) + "_o." + file.get(1)
         )
 
         command.add(outputFile)
@@ -145,16 +152,44 @@ class FFMPEGHelper {
         return outputFile
 	}
 	
-	static def float getVideoDuration(String videoLocation){
+	static def int getVideoDuration(String videoLocation){
 		val command = new ArrayList<String>
 		command.add("ffmpeg")
 		command.add("-i")
-		command.add(videoLocation)
-		command.add("2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,// |
-					 sed 's@\\..*@@g' | awk '{ split($1, A, \":\"); split(A[3], B, \".\");
-					 print 3600*A[1] + 60*A[2] + B[1] }'")
-		val iostream = ProcessHelper.executeAndGetIOStream(command)
-		return Float.valueOf(iostream.get(0))
+		command.add(videoLocation) 
+					 
+		val IO = ProcessHelper.executeAndGetIOStream(command)
+		
+		var duration = 0
+		
+		for(line : IO){
+			if(line.contains("Duration:")){
+				val stringduration = line.trim.split(",").get(0).split(" ").get(1)
+				duration = 3600 * Math.round(Float.parseFloat(stringduration.split(":").get(0)))  + 
+						   60 * Math.round(Float.parseFloat(stringduration.split(":").get(1)))  + 
+						   Math.round(Float.parseFloat(stringduration.split(":").get(2)))
+			}
+		}
+		duration
+	}
+	
+	static def String getVideoDurationString(String videoLocation){
+		val command = new ArrayList<String>
+		command.add("ffmpeg")
+		command.add("-i")
+		command.add(videoLocation) 
+					 
+		val IO = ProcessHelper.executeAndGetIOStream(command)
+		
+		var duration = ""
+		
+		for(line : IO){
+			if(line.contains("Duration:")){
+				duration = line.trim.split(",").get(0).split(" ").get(1)
+			
+			}
+		}
+		duration
 	}
 	
 	static def String videoToGif(String videoLocation, int width, int height){
@@ -165,7 +200,7 @@ class FFMPEGHelper {
 
 		command.add(videoLocation)
 		
-		val outputFile =  CommonUtils.getOutPutFileName("output/gifs/" + new File(videoLocation).absolutePath.replace("\\", "/").split("/").last.replace(".", "@").split("@").get(0) + ".gif")
+		val outputFile =  CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/gifs/" + new File(videoLocation).absolutePath.replace("\\", "/").split("/").last.replace(".", "@").split("@").get(0) + ".gif")
 		
 		command.add("-vf")
 		command.add("scale=" + width + ":" + height)
@@ -187,7 +222,7 @@ class FFMPEGHelper {
 		filtercommand.add("-2")
 					filtercommand.add("-vf")
 					filtercommand.add(filter)
-					var outputFile = CommonUtils.getOutPutFileName("output/filtered/" + new File(media.location).absolutePath.replace("\\", "/").split("/").last)
+					var outputFile = CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/filtered/" + new File(media.location).absolutePath.replace("\\", "/").split("/").last)
 					filtercommand.add(outputFile)
 					ProcessHelper.execute(filtercommand)
 					media.location = outputFile

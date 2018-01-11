@@ -12,6 +12,8 @@ import utils.CommonUtils
 import org.xtext.example.mydsl.videoGen.ImageDescription
 import org.xtext.example.mydsl.videoGen.MediaDescription
 import java.util.List
+import configs.VideoGenConfigs
+import java.util.HashMap
 
 class VideoGenPlayTransformations {
 	
@@ -58,65 +60,105 @@ class VideoGenPlayTransformations {
 			}
 		}
 		
-		VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName("output/playlists/playlist.mp4"))	
+		VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"))	
 	}
 	
-		static def String getMaxDuration(VideoGeneratorModel videoGen){
-		
-		var maxDuration = 0f;
+
+	
+	
+	static def HashMap<String,List<String>> makeThumbnails(VideoGeneratorModel videoGen){
+		var thumbs = new HashMap<String,List<String>>
 		for(media: videoGen.medias){
 			if(media instanceof AlternativesMedia){
-				var alternativeMedia = media as AlternativesMedia
-				var maxAlternativeDuration = 0f;
-				for(alternative: alternativeMedia.medias){
-					if(alternative instanceof VideoDescription){
-						var videoDescription = alternative as VideoDescription
-						var alternativeDuration = FFMPEGHelper.getVideoDuration(videoDescription.location)
-						if(maxAlternativeDuration < alternativeDuration)
-							maxAlternativeDuration = alternativeDuration
-					}
+				for(alternativeMedia: media.medias){
+					if(alternativeMedia instanceof VideoDescription)
+						if(thumbs.get("Alternatives") !== null){
+							var list = thumbs.get("Alternatives") as List<String>
+							list.add(FFMPEGHelper.generateThumbnail(alternativeMedia.location))
+						}
+						else{
+							var list = new ArrayList
+							list.add(FFMPEGHelper.generateThumbnail(alternativeMedia.location))
+							thumbs.put("Alternatives", list)
+						}
 				}
-				maxDuration += maxAlternativeDuration
 			}
-			
 			if(media instanceof MandatoryMedia){
 				if(media.description instanceof VideoDescription){
-					var videoDescription = media.description as VideoDescription
-					maxDuration += FFMPEGHelper.getVideoDuration(videoDescription.location)
+					if(thumbs.get("Mandatory") !== null){
+						var list = thumbs.get("Mandatory") as List<String>
+						list.add(FFMPEGHelper.generateThumbnail(media.description.location))
+					}
+					else{
+						var list = new ArrayList
+						list.add(FFMPEGHelper.generateThumbnail(media.description.location))
+						thumbs.put("Mandatory", list)
+					}
 				}
 			}
 			if(media instanceof OptionalMedia){
 				if(media.description instanceof VideoDescription){
-					var videoDescription = media.description as VideoDescription
-					maxDuration += FFMPEGHelper.getVideoDuration(videoDescription.location)
+					if(thumbs.get("Optional") !== null){
+						var list = thumbs.get("Optional") as List<String>
+						list.add(FFMPEGHelper.generateThumbnail(media.description.location))
+					}
+					else{
+						var list = new ArrayList
+						list.add(FFMPEGHelper.generateThumbnail(media.description.location))
+						thumbs.put("Optional", list)
+					}
 				}
 			}
-
 		}
-		var minutesDuration = Math.floor(maxDuration / 60);
-		var secondeDuration = (maxDuration / 60) - minutesDuration
 		
-		var stringDuration = minutesDuration.toString + " mn " + secondeDuration.toString + " s"
-		
-		return stringDuration
-	}
-	
-	
-	static def List<String> makeThumbnails(VideoGeneratorModel videoGen){
-		val playlists = VideoGenUtils.generatePlaylists(videoGen)
-		var thumbs = new ArrayList
-		for(playlist: playlists){
-			thumbs.add(FFMPEGHelper.generateThumbnail(VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName("output/playlists/playlist.mp4"))))
-		}
 		thumbs
 	}
 	
-	static def void makeWebPage(VideoGeneratorModel videoGen){
-		
+	static def String makeWebPage(VideoGeneratorModel videoGen){
+		var html = "<div>"
+		for(media: videoGen.medias){
+			if(media instanceof AlternativesMedia){
+				for(alternativeMedia: media.medias){
+					if(alternativeMedia instanceof VideoDescription)
+					
+				}
+			}
+			if(media instanceof MandatoryMedia){
+				if(media.description instanceof VideoDescription){
+					
+				}
+			}
+			if(media instanceof OptionalMedia){
+				if(media.description instanceof VideoDescription){
+					
+				}
+			}
+		}
+		html += "</div>"
+		html	
 	}
 	
-	static def void videoGenToGif(VideoGeneratorModel videoGen){
+	static def List<String> videoGensToGifs(VideoGeneratorModel videoGen){
+		var gifs = new ArrayList
+		val playlists = VideoGenUtils.generatePlaylists(videoGen)
 		
+		for(playlist: playlists){
+			gifs.add(videoGenToGif(playlist))
+		}
+		
+		gifs
+	}
+	
+	static def String videoGenToGif(List<MediaDescription> playlist){
+		
+		FFMPEGHelper.videoToGif(
+								VideoGenUtils.makePlaylist(
+															playlist, 
+															CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")
+														  ),
+								VideoGenConfigs.getGifResolutions().get(0),
+								VideoGenConfigs.getGifResolutions().get(1)
+								)
 	}
 	
 }

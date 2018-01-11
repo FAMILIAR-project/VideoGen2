@@ -9,6 +9,7 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import helpers.FFMPEGHelper
 import java.io.File
+import configs.VideoGenConfigs
 
 class VideoGenUtils {
 	
@@ -136,7 +137,7 @@ class VideoGenUtils {
 		var playlists = generatePlaylists(videoGen)
 		var playlistIndex = 0
 		for(playlist: playlists){
-			playlistsGif.add(getGif(playlist, "output/gifs/playlist_" + playlistIndex, width, heigth))
+			playlistsGif.add(getGif(playlist, VideoGenConfigs.outPutFoulder + "/gifs/playlist_" + playlistIndex, width, heigth))
 		}
 		playlistsGif
 	}

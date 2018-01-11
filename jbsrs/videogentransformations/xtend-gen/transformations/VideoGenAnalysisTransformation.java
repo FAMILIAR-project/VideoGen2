@@ -1,13 +1,72 @@
 package transformations;
 
+import configs.VideoGenConfigs;
+import helpers.FFMPEGHelper;
+import java.io.File;
 import java.util.List;
+import org.eclipse.emf.common.util.EList;
+import org.xtext.example.mydsl.videoGen.AlternativesMedia;
+import org.xtext.example.mydsl.videoGen.MandatoryMedia;
+import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
+import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
+import utils.CommonUtils;
 import utils.VideoGenUtils;
 
 @SuppressWarnings("all")
 public class VideoGenAnalysisTransformation {
+  public static int getMaxDuration(final VideoGeneratorModel videoGen) {
+    int _xblockexpression = (int) 0;
+    {
+      int maxDuration = 0;
+      EList<Media> _medias = videoGen.getMedias();
+      for (final Media media : _medias) {
+        {
+          if ((media instanceof AlternativesMedia)) {
+            AlternativesMedia alternativeMedia = ((AlternativesMedia) media);
+            int maxAlternativeDuration = 0;
+            EList<MediaDescription> _medias_1 = alternativeMedia.getMedias();
+            for (final MediaDescription alternative : _medias_1) {
+              if ((alternative instanceof VideoDescription)) {
+                VideoDescription videoDescription = ((VideoDescription) alternative);
+                int alternativeDuration = FFMPEGHelper.getVideoDuration(videoDescription.getLocation());
+                if ((maxAlternativeDuration < alternativeDuration)) {
+                  maxAlternativeDuration = alternativeDuration;
+                }
+              }
+            }
+            int _maxDuration = maxDuration;
+            maxDuration = (_maxDuration + maxAlternativeDuration);
+          }
+          if ((media instanceof MandatoryMedia)) {
+            MediaDescription _description = ((MandatoryMedia)media).getDescription();
+            if ((_description instanceof VideoDescription)) {
+              MediaDescription _description_1 = ((MandatoryMedia)media).getDescription();
+              VideoDescription videoDescription_1 = ((VideoDescription) _description_1);
+              int _maxDuration_1 = maxDuration;
+              int _videoDuration = FFMPEGHelper.getVideoDuration(videoDescription_1.getLocation());
+              maxDuration = (_maxDuration_1 + _videoDuration);
+            }
+          }
+          if ((media instanceof OptionalMedia)) {
+            MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
+            if ((_description_2 instanceof VideoDescription)) {
+              MediaDescription _description_3 = ((OptionalMedia)media).getDescription();
+              VideoDescription videoDescription_2 = ((VideoDescription) _description_3);
+              int _maxDuration_2 = maxDuration;
+              int _videoDuration_1 = FFMPEGHelper.getVideoDuration(videoDescription_2.getLocation());
+              maxDuration = (_maxDuration_2 + _videoDuration_1);
+            }
+          }
+        }
+      }
+      _xblockexpression = maxDuration;
+    }
+    return _xblockexpression;
+  }
+  
   public static double getMinimalSize(final VideoGeneratorModel videoGen) {
     double _xblockexpression = (double) 0;
     {
@@ -108,7 +167,7 @@ public class VideoGenAnalysisTransformation {
       for (final List<MediaDescription> playlist : playlists) {
         {
           double _realSize = realSize;
-          double _realSize_1 = VideoGenAnalysisTransformation.getRealSize(playlist, ("playlist_" + Integer.valueOf(playlistIndex)));
+          double _realSize_1 = VideoGenAnalysisTransformation.getRealSize(playlist);
           realSize = (_realSize + _realSize_1);
           playlistIndex++;
         }
@@ -118,8 +177,10 @@ public class VideoGenAnalysisTransformation {
     return _xblockexpression;
   }
   
-  public static double getRealSize(final List<MediaDescription> playlist, final String playlistName) {
-    return VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, playlistName));
+  public static double getRealSize(final List<MediaDescription> playlist) {
+    File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+    String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
+    return VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(_plus)));
   }
   
   public static double getRealSize(final String playlistLocation) {
