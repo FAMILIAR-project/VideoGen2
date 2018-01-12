@@ -21,15 +21,15 @@
 ######################
 # Eclipse
 ######################
-/petitpaget/*.pydevproject
+*.pydevproject
 /petitpaget/.project
 /petitpaget/.metadata
 /petitpaget/tmp/
 /petitpaget/tmp/**/*
-/petitpaget/*.tmp
-/petitpaget/*.bak
-/petitpaget/*.swp
-/petitpaget/*~.nib
+*.tmp
+*.bak
+*.swp
+*~.nib
 /petitpaget/local.properties
 /petitpaget/.classpath
 /petitpaget/.settings/
@@ -53,36 +53,17 @@
 # Intellij
 ######################
 /petitpaget/.idea/
-/petitpaget/*.iml
-/petitpaget/*.iws
-/petitpaget/*.ipr
-/petitpaget/*.ids
-/petitpaget/*.orig
-
-######################
-# Visual Studio Code
-######################
-/petitpaget/.vscode/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
 
 ######################
 # Maven
 ######################
 /petitpaget/log/
-/petitpaget/target/generated-sources/
-/petitpaget/target/generated-test-sources/
-/petitpaget/target/maven-status/
-/petitpaget/target/test-classes/
-/petitpaget/target/www/
-/petitpaget/target/Dockerfile
-/petitpaget/target/.dockerignore
-/petitpaget/target/classes/fr/istic/
-/petitpaget/target/classes/config/
-/petitpaget/target/classes/i18n/
-/petitpaget/target/classes/mails/
-/petitpaget/target/classes/templates/
-/petitpaget/target/classes/swagger/
-/petitpaget/target/classes/banner.txt
-/petitpaget/target/classes/logback-spring.xml
+/petitpaget/target/
 
 ######################
 # Gradle
@@ -93,38 +74,15 @@
 ######################
 # Package Files
 ######################
-/petitpaget/*.jar
-/petitpaget/*.war
-/petitpaget/*.ear
-/petitpaget/*.db
-
-######################
-# Windows
-######################
-# Windows image file caches
-/petitpaget/Thumbs.db
-
-# Folder config file
-/petitpaget/Desktop.ini
-
-######################
-# Mac OSX
-######################
-/petitpaget/.DS_Store
-/petitpaget/.svn
-
-# Thumbnails
-/petitpaget/._*
-
-# Files that might appear on external disk
-/petitpaget/.Spotlight-V100
-/petitpaget/.Trashes
+*.war
+*.ear
+*.db
 
 ######################
 # Directories
 ######################
-/petitpaget/bin/
-/petitpaget/deploy/
+/*/bin/
+/*/deploy/
 
 ######################
 # Logs
@@ -137,6 +95,7 @@
 /petitpaget/*.*~
 /petitpaget/*~
 /petitpaget/.merge_file*
+*.class
 
 ######################
 # Gradle Wrapper
@@ -168,6 +127,3 @@ VideoGenTools/\.idea/
 
 \.idea/workspace\.xml
 
-petitpaget/target/classes/META-INF/
-
-petitpaget/target/
