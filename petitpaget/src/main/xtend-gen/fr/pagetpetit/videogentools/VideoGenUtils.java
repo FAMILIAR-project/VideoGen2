@@ -190,6 +190,67 @@ public class VideoGenUtils {
     return variant;
   }
   
+  public static String[] getRandomVariant(final VideoGeneratorModel model) {
+    final ArrayList<String> variant = new ArrayList<String>();
+    EList<Media> _medias = model.getMedias();
+    for (final Media media : _medias) {
+      if (((media instanceof MandatoryMedia) && (((MandatoryMedia) media).getDescription() instanceof VideoDescription))) {
+        variant.add(((MandatoryMedia) media).getDescription().getLocation());
+      } else {
+        if (((media instanceof OptionalMedia) && (((OptionalMedia) media).getDescription() instanceof VideoDescription))) {
+          double _random = Math.random();
+          boolean _greaterThan = (_random > 0.5);
+          if (_greaterThan) {
+            variant.add(((OptionalMedia) media).getDescription().getLocation());
+          }
+        } else {
+          if (((media instanceof AlternativesMedia) && (((AlternativesMedia) media).getMedias().get(0) instanceof VideoDescription))) {
+            variant.add(VideoGenUtils.choose(((AlternativesMedia) media)));
+          }
+        }
+      }
+    }
+    return ((String[])Conversions.unwrapArray(variant, String.class));
+  }
+  
+  public static String choose(final AlternativesMedia media) {
+    String chosen = "";
+    chosen = null;
+    int total = 0;
+    final ArrayList<Integer> weights = new ArrayList<Integer>();
+    EList<MediaDescription> _medias = media.getMedias();
+    for (final MediaDescription desc : _medias) {
+      {
+        weights.add(Integer.valueOf(total));
+        int _tal = total;
+        int _probability = ((VideoDescription) desc).getProbability();
+        total = (_tal + _probability);
+      }
+    }
+    InputOutput.<String>println(("total = " + Integer.valueOf(total)));
+    double _random = Math.random();
+    final double random = (_random * total);
+    InputOutput.<String>println(("random = " + Double.valueOf(random)));
+    boolean bool = true;
+    for (int i = 0; ((i < (((Object[])Conversions.unwrapArray(media.getMedias(), Object.class)).length - 1)) && bool); i++) {
+      {
+        Integer _get = weights.get(i);
+        String _plus = ("value = " + _get);
+        InputOutput.<String>println(_plus);
+        if (((random >= (weights.get(i)).intValue()) && (random < (weights.get((i + 1))).intValue()))) {
+          chosen = media.getMedias().get(i).getLocation();
+          bool = false;
+        }
+      }
+    }
+    if ((chosen == null)) {
+      final int length = ((Object[])Conversions.unwrapArray(media.getMedias(), Object.class)).length;
+      chosen = media.getMedias().get((length - 1)).getLocation();
+      InputOutput.<String>println(("chosen = " + chosen));
+    }
+    return chosen;
+  }
+  
   public static String concatVideos(final String[] filenames, final String outputfilename) {
     final ArrayList<String> COMMAND = new ArrayList<String>();
     String filter = "";
