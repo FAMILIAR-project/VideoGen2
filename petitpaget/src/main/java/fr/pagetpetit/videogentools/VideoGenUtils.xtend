@@ -167,7 +167,6 @@ class VideoGenUtils {
 		for(arg : COMMAND){
 			println(arg)
 		}
-		
 		ProcessExec.executeCommand(COMMAND)
 		println(outputfilename + " created")
 		
