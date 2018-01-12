@@ -87,13 +87,11 @@
 ######################
 # Logs
 ######################
-/petitpaget/*.log
+*.log
 
 ######################
 # Others
 ######################
-/petitpaget/*.*~
-/petitpaget/*~
 /petitpaget/.merge_file*
 *.class
 
@@ -127,3 +125,5 @@ VideoGenTools/\.idea/
 
 \.idea/workspace\.xml
 
+
+petitpaget/\.mvn/wrapper/maven-wrapper\.jar
