@@ -1,6 +1,7 @@
 body {
-  background-color: black;
-  color: white;
+  background-color: lightgray;
+
+  color: black;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: center;
   float: center;
@@ -8,7 +9,7 @@ body {
 
 .title_panel{
 	height: 60px;
-	width: 350px;
+	width: 100%;
 	font-size: 300%;
 	font-weight: bold;
 	text-align: center;
@@ -22,7 +23,7 @@ body {
 }
 .graphic{
 	margin-top: 30px;
-	color: white;
+	color: black;
 }
 .footer{
 	position:fixed;

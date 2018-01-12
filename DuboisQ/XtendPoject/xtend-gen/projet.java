@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -66,9 +67,10 @@ public class projet {
           }
         }
       }
+      int name = projet.x.nextInt(99999999);
       Writer writer = null;
       try {
-        FileOutputStream _fileOutputStream = new FileOutputStream("public/temp.txt");
+        FileOutputStream _fileOutputStream = new FileOutputStream((("public/temp" + Integer.valueOf(name)) + ".txt"));
         OutputStreamWriter _outputStreamWriter = new OutputStreamWriter(_fileOutputStream, "utf-8");
         BufferedWriter _bufferedWriter = new BufferedWriter(_outputStreamWriter);
         writer = _bufferedWriter;
@@ -91,10 +93,18 @@ public class projet {
           }
         }
       }
-      int name = projet.x.nextInt(99999999);
       String command = (("ffmpeg -f concat -safe 0 -i public/temp.txt -y -c copy public/videogen/" + Integer.valueOf(name)) + ".mp4");
       Process p = Runtime.getRuntime().exec(command);
       p.waitFor();
+      final File file = new File((("public/temp" + Integer.valueOf(name)) + ".txt"));
+      boolean _delete = file.delete();
+      if (_delete) {
+        String _name = file.getName();
+        String _plus_6 = (_name + " is deleted!");
+        System.out.println(_plus_6);
+      } else {
+        System.out.println("Delete operation is failed.");
+      }
       InputOutput.<String>println((("videogen/" + Integer.valueOf(name)) + ".mp4"));
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

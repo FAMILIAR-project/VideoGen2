@@ -12,6 +12,7 @@ import java.io.BufferedWriter
 import java.io.OutputStreamWriter
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.File
 
 class projet {
 	public static Random x
@@ -55,10 +56,13 @@ class projet {
 			}
 		}
 		
+		// créé le nom aléatoire
+		var name = x.nextInt(99999999)
+		
 		// crée un fichier texte avec les video a utilisé pour cette génération
 		var Writer writer = null
 		try {
-		    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("public/temp.txt"), "utf-8"));
+		    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("public/temp"+name+".txt"), "utf-8"));
 		    writer.write(filelist);
 		} catch (IOException ex) {
 		  	System.err.println("erreur d'écriture de fichier temporaire")		
@@ -66,14 +70,20 @@ class projet {
 		   try {writer.close();} catch (Exception ex) {/*ignore*/}
 		}
 
-		// créé le nom aléatoire
-		var name = x.nextInt(99999999)
 
 		//appel la commande FFMPEG pour crée la video a partir du fichier text
 		var command = "ffmpeg -f concat -safe 0 -i public/temp.txt -y -c copy public/videogen/"+name+".mp4"		
 		var p = Runtime.runtime.exec(command)
 		p.waitFor
 		
+		val file = new File("public/temp"+name+".txt");
+
+		if(file.delete()){
+			System.out.println(file.getName() + " is deleted!");
+		}else{
+			System.out.println("Delete operation is failed.");
+		}
+    		
 		//retourne le lien de la video 
 		println("videogen/"+name+".mp4")
 	

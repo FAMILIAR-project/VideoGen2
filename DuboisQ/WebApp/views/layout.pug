@@ -12,7 +12,7 @@ script.
 	var generate = function() {
 		if (!EnAttenteDeCreation){
 			EnAttenteDeCreation= true;
-			$('.graphic').html('<img src="/loading.gif"><br><br> Création de la vidéo en cours !');
+			$('.graphic').html('<img src="/loading.gif" width="100" ><br><br> Création de la vidéo en cours !');
 			$.ajax({
 				type:"GET",
 				url:"/tools/generate",
@@ -26,5 +26,5 @@ script.
 					EnAttenteDeCreation= false;
 				}
 			});
-		}	
+		}
 	}
