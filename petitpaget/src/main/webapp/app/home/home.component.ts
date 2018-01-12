@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+<<<<<<< Updated upstream
         /*console.log('LOADING MODEL');
         this.videoGenService.getModel('example1').subscribe((model) => {
             console.log(model);
@@ -41,6 +42,8 @@ export class HomeComponent implements OnInit {
             console.log(response);
             console.log("PLAYLIST GENERATED");
         });
+=======
+>>>>>>> Stashed changes
     }
 
     registerAuthenticationSuccess() {
