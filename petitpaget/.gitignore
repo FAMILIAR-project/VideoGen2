@@ -58,6 +58,7 @@ local.properties
 *.ipr
 *.ids
 *.orig
+classes/
 
 ######################
 # Visual Studio Code
@@ -68,6 +69,7 @@ local.properties
 # Maven
 ######################
 /log/
+/target/
 
 ######################
 # Gradle
@@ -119,6 +121,7 @@ Desktop.ini
 ######################
 # Others
 ######################
+*.class
 *.*~
 *~
 .merge_file*

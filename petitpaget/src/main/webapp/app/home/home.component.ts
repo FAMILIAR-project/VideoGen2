@@ -3,8 +3,6 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
-import {VideoGenService} from '../videogen/videogen.service';
-import {AlternativesMedia, MandatoryMedia} from '../videogen/model/videogen.model';
 
 @Component({
     selector: 'jhi-home',
@@ -21,8 +19,7 @@ export class HomeComponent implements OnInit {
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager,
-        private videoGenService: VideoGenService
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -52,12 +49,6 @@ export class HomeComponent implements OnInit {
                 this.account = account;
             });
         });
-    }
-
-    GoSelection() {
-        // il faut aller sur une nouvelle page avec le choix des différentes vidéos (voir avec mael pour recuperer la liste des videos)
-        // this.principal.hasAnyAuthority() ;
-
     }
 
     isAuthenticated() {

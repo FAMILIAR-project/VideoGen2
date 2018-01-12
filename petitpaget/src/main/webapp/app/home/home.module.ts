@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { VideoGenSharedModule } from '../shared';
 
 import { HOME_ROUTE, HomeComponent } from './';
+import { TestPageDirective } from './test-page.directive';
 
 @NgModule({
     imports: [
@@ -12,6 +13,7 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     declarations: [
         HomeComponent,
+        TestPageDirective,
     ],
     entryComponents: [
     ],
