@@ -366,6 +366,9 @@ public class VideoGenUtils {
         playlist.add(VideoGenUtils.resize(video_1, r_1[0], r_1[1], output_width, output_height, outputFolder));
       }
     }
-    return VideoGenUtils.concatVideos(((String[])Conversions.unwrapArray(playlist, String.class)), (outputFolder + "/output.mp4"));
+    long _currentTimeMillis = System.currentTimeMillis();
+    String _plus = ((outputFolder + "/output_") + Long.valueOf(_currentTimeMillis));
+    String _plus_1 = (_plus + ".mp4");
+    return VideoGenUtils.concatVideos(((String[])Conversions.unwrapArray(playlist, String.class)), _plus_1);
   }
 }

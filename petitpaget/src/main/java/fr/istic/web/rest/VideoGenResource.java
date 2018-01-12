@@ -26,12 +26,11 @@ public class VideoGenResource {
         this.videogenHelper = new VideoGenHelper();
     }
 
-    @GetMapping("/videogen/{filepath}")
-    public VideoGeneratorModelWrapper getVideoGenModel(@PathVariable String filepath){
-        filepath = "data/input/videogen/" + filepath + ".videogen";
-        log.debug("getVideoGenModel : " + filepath);
-        //return addClues(videogenHelper.loadVideoGenerator(URI.createURI(filepath)));
-        return wrap(videogenHelper.loadVideoGenerator(URI.createURI(filepath)));
+    @GetMapping("/videogen/{filename}")
+    public VideoGeneratorModelWrapper getVideoGenModel(@PathVariable String filename){
+        filename = "data/input/videogen/" + filename + ".videogen";
+        log.debug("getVideoGenModel : " + filename);
+        return wrap(videogenHelper.loadVideoGenerator(URI.createURI(filename)));
     }
 
     @PostMapping("/videogen")
@@ -40,6 +39,16 @@ public class VideoGenResource {
         return ResponseEntity.accepted()
             .headers(HeaderUtil.createAlert( "A playlist was generated at ", location))
             .body(location);
+    }
+
+    @GetMapping("videogen/random/{filename}")
+    public String generateRandomVariant(@PathVariable String filename){
+        filename = "data/input/videogen/" + filename + ".videogen";
+        log.debug("getRandomVariant : " + filename);
+        VideoGeneratorModel model = videogenHelper.loadVideoGenerator(URI.createURI(filename));
+        String[] variant = VideoGenUtils.getRandomVariant(model);
+        String location = VideoGenUtils.generatePlaylist(variant, "data/output");
+        return location;
     }
 
     @Deprecated
