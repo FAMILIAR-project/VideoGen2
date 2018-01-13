@@ -2,6 +2,9 @@ package lebonmaheu
 
 import java.util.Scanner
 import java.util.List
+import java.io.InputStreamReader
+import java.io.BufferedReader
+import java.util.stream.Collectors
 
 class FFMPEG {
 	def static ffmpegComputeDuration(String locationVideo) {
@@ -13,7 +16,7 @@ class FFMPEG {
     }
     
     def static ffmpegConcatenateCommand(List<String> locationList, String outputPath) {
-    	val inputs = locationList.map [ loc | "-i '" + loc + "' " ].join()
+    	val inputs = locationList.map [ loc | "-i " + loc + " " ].join()
     	val inputCount = Integer.toString(locationList.size)
     	var setsar = ""
     	var segments = ""
@@ -24,11 +27,12 @@ class FFMPEG {
     		segments += "[v" + is + "][" + is + ":a]"
     	}
     	
-    	val filter = "-filter_complex \"" + setsar + segments + "concat=n=" + inputCount + ":v=1:a=1[outv][outa]\""
+    	val filter = "-filter_complex " + setsar + segments + "concat=n=" + inputCount + ":v=1:a=1[outv][outa]"
     	 
-    	val cmd = '''/usr/bin/ffmpeg -y «inputs» «filter» -map "[outv]" -map "[outa]" «outputPath»'''
+    	val cmd = '''/usr/bin/ffmpeg -y «inputs» «filter» -map [outv] -map [outa] «outputPath»'''
     	val p = Runtime.runtime.exec(cmd.toString)
-    	p.waitFor
+    	p.waitFor()
+    	println(new BufferedReader(new InputStreamReader(p.errorStream)).lines().collect(Collectors.joining("\n")))
     	println(cmd.toString)
     }
     
