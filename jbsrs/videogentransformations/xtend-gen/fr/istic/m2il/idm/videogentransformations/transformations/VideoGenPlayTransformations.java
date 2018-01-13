@@ -34,66 +34,35 @@ public class VideoGenPlayTransformations {
       if (_tripleNotEquals) {
         String _xblockexpression = null;
         {
-          ArrayList<MediaDescription> playlist = new ArrayList<MediaDescription>();
-          EList<Media> _medias = videoGen.getMedias();
-          for (final Media media : _medias) {
-            {
-              if ((media instanceof MandatoryMedia)) {
-                playlist.add(((MandatoryMedia)media).getDescription());
-              }
-              if ((media instanceof OptionalMedia)) {
-                MediaDescription _description = ((OptionalMedia)media).getDescription();
-                if ((_description instanceof ImageDescription)) {
-                  double _random = Math.random();
-                  double _multiply = (_random * 2);
-                  boolean _lessThan = (_multiply < 1);
-                  if (_lessThan) {
-                    playlist.add(((OptionalMedia)media).getDescription());
-                  }
-                }
-                MediaDescription _description_1 = ((OptionalMedia)media).getDescription();
-                if ((_description_1 instanceof VideoDescription)) {
-                  ArrayList<VideoDescription> list = new ArrayList<VideoDescription>();
-                  MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
-                  final VideoDescription optionalVideo = ((VideoDescription) _description_2);
-                  list.add(optionalVideo);
-                  final VideoDescription video = VideoGenUtils.getRandom(list);
-                  if ((video != null)) {
-                    playlist.add(video);
-                  }
-                }
-              }
-              if ((media instanceof AlternativesMedia)) {
-                boolean isImageDescription = false;
-                MediaDescription _get = ((AlternativesMedia)media).getMedias().get(0);
-                if ((_get instanceof ImageDescription)) {
-                  isImageDescription = true;
-                }
-                if (isImageDescription) {
-                  double _random_1 = Math.random();
-                  int _size = ((AlternativesMedia)media).getMedias().size();
-                  double _multiply_1 = (_random_1 * _size);
-                  int alternativesIndex = ((int) _multiply_1);
-                  MediaDescription _get_1 = ((AlternativesMedia)media).getMedias().get(alternativesIndex);
-                  final MediaDescription mdescription = ((MediaDescription) _get_1);
-                  playlist.add(mdescription);
-                } else {
-                  ArrayList<VideoDescription> list_1 = new ArrayList<VideoDescription>();
-                  EList<MediaDescription> _medias_1 = ((AlternativesMedia)media).getMedias();
-                  for (final MediaDescription alternative : _medias_1) {
-                    {
-                      final VideoDescription alternaiveVideo = ((VideoDescription) alternative);
-                      list_1.add(alternaiveVideo);
-                    }
-                  }
-                  playlist.add(VideoGenUtils.getRandom(list_1));
-                }
-              }
-            }
-          }
+          List<String> playlist = VideoGenUtils.getRandomPlaylist(videoGen);
           File _outPutFoulder_1 = VideoGenConfigs.getOutPutFoulder();
           String _plus = (_outPutFoulder_1 + "/playlists/playlist.mp4");
           _xblockexpression = VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(_plus));
+        }
+        _xifexpression_1 = _xblockexpression;
+      }
+      _xifexpression = _xifexpression_1;
+    } else {
+      return null;
+    }
+    return _xifexpression;
+  }
+  
+  public static List<String> getRandomPlayList(final VideoGeneratorModel videoGen) {
+    List<String> _xifexpression = null;
+    boolean _isGoodVideoGenSpecification = VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen);
+    if (_isGoodVideoGenSpecification) {
+      List<String> _xifexpression_1 = null;
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      boolean _tripleNotEquals = (_outPutFoulder != null);
+      if (_tripleNotEquals) {
+        List<String> _xblockexpression = null;
+        {
+          List<String> playlist = VideoGenUtils.getRandomPlaylist(videoGen);
+          File _outPutFoulder_1 = VideoGenConfigs.getOutPutFoulder();
+          String _plus = (_outPutFoulder_1 + "/playlists/playlist.mp4");
+          VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(_plus));
+          _xblockexpression = playlist;
         }
         _xifexpression_1 = _xblockexpression;
       }
@@ -274,13 +243,25 @@ public class VideoGenPlayTransformations {
       File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
       String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
       return FFMPEGHelper.videoToGif(
-        VideoGenUtils.makePlaylist(playlist, 
+        VideoGenUtils.makePlaylist(
+          VideoGenUtils.getMediaDescriptionsLocation(playlist), 
           CommonUtils.getOutPutFileName(_plus)), 
         VideoGenConfigs.getGifResolutions()[0], 
         VideoGenConfigs.getGifResolutions()[1]);
     } else {
       return null;
     }
+  }
+  
+  public static String videosToGif(final List<String> videos) {
+    String _xblockexpression = null;
+    {
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
+      String video = VideoGenUtils.makePlaylist(videos, CommonUtils.getOutPutFileName(_plus));
+      _xblockexpression = FFMPEGHelper.videoToGif(video, VideoGenConfigs.getGifResolutions()[0], VideoGenConfigs.getGifResolutions()[1]);
+    }
+    return _xblockexpression;
   }
   
   public static String videoGenApplyFilters(final VideoGeneratorModel videoGen) {

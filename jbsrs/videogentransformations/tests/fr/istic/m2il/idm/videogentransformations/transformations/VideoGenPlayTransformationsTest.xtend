@@ -59,7 +59,9 @@ class VideoGenPlayTransformationsTest {
 				VideoGenConfigs.setOutPutFoulder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
+		
 			VideoGenPlayTransformations.generateRandomPlayList(videoGen)
+			
 		}
 	}
 	

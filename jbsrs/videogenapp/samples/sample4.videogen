@@ -1,8 +1,0 @@
-VideoGen {
-	mandatory videoseq v1 "/home/ismael/videogen/v0.mp4"
-	mandatory videoseq v2 "/home/ismael/videogen/v01.mp4"
-	mandatory image i0 "/home/ismael/videogen"
-	mandatory videoseq v3 "home/ismael/videogen/"
-	mandatory image i1 "/home/ismael/videogen/"
-	mandatory videoseq v4 "/home/ismael/videogen/v2.mp4"
-}

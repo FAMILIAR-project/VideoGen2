@@ -127,7 +127,7 @@ class VideoGenAnalysisTransformations {
 	}
 	
 	static def double getRealSize(List<MediaDescription> playlist){
-		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
+		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
 	}
 	
 	static def double getRealSize(String playlistLocation){

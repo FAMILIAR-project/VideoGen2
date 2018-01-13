@@ -23,58 +23,24 @@ class VideoGenPlayTransformations {
 	static def String generateRandomPlayList(VideoGeneratorModel videoGen){
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(VideoGenConfigs.outPutFoulder !== null ){
-				var playlist = new ArrayList<MediaDescription>
-		
-		for(media: videoGen.medias){
-			if(media instanceof MandatoryMedia){
-				
-					playlist.add(media.description)
-
-			}
-			if(media instanceof OptionalMedia){
-				if(media.description instanceof ImageDescription){
-					if(Math.random() * 2 < 1){
-						playlist.add(media.description)
-					}
-				}
-				
-				if(media.description instanceof VideoDescription){
-					
-					var list = new ArrayList
-					val optionalVideo = (media.description as VideoDescription)
-					list.add(optionalVideo)
-
-					val video = VideoGenUtils.getRandom(list)
-					if(video !== null)
-						playlist.add(video)
-				}				
-			}
-			if(media instanceof AlternativesMedia){
-				var isImageDescription = false
-				if(media.medias.get(0) instanceof ImageDescription)
-					isImageDescription = true
-				if(isImageDescription){
-					var alternativesIndex = (Math.random() * media.medias.size) as int
-					val mdescription = (media.medias.get(alternativesIndex)) as MediaDescription
-					playlist.add(mdescription)
-				}
-				else{
-					var list = new ArrayList
-					for(alternative: media.medias){
-						val alternaiveVideo = alternative as VideoDescription
-						list.add(alternaiveVideo)
-					}
-					playlist.add(VideoGenUtils.getRandom(list))
-				}
-				
-			}
-		}
-		
-		VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"))	
+				var playlist = VideoGenUtils.getRandomPlaylist(videoGen)
+				VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"))	
 			}
 		}
 		else
 			return null
+	}
+	
+	static def List<String> getRandomPlayList(VideoGeneratorModel videoGen){
+		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
+			if(VideoGenConfigs.outPutFoulder !== null ){
+				var playlist = VideoGenUtils.getRandomPlaylist(videoGen)
+				VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"))
+				playlist	
+			}
+		}
+		else
+			return null	
 	}
 	
 
@@ -181,7 +147,7 @@ class VideoGenPlayTransformations {
 		if(VideoGenConfigs.outPutFoulder !== null  && VideoGenConfigs.getGifResolutions.get(0) > 0 && VideoGenConfigs.getGifResolutions.get(1) > 0){
 			return FFMPEGHelper.videoToGif(
 								VideoGenUtils.makePlaylist(
-															playlist, 
+															VideoGenUtils.getMediaDescriptionsLocation(playlist), 
 															CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")
 														  ),
 								VideoGenConfigs.getGifResolutions().get(0),
@@ -189,6 +155,11 @@ class VideoGenPlayTransformations {
 								)
 		}
 		else return null
+	}
+	
+	static def String videosToGif(List<String> videos){
+		var video = VideoGenUtils.makePlaylist(videos, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"))
+		FFMPEGHelper.videoToGif(video, VideoGenConfigs.getGifResolutions().get(0),VideoGenConfigs.getGifResolutions().get(1))
 	}
 	
 	static def String videoGenApplyFilters(VideoGeneratorModel videoGen){

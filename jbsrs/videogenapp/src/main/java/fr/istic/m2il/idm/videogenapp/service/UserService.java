@@ -9,6 +9,7 @@ import fr.istic.m2il.idm.videogenapp.security.AuthoritiesConstants;
 import fr.istic.m2il.idm.videogenapp.security.SecurityUtils;
 import fr.istic.m2il.idm.videogenapp.service.util.RandomUtil;
 import fr.istic.m2il.idm.videogenapp.service.dto.UserDTO;
+import fr.istic.m2il.idm.videogenapp.web.rest.vm.ManagedUserVM;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

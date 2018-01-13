@@ -1,12 +1,12 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "fr.istic.m2il.idm.videogen"
+      "packageName": "fr.istic.m2il.idm.videogenapp"
     },
     "jhipsterVersion": "4.13.0",
     "baseName": "videogenapp",
-    "packageName": "fr.istic.m2il.idm.videogen",
-    "packageFolder": "fr/istic/m2il/idm/videogen",
+    "packageName": "fr.istic.m2il.idm.videogenapp",
+    "packageFolder": "fr/istic/m2il/idm/videogenapp",
     "serverPort": "8080",
     "authenticationType": "jwt",
     "hibernateCache": "no",
@@ -21,7 +21,7 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "6d47094f4f541a27352767d4224537fbf5fa7a67",
+    "jwtSecretKey": "05b0751b7dcb3731ca0b894954d1173ae82f42a0",
     "clientFramework": "angularX",
     "useSass": false,
     "clientPackageManager": "yarn",

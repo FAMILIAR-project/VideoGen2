@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
+import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MandatoryMedia;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
@@ -88,16 +89,16 @@ public class VideoGenUtils {
     return newPlaylists;
   }
   
-  public static String makePlaylist(final List<MediaDescription> medias, final String playlistName) {
+  public static String makePlaylist(final List<String> locations, final String playlistName) {
     final ArrayList<int[]> resolutions = new ArrayList<int[]>();
-    for (final MediaDescription media : medias) {
-      if (((media != null) && 
-        (((((!media.getLocation().replace(".", "@").split("@")[1].equals("jpg")) && 
-          (!media.getLocation().replace(".", "@").split("@")[1].equals("png"))) && 
-          (!media.getLocation().replace(".", "@").split("@")[1].equals("gif"))) && 
-          (!media.getLocation().replace(".", "@").split("@")[1].equals("bpm"))) && 
-          (!media.getLocation().replace(".", "@").split("@")[1].equals("tiff"))))) {
-        resolutions.add(FFMPEGHelper.getVideoResolution(media.getLocation()));
+    for (final String location : locations) {
+      if (((location != null) && 
+        (((((!location.replace(".", "@").split("@")[1].equals("jpg")) && 
+          (!location.replace(".", "@").split("@")[1].equals("png"))) && 
+          (!location.replace(".", "@").split("@")[1].equals("gif"))) && 
+          (!location.replace(".", "@").split("@")[1].equals("bpm"))) && 
+          (!location.replace(".", "@").split("@")[1].equals("tiff"))))) {
+        resolutions.add(FFMPEGHelper.getVideoResolution(location));
       }
     }
     int maxOutputWidth = 0;
@@ -118,13 +119,12 @@ public class VideoGenUtils {
     }
     int i = 0;
     final ArrayList<String> playlist = new ArrayList<String>();
-    for (final MediaDescription media_1 : medias) {
-      if ((media_1 != null)) {
-        media_1.setLocation(FFMPEGHelper.homogenizeMediaResolution(
-          media_1.getLocation(), 
-          FFMPEGHelper.getVideoResolution(media_1.getLocation())[0], 
-          FFMPEGHelper.getVideoResolution(media_1.getLocation())[1], maxOutputWidth, maxOutputHeight));
-        playlist.add(media_1.getLocation());
+    for (final String location_1 : locations) {
+      if ((location_1 != null)) {
+        playlist.add(
+          FFMPEGHelper.homogenizeMediaResolution(location_1, 
+            FFMPEGHelper.getVideoResolution(location_1)[0], 
+            FFMPEGHelper.getVideoResolution(location_1)[1], maxOutputWidth, maxOutputHeight));
       }
     }
     ArrayList<String> playlistWrite = CollectionLiterals.<String>newArrayList();
@@ -182,7 +182,7 @@ public class VideoGenUtils {
   }
   
   public static String getGif(final List<MediaDescription> playlist, final String playlistName, final int width, final int heigth) {
-    return FFMPEGHelper.videoToGif(VideoGenUtils.makePlaylist(playlist, playlistName), width, heigth);
+    return FFMPEGHelper.videoToGif(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), playlistName), width, heigth);
   }
   
   public static VideoDescription getRandom(final List<VideoDescription> videos) {
@@ -274,5 +274,93 @@ public class VideoGenUtils {
         CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(_plus_3), ((String[])Conversions.unwrapArray(files, String.class)));
       }
     }
+  }
+  
+  public static List<String> getMediaDescriptionsLocation(final List<MediaDescription> playlist) {
+    ArrayList<String> _xblockexpression = null;
+    {
+      ArrayList<String> playlistlocations = CollectionLiterals.<String>newArrayList();
+      for (final MediaDescription media : playlist) {
+        if ((media instanceof AlternativesMedia)) {
+          EList<MediaDescription> _medias = ((AlternativesMedia)media).getMedias();
+          for (final MediaDescription alt : _medias) {
+            if ((media != null)) {
+              playlistlocations.add(media.getLocation());
+            }
+          }
+        } else {
+          if ((media != null)) {
+            playlistlocations.add(media.getLocation());
+          }
+        }
+      }
+      _xblockexpression = playlistlocations;
+    }
+    return _xblockexpression;
+  }
+  
+  public static List<String> getRandomPlaylist(final VideoGeneratorModel videoGen) {
+    List<String> _xblockexpression = null;
+    {
+      ArrayList<MediaDescription> playlist = CollectionLiterals.<MediaDescription>newArrayList();
+      EList<Media> _medias = videoGen.getMedias();
+      for (final Media media : _medias) {
+        {
+          if ((media instanceof MandatoryMedia)) {
+            playlist.add(((MandatoryMedia)media).getDescription());
+          }
+          if ((media instanceof OptionalMedia)) {
+            MediaDescription _description = ((OptionalMedia)media).getDescription();
+            if ((_description instanceof ImageDescription)) {
+              double _random = Math.random();
+              double _multiply = (_random * 2);
+              boolean _lessThan = (_multiply < 1);
+              if (_lessThan) {
+                playlist.add(((OptionalMedia)media).getDescription());
+              }
+            }
+            MediaDescription _description_1 = ((OptionalMedia)media).getDescription();
+            if ((_description_1 instanceof VideoDescription)) {
+              ArrayList<VideoDescription> list = new ArrayList<VideoDescription>();
+              MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
+              final VideoDescription optionalVideo = ((VideoDescription) _description_2);
+              list.add(optionalVideo);
+              final VideoDescription video = VideoGenUtils.getRandom(list);
+              if ((video != null)) {
+                playlist.add(video);
+              }
+            }
+          }
+          if ((media instanceof AlternativesMedia)) {
+            boolean isImageDescription = false;
+            MediaDescription _get = ((AlternativesMedia)media).getMedias().get(0);
+            if ((_get instanceof ImageDescription)) {
+              isImageDescription = true;
+            }
+            if (isImageDescription) {
+              double _random_1 = Math.random();
+              int _size = ((AlternativesMedia)media).getMedias().size();
+              double _multiply_1 = (_random_1 * _size);
+              int alternativesIndex = ((int) _multiply_1);
+              MediaDescription _get_1 = ((AlternativesMedia)media).getMedias().get(alternativesIndex);
+              final MediaDescription mdescription = ((MediaDescription) _get_1);
+              playlist.add(mdescription);
+            } else {
+              ArrayList<VideoDescription> list_1 = new ArrayList<VideoDescription>();
+              EList<MediaDescription> _medias_1 = ((AlternativesMedia)media).getMedias();
+              for (final MediaDescription alternative : _medias_1) {
+                {
+                  final VideoDescription alternaiveVideo = ((VideoDescription) alternative);
+                  list_1.add(alternaiveVideo);
+                }
+              }
+              playlist.add(VideoGenUtils.getRandom(list_1));
+            }
+          }
+        }
+      }
+      _xblockexpression = VideoGenUtils.getMediaDescriptionsLocation(playlist);
+    }
+    return _xblockexpression;
   }
 }

@@ -197,7 +197,7 @@ public class VideoGenAnalysisTransformations {
   public static double getRealSize(final List<MediaDescription> playlist) {
     File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
     String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
-    return VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(playlist, CommonUtils.getOutPutFileName(_plus)));
+    return VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), CommonUtils.getOutPutFileName(_plus)));
   }
   
   public static double getRealSize(final String playlistLocation) {

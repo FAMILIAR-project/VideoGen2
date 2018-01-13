@@ -16,7 +16,7 @@
 logging:
     level:
         ROOT: DEBUG
-        fr.istic.m2il.idm.videogen: DEBUG
+        fr.istic.m2il.idm.videogenapp: DEBUG
         io.github.jhipster: DEBUG
 
 spring:

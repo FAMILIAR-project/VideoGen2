@@ -12,6 +12,7 @@ import java.io.File
 import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import java.util.Random
+import org.xtext.example.mydsl.videoGen.ImageDescription
 
 class VideoGenUtils {
 	
@@ -74,21 +75,21 @@ class VideoGenUtils {
 	
 	
 	
-	static def String makePlaylist(List<MediaDescription> medias, String playlistName){
+	static def String makePlaylist(List<String> locations, String playlistName){
 		val resolutions = new ArrayList
 		
-		for(media : medias){
-			if(media !== null && 
+		for(location : locations){
+			if(location !== null && 
 				
 				(
-					!media.location.replace(".","@").split("@").get(1).equals("jpg") && 
-					!media.location.replace(".","@").split("@").get(1).equals("png") &&
-					!media.location.replace(".","@").split("@").get(1).equals("gif") &&
-					!media.location.replace(".","@").split("@").get(1).equals("bpm") &&
-					!media.location.replace(".","@").split("@").get(1).equals("tiff")
+					!location.replace(".","@").split("@").get(1).equals("jpg") && 
+					!location.replace(".","@").split("@").get(1).equals("png") &&
+					!location.replace(".","@").split("@").get(1).equals("gif") &&
+					!location.replace(".","@").split("@").get(1).equals("bpm") &&
+					!location.replace(".","@").split("@").get(1).equals("tiff")
 				)
 			)
-			resolutions.add(FFMPEGHelper.getVideoResolution(media.location))
+			resolutions.add(FFMPEGHelper.getVideoResolution(location))
 		}
 		
 		var maxOutputWidth = 0
@@ -104,17 +105,16 @@ class VideoGenUtils {
 		}
 		var i = 0;
 		val playlist = new ArrayList
-		for(media : medias){
-				if(media !== null){
-					media.location = FFMPEGHelper.homogenizeMediaResolution(
-															media.location, 
-															FFMPEGHelper.getVideoResolution(media.location).get(0), 
-															FFMPEGHelper.getVideoResolution(media.location).get(1), 
+		for(location : locations){
+				if(location !== null){
+					playlist.add(FFMPEGHelper.homogenizeMediaResolution(
+															location, 
+															FFMPEGHelper.getVideoResolution(location).get(0), 
+															FFMPEGHelper.getVideoResolution(location).get(1), 
 															maxOutputWidth, 
 															maxOutputHeight
 															)
-				playlist.add(media.location
-						)
+					)
 				}
 			
 		}
@@ -158,7 +158,7 @@ class VideoGenUtils {
 	}
 	
 	static def String getGif(List<MediaDescription> playlist, String playlistName, int width, int heigth){
-		FFMPEGHelper.videoToGif(makePlaylist(playlist, playlistName), width, heigth)
+		FFMPEGHelper.videoToGif(makePlaylist(getMediaDescriptionsLocation(playlist), playlistName), width, heigth)
 	}
 	
 	static def VideoDescription getRandom(List<VideoDescription> videos){
@@ -223,5 +223,70 @@ class VideoGenUtils {
 			}
 			CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.txt"), files)
 		}
+	}
+	
+	static def List<String> getMediaDescriptionsLocation(List<MediaDescription> playlist){
+		var playlistlocations = newArrayList
+		for(media: playlist){
+			if( media instanceof AlternativesMedia){
+				for(alt: media.medias){
+					if(media !== null)
+						playlistlocations.add(media.location)
+				}
+			}
+			else
+				if(media !== null)
+					playlistlocations.add(media.location)
+		}
+		playlistlocations
+	}
+	
+	static def List<String> getRandomPlaylist(VideoGeneratorModel videoGen){
+		var playlist = newArrayList
+		for(media: videoGen.medias){
+			if(media instanceof MandatoryMedia){
+				
+					playlist.add(media.description)
+
+			}
+			if(media instanceof OptionalMedia){
+				if(media.description instanceof ImageDescription){
+					if(Math.random() * 2 < 1){
+						playlist.add(media.description)
+					}
+				}
+				
+				if(media.description instanceof VideoDescription){
+					
+					var list = new ArrayList
+					val optionalVideo = (media.description as VideoDescription)
+					list.add(optionalVideo)
+
+					val video = VideoGenUtils.getRandom(list)
+					if(video !== null)
+						playlist.add(video)
+				}				
+			}
+			if(media instanceof AlternativesMedia){
+				var isImageDescription = false
+				if(media.medias.get(0) instanceof ImageDescription)
+					isImageDescription = true
+				if(isImageDescription){
+					var alternativesIndex = (Math.random() * media.medias.size) as int
+					val mdescription = (media.medias.get(alternativesIndex)) as MediaDescription
+					playlist.add(mdescription)
+				}
+				else{
+					var list = new ArrayList
+					for(alternative: media.medias){
+						val alternaiveVideo = alternative as VideoDescription
+						list.add(alternaiveVideo)
+					}
+					playlist.add(VideoGenUtils.getRandom(list))
+				}
+				
+			}
+		}
+		getMediaDescriptionsLocation(playlist)
 	}
 }

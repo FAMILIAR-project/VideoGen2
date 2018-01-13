@@ -1,0 +1,11 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [],
+    "changelogDate": "20180113234133",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "videogen",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

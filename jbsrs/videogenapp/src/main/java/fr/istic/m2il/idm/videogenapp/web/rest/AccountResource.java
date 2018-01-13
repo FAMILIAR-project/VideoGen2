@@ -3,7 +3,6 @@ package fr.istic.m2il.idm.videogenapp.web.rest;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.istic.m2il.idm.videogenapp.domain.User;
-import fr.istic.m2il.idm.videogenapp.domain.VideoGen;
 import fr.istic.m2il.idm.videogenapp.repository.UserRepository;
 import fr.istic.m2il.idm.videogenapp.security.SecurityUtils;
 import fr.istic.m2il.idm.videogenapp.service.MailService;
@@ -13,16 +12,11 @@ import fr.istic.m2il.idm.videogenapp.web.rest.errors.*;
 import fr.istic.m2il.idm.videogenapp.web.rest.vm.KeyAndPasswordVM;
 import fr.istic.m2il.idm.videogenapp.web.rest.vm.ManagedUserVM;
 
-import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs;
-import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenHelper;
-import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

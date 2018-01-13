@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.istic.m2il.idm.videogen</groupId>
+    <groupId>fr.istic.m2il.idm.videogenapp</groupId>
     <artifactId>videogenapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -89,11 +89,10 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>fr.istic.m2il.idm.videogen</groupId>
+                <groupId>fr.istic.m2il.idm</groupId>
                 <artifactId>videogen</artifactId>
                 <version>${videogen.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.github.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
@@ -106,7 +105,6 @@
     </dependencyManagement>
 
     <dependencies>
-
         <dependency>
             <groupId>io.github.jhipster</groupId>
             <artifactId>jhipster</artifactId>
@@ -306,6 +304,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
+        <dependency>
+            <groupId>fr.istic.m2il.idm.videogenapp</groupId>
+            <artifactId>videogenapp</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -477,7 +480,7 @@
                     <driver>com.mysql.jdbc.Driver</driver>
                     <url>jdbc:mysql://localhost:3306/videogenapp</url>
                     <defaultSchemaName>videogenapp</defaultSchemaName>
-                    <username>root</username>
+                    <username>videogenappadmin</username>
                     <password>videogenappadmin</password>
                     <referenceUrl>hibernate:spring:fr.istic.m2il.idm.videogenapp.domain?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
