@@ -8,11 +8,12 @@ import java.util.stream.Collectors
 
 class FFMPEG {
 	def static ffmpegComputeDuration(String locationVideo) {
-    	val cmd = '''/usr/local/bin/ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 «locationVideo»'''
+    	val cmd = '''/usr/bin/ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 «locationVideo»'''
     	val p = Runtime.runtime.exec(cmd.toString)
     	p.waitFor
     	
-    	return new Scanner(p.inputStream).nextInt
+    	val scanner = new Scanner(p.inputStream) 
+    	return Double.valueOf(scanner.next)
     }
     
     def static ffmpegConcatenateCommand(List<String> locationList, String outputPath) {

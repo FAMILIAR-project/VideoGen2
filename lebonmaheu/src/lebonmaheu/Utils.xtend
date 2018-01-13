@@ -9,8 +9,6 @@ import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import org.xtext.example.mydsl.videoGen.MandatoryMedia
 import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.AlternativesMedia
-import java.io.File
-import java.io.FileWriter
 import java.util.LinkedList
 
 class Utils {
@@ -29,6 +27,12 @@ class Utils {
 		throw new NullPointerException
 	}
 	
+	/**
+	 * Deep copy of a list of variants.
+	 * 
+	 * @param all the list of variants
+	 * @return the copy
+	 */
 	def private static copyVariantList(List<List<MediaDescription>> all) {
     	val List<List<MediaDescription>> newAll = new ArrayList<List<MediaDescription>>
     	
@@ -39,7 +43,13 @@ class Utils {
     	return newAll
     }
     
-    def public static getAllVariants(VideoGeneratorModel videoGen, String inputFile) {
+    /**
+     * Computes every possible variants of the videogen.
+     * 
+     * @param videoGen the videogen
+     * @return the variants
+     */
+    def public static getAllVariants(VideoGeneratorModel videoGen) {
 		val all = new ArrayList<List<MediaDescription>>
 		all.add(new ArrayList<MediaDescription>)
 		
@@ -71,7 +81,13 @@ class Utils {
 		return all
     }
     
-    def public static getAllIds(VideoGeneratorModel videoGen, String inputFile) {
+    /**
+     * Get the ID of each media in the videogen.
+     * 
+     * @param videoGen the videogen
+     * @return the ID of each media
+     */
+    def public static getAllIds(VideoGeneratorModel videoGen) {
     	val ids = new ArrayList<String>
 		
 		videoGen.medias.forEach[ m |
@@ -87,59 +103,13 @@ class Utils {
 		return ids
     }
     
-    def public static makeCSV(VideoGeneratorModel videoGen, String inputFile) {
-    	val all = getAllVariants(videoGen, inputFile)
-    	val seqs = getAllIds(videoGen, inputFile)
-    	
-    	val file = new File("playlist.csv")
-        file.createNewFile
-        
-        val writer = new FileWriter(file)
-        
-        writer.write("id")
-        seqs.forEach [ id | writer.write(";" + id) ]
-        writer.write(";size\n")
-        
-        for(var i = 0; i < all.size; i++) {
-        	val List<MediaDescription> variant = all.get(i)
-        	writer.write(Integer.toString(i + 1) + ";")
-        	val ids = variant.map [ m | getMediaId(m) ]
-        	seqs.forEach [ id |
-        		if(ids.contains(id))
-        			writer.write("TRUE")
-        		else
-        			writer.write("FALSE")
-        		writer.write(";")
-        	]
-        	writer.write('''«variantSize(variant)»'''.toString + "\n")
-        }
-        
-        writer.flush
-        writer.close
-    }
-    
-    def public static variantDuration(List<MediaDescription> variant) {
-    	var duration = 0
-    	
-    	for (media : variant) {
-			duration += FFMPEG.ffmpegComputeDuration(media.location)
-    	}
-    	
-    	return duration
-    }
-    
-    def public static variantSize(List<MediaDescription> variant) {
-    	var size = 0L
-    	
-    	for (media : variant) {
-			val file = new File(media.location)
-			size += file.length
-    	}
-    	
-    	return size
-    }
-    
-    def public static longestVariant(VideoGeneratorModel videoGen, String inputFile) {
+    /**
+     * Get the longest variant in terms of duration.
+     * 
+     * @param videoGen the videogen
+     * @return the longest variant
+     */
+    def public static longestVariant(VideoGeneratorModel videoGen) {
 		var List<MediaDescription> playlist = new ArrayList
 		
 		for(media : videoGen.medias) {
@@ -169,6 +139,14 @@ class Utils {
 		return playlist
     }
     
+    /**
+     * Check if the probabilities given in the alternatives respect the given laws:
+     *   - the addition of all does not exceed 100
+     *   - medias without probabilities equally share the remaining probabilities
+     * 
+     * @param medias the list of alternatives
+     * @return true if the laws are respected, false otherwise
+     */
     def public static probabilitiesAreCorrect(List<MediaDescription> medias) {
     	var hasFallback = false
     	var amount = 0
@@ -186,6 +164,12 @@ class Utils {
     	return (amount == 100) || (amount < 100 && hasFallback)
     }
     
+    /**
+     * Write explicitly the probabilities of the medias that didn't have theirs user-specified.
+     * 
+     * @param medias the list of alternatives
+     * @return the new list of alternatives
+     */
     def public static fillProbabilities(List<MediaDescription> medias) {
     	var empty = new LinkedList<MediaDescription>
     	var done = new LinkedList<MediaDescription>

@@ -86,14 +86,11 @@ class VideoGen {
         FFMPEG.ffmpegConcatenateCommand(locationList,  output)
         
         /* Generate all possible variants */
-        val all = Utils.getAllVariants(videoGen, input)
+        val all = Utils.getAllVariants(videoGen)
         all.forEach [variant |
         	variant.forEach [ m | print(Utils.getMediaId(m) + " ") ]
         	println("")
         ]
-        
-        /* Make a CSV from all possible variants and their size */
-        Utils.makeCSV(videoGen, input)
         
         //FFMPEG.ffmpegConvertToGIF(output)
     }
