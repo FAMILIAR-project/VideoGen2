@@ -18,7 +18,7 @@ script.
 				url:"/tools/generate",
 				data:{},
 				success:function(rep){
-					$('.graphic').html('<video controls width="400" height="222" src="'+rep+'" type="video/mp4">Ici la description alternative</video>');
+					$('.graphic').html('<video controls width="800" height="444" src="GeneratedVideo/'+rep+'" type="video/mp4">Ici la description alternative</video><br><br> Votre vidéo sera disponible pendant 5 minutes avant de disparaitre dans le néant :(');
 					EnAttenteDeCreation= false;
 				},
 				error:function(err){

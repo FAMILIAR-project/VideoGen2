@@ -1,9 +1,0 @@
-@author "Quentin Dubois"
-@version "0.0.1"
-VideoGen {
-	mandatory videoseq v1 "1.mp4"
-	alternatives v3 {
-
-	}
-
-}

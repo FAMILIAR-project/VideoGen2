@@ -1,0 +1,10 @@
+@author "Quentin Dubois"
+@version "0.0.1"
+VideoGen {
+	mandatory videoseq v1 "../OriginVideo/smallnoise.mp4"		
+	mandatory videoseq v2 "../OriginVideo/bignoise.mp4"
+	mandatory videoseq v3 "../OriginVideo/goat1.mp4"	
+	mandatory videoseq v4 "../OriginVideo/goat2.mp4"	
+	mandatory videoseq v5 "../OriginVideo/aaa.mp4"	
+
+}
