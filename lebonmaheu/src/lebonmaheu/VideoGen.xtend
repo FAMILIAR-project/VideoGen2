@@ -54,6 +54,10 @@ class VideoGen {
             else if(media instanceof AlternativesMedia)
             {
             	if (! Utils.probabilitiesAreCorrect(media.medias)) {
+            		/* 
+            		 * if the probability-related laws are not respected,
+            		 * then every media has an equal chance to be picked.
+            		 */
                 	val rand = ThreadLocalRandom.current.nextInt(0,media.medias.size)
                 	playlist.add(media.medias.get(rand))
                 } else {
@@ -74,6 +78,7 @@ class VideoGen {
         val writer = new FileWriter(file)
         val locationList = new LinkedList<String>
         
+        /* Write the playlist in its file */
         for(item : playlist){
             writer.write("file '"+item.location+"'\n")
             locationList.add(item.location)
@@ -84,14 +89,6 @@ class VideoGen {
         
         /* Generate the video */
         FFMPEG.ffmpegConcatenateCommand(locationList,  output)
-        
-        /* Generate all possible variants */
-        val all = Utils.getAllVariants(videoGen)
-        all.forEach [variant |
-        	variant.forEach [ m | print(Utils.getMediaId(m) + " ") ]
-        	println("")
-        ]
-        
         FFMPEG.ffmpegConvertToGIF(output)
     }
     
