@@ -4,6 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
 import {VideoGenService} from '../videogen/videogen.service';
+import {VideoGeneratorModel} from '../videogen/model/videogen.model';
 
 @Component({
     selector: 'jhi-home',
@@ -16,6 +17,7 @@ import {VideoGenService} from '../videogen/videogen.service';
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    videoGenModel: VideoGeneratorModel;
 
     constructor(
         private principal: Principal,
@@ -30,9 +32,13 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-        console.log('LOADING MODEL');
+        /*console.log('LOADING MODEL');
         this.videoGenService.getModel('example2').subscribe((model) => {
             console.log(model);
+            this.videoGenModel = model;
+        });*/
+        this.videoGenService.getVideoGenFiles().subscribe((files) => {
+           console.log(files);
         });
         /*
         let videos:string[] = [

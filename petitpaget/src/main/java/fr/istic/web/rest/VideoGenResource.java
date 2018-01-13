@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.xtext.example.mydsl.videoGen.*;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,14 @@ public class VideoGenResource {
         String[] variant = VideoGenUtils.getRandomVariant(model);
         String location = VideoGenUtils.generatePlaylist(variant, "data/output");
         return location;
+    }
+
+    @GetMapping("videogen/files")
+    public String[] getVideoGenFiles(){
+        File videoGenFolder = new File("data/input/videogen");
+        return videoGenFolder.list(
+            (dir,name)-> name.endsWith(".videogen")
+        );
     }
 
     @Deprecated

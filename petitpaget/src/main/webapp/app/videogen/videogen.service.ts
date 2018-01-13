@@ -21,6 +21,10 @@ export class VideoGenService {
             .map((res: Response) => res);
     }
 
+    getVideoGenFiles(): any{
+        return this.http.get(this.resourceUrl+ '/files').map((res: Response) => res.json());
+    }
+
     /*private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
