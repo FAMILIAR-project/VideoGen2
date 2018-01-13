@@ -78,15 +78,17 @@ class Test {
         file.createNewFile
         
         val writer = new FileWriter(file)
+        val locationList = new LinkedList<String>
         
         for(item : playlist){
             writer.write("file '"+item.location+"'\n")
+            locationList.add(item.location)
         }
         
         writer.flush()
         writer.close()
         
-        FFMPEG.ffmpegConcatenateCommand("playlist.txt",  output)
+        FFMPEG.ffmpegConcatenateCommand(locationList,  output)
         
         val all = getAllVariants(videoGen, input)
         all.forEach [variant |

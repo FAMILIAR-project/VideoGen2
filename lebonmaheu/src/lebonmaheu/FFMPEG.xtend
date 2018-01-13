@@ -1,6 +1,7 @@
 package lebonmaheu
 
 import java.util.Scanner
+import java.util.List
 
 class FFMPEG {
 	def static ffmpegComputeDuration(String locationVideo) {
@@ -11,10 +12,24 @@ class FFMPEG {
     	return new Scanner(p.inputStream).nextInt
     }
     
-    def static ffmpegConcatenateCommand(String mpegPlaylistFile, String outputPath) { 
-    	val cmd = '''/usr/bin/ffmpeg -y -f concat -safe 0 -i «mpegPlaylistFile» -c copy «outputPath»'''
+    def static ffmpegConcatenateCommand(List<String> locationList, String outputPath) {
+    	val inputs = locationList.map [ loc | "-i '" + loc + "' " ].join()
+    	val inputCount = Integer.toString(locationList.size)
+    	var setsar = ""
+    	var segments = ""
+    	
+    	for (i : 0 ..< locationList.size) {
+    		val is = Integer.toString(i)
+    		setsar += "[" + is + "]setdar=16/9[v" + is + "];"
+    		segments += "[v" + is + "][" + is + ":a]"
+    	}
+    	
+    	val filter = "-filter_complex \"" + setsar + segments + "concat=n=" + inputCount + ":v=1:a=1[outv][outa]\""
+    	 
+    	val cmd = '''/usr/bin/ffmpeg -y «inputs» «filter» -map "[outv]" -map "[outa]" «outputPath»'''
     	val p = Runtime.runtime.exec(cmd.toString)
     	p.waitFor
+    	println(cmd.toString)
     }
     
     def static ffmpegConvertToGIF(String input) {
