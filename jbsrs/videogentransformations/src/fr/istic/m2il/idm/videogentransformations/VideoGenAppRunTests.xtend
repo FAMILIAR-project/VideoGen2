@@ -60,13 +60,10 @@ class VideoGenAppRunTests {
 						var files = args.get(3)
 						files += " " + args.get(4)
 						
-						var i = 5;
-						if(args.length > 5){
-							while(args.get(i) !==  null){
-								files += " " + args.get(i)
-								i++;
-							}
+						for (var i = 5 ; i < args.length ; i++) {
+  							files += " " + args.get(i)
 						}
+						
 						System.setProperty("concat_files", files);
 						
 					}

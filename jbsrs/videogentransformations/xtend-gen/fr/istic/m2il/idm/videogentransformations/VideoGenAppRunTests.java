@@ -67,19 +67,11 @@ public class VideoGenAppRunTests {
               String _get_2 = args[4];
               String _plus = (" " + _get_2);
               files = (_files + _plus);
-              int i = 5;
-              int _length = args.length;
-              boolean _greaterThan = (_length > 5);
-              if (_greaterThan) {
-                while ((args[i] != null)) {
-                  {
-                    String _files_1 = files;
-                    String _get_3 = args[i];
-                    String _plus_1 = (" " + _get_3);
-                    files = (_files_1 + _plus_1);
-                    i++;
-                  }
-                }
+              for (int i = 5; (i < args.length); i++) {
+                String _files_1 = files;
+                String _get_3 = args[i];
+                String _plus_1 = (" " + _get_3);
+                files = (_files_1 + _plus_1);
               }
               System.setProperty("concat_files", files);
             }

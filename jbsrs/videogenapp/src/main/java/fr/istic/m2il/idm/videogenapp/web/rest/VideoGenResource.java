@@ -50,6 +50,6 @@ public class VideoGenResource {
     @PostMapping("/videos")
     @Timed
     public void createUser(){
-        
+
     }
 }
