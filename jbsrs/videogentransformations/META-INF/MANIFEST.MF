@@ -3,11 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: rsunique
 Bundle-SymbolicName: videogentransformations
 Bundle-Version: 1.0.0.qualifier
-Export-Package: transformations
+Export-Package: fr.istic.m2il.idm.videogentransformations.configs,
+ fr.istic.m2il.idm.videogentransformations.helpers,
+ fr.istic.m2il.idm.videogentransformations.transformations,
+ fr.istic.m2il.idm.videogentransformations.utils
 Require-Bundle: org.xtext.example.videogen;bundle-version="1.0.0",
- org.xtext.example.videogen.ide;bundle-version="1.0.0",
- org.xtext.example.videogen.tests;bundle-version="1.0.0",
- org.xtext.example.videogen.ui;bundle-version="1.0.0",
  org.eclipse.emf.ecore.xmi;bundle-version="2.13.0",
  org.eclipse.xtend;bundle-version="2.0.0"
 Import-Package: org.eclipse.xtext.xbase.lib
+Main-Class: fr.istic.m2il.idm.videogentransformations.VideoGenAppRunTests
