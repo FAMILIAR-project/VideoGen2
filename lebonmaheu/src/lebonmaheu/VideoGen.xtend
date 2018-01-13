@@ -92,7 +92,7 @@ class VideoGen {
         	println("")
         ]
         
-        //FFMPEG.ffmpegConvertToGIF(output)
+        FFMPEG.ffmpegConvertToGIF(output)
     }
     
     
