@@ -3,7 +3,7 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <logger name="fr.istic.m2il.idm.videogen" level="INFO"/>
+    <logger name="fr.istic.m2il.idm.videogenapp" level="INFO"/>
 
     <logger name="io.github.jhipster" level="WARN"/>
 

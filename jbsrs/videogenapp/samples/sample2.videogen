@@ -1,0 +1,13 @@
+@author "IL(A)? students"
+@version "1.0"
+@creation "11/01/2018"
+VideoGen {
+	
+	mandatory videoseq v1 "/home/ismael/videogen/hello.mp4" {duration 6}
+	optional videoseq v2 "/home/ismael/videogen/v2.mp4" {duration 10}
+	alternatives v3 {
+		videoseq v31 "/home/ismael/videogen/bla.mp4" {duration 15}
+		videoseq v32 "/home/ismael/videogen/blabla.mp4"
+	}
+	mandatory videoseq v4 "/home/ismael/videogen/coucou.mp4" {text content "contenu text video" position TOP }
+}
