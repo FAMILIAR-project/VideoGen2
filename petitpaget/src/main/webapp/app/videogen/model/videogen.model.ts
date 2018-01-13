@@ -14,55 +14,26 @@ export class VideoGenInformation {
 }
 
 export class Media {
-}
-
-export class MandatoryMedia extends Media {
     constructor(
-      public description: MediaDescription,
-    ){
-        super();
-    }
-}
-
-export class OptionalMedia extends Media {
-    constructor(
-        public description: MediaDescription,
-    ){
-        super();
-    }
-}
-
-export class AlternativesMedia extends Media {
-    constructor(
-        public medias: MediaDescription[],
+        public type: string,
+        public description?: MediaDescription,
+        public medias?: MediaDescription[],
         public id?: number
-    ){
-        super();
-    }
+    ){}
 }
 
 export class MediaDescription {
-}
-
-export class VideoDescription extends MediaDescription {
     constructor(
         public location: string,
+        //Video
         public videoid?: number,
         public duration?: number,
         public probability?: number,
-        public description?: string
+        public description?: string,
         //TODO Filter + VideoText
-    ){
-        super();
-    }
-}
 
-export class ImageDescription extends MediaDescription {
-    constructor(
-        public location: string,
+        //Image
         public toptext?: string,
         public bottomtext?: string
-    ){
-        super();
-    }
+    ){}
 }

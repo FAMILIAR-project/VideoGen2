@@ -364,6 +364,13 @@
             <version>1</version>
             <systemPath>${basedir}/lib/VideoGenModel.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>VideoGenTools</groupId>
+            <artifactId>fr.pagetpetit.videogentools</artifactId>
+            <scope>system</scope>
+            <version>1</version>
+            <systemPath>${basedir}/lib/VideoGenTools.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>

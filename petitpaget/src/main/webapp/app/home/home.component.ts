@@ -30,11 +30,12 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-        /*console.log('LOADING MODEL');
-        this.videoGenService.getModel('example1').subscribe((model) => {
+        console.log('LOADING MODEL');
+        this.videoGenService.getModel('example2').subscribe((model) => {
             console.log(model);
-        });*/
-        var videos:string[] = [
+        });
+        /*
+        let videos:string[] = [
             "data/input/video/jaunatan.mp4",
             "data/input/video/sheep.mp4"
         ];
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit {
             console.log(response);
             console.log("PLAYLIST GENERATED");
         });
+        */
     }
 
     registerAuthenticationSuccess() {

@@ -30,7 +30,9 @@ public class VideoGenResource {
     public VideoGeneratorModelWrapper getVideoGenModel(@PathVariable String filename){
         filename = "data/input/videogen/" + filename + ".videogen";
         log.debug("getVideoGenModel : " + filename);
-        return wrap(videogenHelper.loadVideoGenerator(URI.createURI(filename)));
+        VideoGeneratorModel model = videogenHelper.loadVideoGenerator(URI.createURI(filename));
+        VideoGenUtils.generateThumbnails(model, "data/output/thumbnails");
+        return wrap(model);
     }
 
     @PostMapping("/videogen")

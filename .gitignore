@@ -129,3 +129,5 @@ VideoGenTools/\.idea/
 petitpaget/\.mvn/wrapper/maven-wrapper\.jar
 
 \.idea/
+
+petitpaget/data/output/thumbnails/
