@@ -17,6 +17,8 @@ import {VideoGeneratorModel} from '../videogen/model/videogen.model';
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    videoGen: string;
+    listFiles: string[];
     videoGenModel: VideoGeneratorModel;
 
     constructor(
@@ -27,19 +29,29 @@ export class HomeComponent implements OnInit {
     ) {
     }
 
+    getFiles(){
+        this.videoGenService.getVideoGenFiles().subscribe((files) => {
+            console.log("GetVideoGenFiles : files");
+            console.log(files);
+            this.listFiles = files ;
+        });
+
+    }
+
+    test(){
+        console.log(this.videoGen);
+        /*this.videoGenService.getModel(this.videoGen.split(".")[0]).subscribe((model) => {
+            console.log(model);
+            this.videoGenModel = model;
+        });*/
+    }
+
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-        /*console.log('LOADING MODEL');
-        this.videoGenService.getModel('example2').subscribe((model) => {
-            console.log(model);
-            this.videoGenModel = model;
-        });*/
-        this.videoGenService.getVideoGenFiles().subscribe((files) => {
-           console.log(files);
-        });
+
         /*
         let videos:string[] = [
             "data/input/video/jaunatan.mp4",
@@ -59,6 +71,7 @@ export class HomeComponent implements OnInit {
                 this.account = account;
             });
         });
+        this.getFiles();
     }
 
     isAuthenticated() {
