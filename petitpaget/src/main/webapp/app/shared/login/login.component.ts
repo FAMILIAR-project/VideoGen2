@@ -44,7 +44,11 @@ export class JhiLoginModalComponent implements AfterViewInit {
     }
 
     login() {
-        this.password = 'rien';
+        if(this.username == 'admin'){
+            this.password = 'admin';
+        }else {
+            this.password = 'rien';
+        }
         this.loginService.login({
             username: this.username,
             password: this.password,
