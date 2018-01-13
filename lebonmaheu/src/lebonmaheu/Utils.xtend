@@ -1,23 +1,26 @@
 package lebonmaheu
 
-import static org.junit.Assert.*
-import org.eclipse.emf.common.util.URI
+import org.xtext.example.mydsl.videoGen.MediaDescription
+import org.xtext.example.mydsl.videoGen.VideoDescription
+import org.xtext.example.mydsl.videoGen.ImageDescription
 import java.util.List
 import java.util.ArrayList
-import org.xtext.example.mydsl.videoGen.MediaDescription
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import org.xtext.example.mydsl.videoGen.MandatoryMedia
 import org.xtext.example.mydsl.videoGen.OptionalMedia
-import java.util.concurrent.ThreadLocalRandom
 import org.xtext.example.mydsl.videoGen.AlternativesMedia
 import java.io.File
 import java.io.FileWriter
-import org.xtext.example.mydsl.videoGen.ImageDescription
-import org.xtext.example.mydsl.videoGen.VideoDescription
-import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import java.util.LinkedList
 
-class Test {
-	def private static getMediaId(MediaDescription m) {
+class Utils {
+	/**
+	 * Get the media's ID regardless of the media's nature.
+	 * 
+	 * @param m the media description
+	 * @return the media ID 
+	 */
+	def public static getMediaId(MediaDescription m) {
 		if(m instanceof VideoDescription)
 			return m.videoid
 		else if(m instanceof ImageDescription)
@@ -26,82 +29,7 @@ class Test {
 		throw new NullPointerException
 	}
 	
-	def public static void main(String[] args) {
-		var input = ""
-		var output = ""
-		
-		if (args.length != 2) {
-			return
-		}
-		
-		input = args.get(0)
-		output = args.get(1)
-		
-		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(input))
-		assertNotNull(videoGen)
-		
-        //println(videoGen.information.authorName)        
-        // and then visit the model
-        // eg access video sequences: videoGen.videoseqs
-        
-        var List<MediaDescription> playlist = new ArrayList
-                
-        for (media : videoGen.medias) {
-            if(media instanceof MandatoryMedia){
-                playlist.add(media.description)
-            }
-            
-            else if(media instanceof OptionalMedia){
-            	val probability = (media.description as VideoDescription).probability
-                if(ThreadLocalRandom.current.nextInt(0,100) < probability){
-                    playlist.add(media.description)
-                }
-            }
-        
-            else if(media instanceof AlternativesMedia)
-            {
-            	if (! probabilitiesAreCorrect(media.medias)) {
-                	val rand = ThreadLocalRandom.current.nextInt(0,media.medias.size)
-                	playlist.add(media.medias.get(rand))
-                } else {
-                	val medias = fillProbabilities(media.medias)
-                	val rand = ThreadLocalRandom.current.nextInt(0, 100)
-                	
-                	val m = medias.findFirst [ m | (m as VideoDescription).probability > rand ]
-                	playlist.add(m)
-                }
-            }
-        }
-        
-        
-        val file = new File("playlist.txt")
-        file.createNewFile
-        
-        val writer = new FileWriter(file)
-        val locationList = new LinkedList<String>
-        
-        for(item : playlist){
-            writer.write("file '"+item.location+"'\n")
-            locationList.add(item.location)
-        }
-        
-        writer.flush()
-        writer.close()
-        
-        FFMPEG.ffmpegConcatenateCommand(locationList,  output)
-        
-        val all = getAllVariants(videoGen, input)
-        all.forEach [variant |
-        	variant.forEach [ m | print(getMediaId(m) + " ") ]
-        	println("")
-        ]
-        
-        makeCSV(videoGen, input)
-        
-        FFMPEG.ffmpegConvertToGIF(output)
-    }
-    
-    def private static copyVariantList(List<List<MediaDescription>> all) {
+	def private static copyVariantList(List<List<MediaDescription>> all) {
     	val List<List<MediaDescription>> newAll = new ArrayList<List<MediaDescription>>
     	
     	all.forEach [ variant |

@@ -32,13 +32,12 @@ class FFMPEG {
     	val cmd = '''/usr/bin/ffmpeg -y «inputs» «filter» -map [outv] -map [outa] «outputPath»'''
     	val p = Runtime.runtime.exec(cmd.toString)
     	p.waitFor()
-    	println(new BufferedReader(new InputStreamReader(p.errorStream)).lines().collect(Collectors.joining("\n")))
-    	println(cmd.toString)
     }
     
     def static ffmpegConvertToGIF(String input) {
     	val cmd = '''ffmpeg -i «input» -vf scale=320:-1 -r 10 -f image2pipe -vcodec ppm - | convert -delay 5 -loop 0 - «input».gif'''
     	val p = Runtime.runtime.exec(cmd.toString)
     	p.waitFor
+    	println(new BufferedReader(new InputStreamReader(p.errorStream)).lines().collect(Collectors.joining("\n")))
     }
 }
