@@ -1,0 +1,17 @@
+VideoGen {
+  mandatory videoseq v1 "bwah.mp4"
+  optional videoseq v2 "Adrift.mp4"
+  alternatives v3 {
+    videoseq v31 "city.mp4"
+    videoseq v32 "bwah.mp4"
+    videoseq v33 "gachi_fuck_you.mp4"
+  }
+  mandatory videoseq v5 "bwah.mp4"
+  optional videoseq v6 "Adrift.mp4"
+  alternatives v7 {
+    videoseq v71 "city.mp4"
+    videoseq v72 "bwah.mp4"
+    videoseq v73 "gachi_fuck_you.mp4"
+  }
+  mandatory videoseq v8 "bwah.mp4"
+}
