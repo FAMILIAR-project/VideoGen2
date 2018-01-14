@@ -41,14 +41,14 @@ un système de vérification est réalisé par nodeJS afin de supprimer les vid�
 
 # Installation
 
-Dépendances:
-`sudo apt-get update`
-`sudo apt-get install git nodejs-legacy npm default-jre`
+Dépendances:      
+`sudo apt-get update`      
+`sudo apt-get install git nodejs-legacy npm default-jre`      
 
-Installation:
-`git clone https://github.com/DuboisQ/video_generator_idm_2017.git`
-`cd video_generator_idm_2017/DuboisQ/WebApp`
-`npm install`
+Installation:      
+`git clone https://github.com/DuboisQ/video_generator_idm_2017.git`      
+`cd video_generator_idm_2017/DuboisQ/WebApp`      
+`npm install`      
 
 # Utilisation
 
@@ -61,7 +61,7 @@ modification des vidéo utilisées:
 - Ajouter des vidéos au dossier WebApp/public/OriginVideo
 - Modifier template.videogen (WebApp/public)
 
-#Autre
+# Autre
 
 La concaténation de vidéo via FFMPEF (et la commande utilisé dans le JAR) requiert d'utiliser des vidéos similaire en terme de structure.
 Je vous recommande donc d'utiliser des vidéos ayants:
