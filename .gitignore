@@ -1,0 +1,6 @@
+loic_beaulieu_xtext_project/bin/
+loic_beaulieu_xtext_project/video/
+loic_beaulieu_xtext_project/output_video/
+
+*.xtendbin
+*.videogen
