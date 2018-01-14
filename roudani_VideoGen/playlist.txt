@@ -1,0 +1,5 @@
+#this is a comment
+file '1.mp4'
+file '2.mp4'
+file '4.mp4'
+# duree total : 71.533
