@@ -78,6 +78,7 @@ class projet {
     		
 		//retourne le lien de la video 
 		println(name+".mp4")
+		
 	
 	}
 }

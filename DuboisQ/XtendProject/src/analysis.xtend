@@ -6,7 +6,6 @@ import org.xtext.example.mydsl.videoGen.MediaDescription
 import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 import java.io.File
-import java.util.Collections
 
 /*
  * Affiche le nombre de variantes possibles 
@@ -16,65 +15,126 @@ import java.util.Collections
 class analysis {
 	
 	def static void main(String[] args){
+		var differenteVideo = newHashMap();
+		
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("public/template.videogen"))
 		println("Auteur du fichier videogen : "+videoGen.information.authorName)		
-		println("Version du fichier videogen : "+videoGen.information.version)
-		
-		var listpoid = newArrayList()
-		listpoid.add(0l)
-		
+		println("Version du fichier videogen : "+videoGen.information.version)		
+		println("")
+
+		var Variantes= newArrayList()
+		Variantes.add(new variante())
+
 		if (videoGen instanceof VideoGeneratorModel){
 			for (Media media : videoGen.getMedias()) {
-				
 				if (media instanceof MandatoryMedia) {
 					if (media.getDescription() instanceof MediaDescription){
-						val file =new File("public/OriginVideo/"+media.getDescription().location)
-						val listpoidtemp = newArrayList()
-						for( i : listpoid){
-							listpoidtemp.add(i+file.length)
+						var videoname = media.getDescription().location.split("/").get(2)
+						val file =new File("public/OriginVideo/"+videoname)
+						if (!differenteVideo.containsKey(videoname)){
+							differenteVideo.put(videoname,file.length)
+						}			
+						val VariantesTemp = newArrayList()
+						for( i : Variantes){
+							VariantesTemp.add(i.clone().AddVideo(videoname,file.length))
 						}
-						listpoid = listpoidtemp						
+						Variantes = VariantesTemp							
 					}					
 				}
 				else if (media instanceof OptionalMedia) {
 					if (media.getDescription() instanceof MediaDescription){
-						val file =new File("public/OriginVideo/"+media.getDescription().location)
-						val listpoidtemp = newArrayList() 
-						for( i : listpoid){
-							listpoidtemp.add(i+file.length)
+						var videoname = media.getDescription().location.split("/").get(2)
+						val file =new File("public/OriginVideo/"+videoname)
+						if (!differenteVideo.containsKey(videoname)){
+							differenteVideo.put(videoname,file.length)
 						}
-						listpoid.addAll(listpoidtemp)
+						val VariantesTemp = newArrayList()
+						for( i : Variantes){
+							VariantesTemp.add(i.clone().AddVideo(videoname,file.length))
+						}
+						Variantes.addAll(VariantesTemp)	
 					}		
 				}
 				else if (media instanceof AlternativesMedia) {
-					var listpoidalter = newArrayList()
+					val VariantesTemp = newArrayList()
 					for (MediaDescription medialter : media.getMedias()){
-						val file =new File("public/OriginVideo/"+medialter.location)
-						for( i : listpoid){
-							listpoidalter.add(i+file.length)
+						var videoname = medialter.location.split("/").get(2)
+						val file =new File("public/OriginVideo/"+videoname)
+						if (!differenteVideo.containsKey(videoname)){
+							differenteVideo.put(videoname,file.length)
+						}
+						for( i : Variantes){
+							VariantesTemp.add(i.clone().AddVideo(videoname,file.length))
 						}
 					}
-					listpoid=listpoidalter
+					Variantes = VariantesTemp			
 				}
 			}
 		}
-		println(listpoid.size+" variantes possible.")
-		println("Poid max variante: "+Collections.max(listpoid)+"octets soit "+(Collections.max(listpoid)/1048576f)+"mo");
-		println("Poid min variante: "+Collections.min(listpoid)+"octets soit "+(Collections.min(listpoid)/1048576f)+"mo");
-		println("")
 		
-		println("liste des poid possible des vidéos en Octets :")
-		println(listpoid)
+		println(differenteVideo.size+" videos utilisées:")
+		var it = differenteVideo.entrySet().iterator();
+	    while (it.hasNext()) {
+	        var pair = it.next();
+	        System.out.println(pair.getKey()+ " de "+(pair.getValue()/1048576f)+" mo");
+	    }
 		println("")
+
+		var maxSize = 0L
+		var minSize  = 9999999999999L
+		var maxduree = 0L
+		var minduree = 99999999999999999L
 		
-		var listpoidmo = newArrayList()
-		for (c : listpoid){
-			listpoidmo.add(c/1048576f)
+		for (c : Variantes){
+			if (c.TotalSize> maxSize )	{
+				maxSize = c.TotalSize
+			}	
 			
+			if (c.TotalSize < minSize )	{
+				minSize = c.TotalSize
+			}		
+			
+			if (c.Totalduree> maxduree )	{
+				maxduree = c.Totalduree
+			}		
+			
+			if (c.Totalduree < minduree )	{
+				minduree = c.Totalduree
+			}	
 		}
-		println("liste des poid possible des vidéos en Mega-Octets :")
-		println(listpoidmo)
-		println("")		
+		
+		println(Variantes.size+" variantes possible.")
+		println("Poid max variante: "+(maxSize/1048576f)+" mo");
+		println("Poid min variante: "+(minSize/1048576f)+" mo");
+		println("Durée max variante: "+maxduree+" secondes (non correct)");
+		println("Durée min variante: "+minduree+" secondes (non correct)");
+		println("")
+		
+		println("liste des poids possible des vidéos en Mega-Octets (estimation avec additions des poids vidéo):")
+		for (c : Variantes){
+			print(c.GetPoidMO()+"  ")
+		}
+		println("")
+		println("")
+				
 		
 	}
+	
+	// non fonctionnel
+	static def Float getDuration(String path){
+		var cmd = "ffprobe -i "+path+" -show_entries format=duration -v quiet -of csv=\"p=0\""
+				println(cmd)
+		
+		var p = Runtime.getRuntime.exec(cmd)
+	
+	    var in = p.getInputStream();
+	    var c =0;
+	    while ((c = in.read()) != -1) {
+	     println( c);
+	    }
+	    in.close();
+		
+		return 0f;
+	}
+
 }
