@@ -1,36 +1,51 @@
 package fr.istic.idm;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.function.Consumer;
+import java.io.IOException;
+import java.util.UUID;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xtext.example.mydsl.videoGen.AlternativesMedia;
-import org.xtext.example.mydsl.videoGen.MandatoryMedia;
-import org.xtext.example.mydsl.videoGen.Media;import org.xtext.example.mydsl.videoGen.MediaDescription;
-import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 import fr.istic.idm.exception.InvalidVarianteGeneration;
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
-import fr.istic.idm.model.MediaSequence;
 import fr.istic.idm.model.Variante;
 import fr.istic.idm.model.Variantes;
 
 public class VideoGenCompiler {
-
+	private static final String TEMP_DIR_NAME = "VideoGenTemp";
+	private static final File TEMP_DIR = FileUtils.getFile(FilenameUtils.normalize(System.getProperty("user.dir") + "/" + TEMP_DIR_NAME));
+	private static final File OUTPUT_DIR = FileUtils.getFile(FilenameUtils.normalize(System.getProperty("user.dir") + "/" + "VideoGenOutput"));
+	
+	// TODO: Update this if linux failed to work
+	public static final String TEMP_DIR_PATH = FilenameUtils.normalize(TEMP_DIR.getAbsolutePath() + "/");
+	
 	private static Logger log = LoggerFactory.getLogger(VideoGenCompiler.class);
 	
 	private VideoGeneratorModel model;
 	private Variantes variantes;
 	
 	public VideoGenCompiler(VideoGeneratorModel model) {
+		if(!TEMP_DIR.exists()) {
+			TEMP_DIR.mkdir();
+		}
+		
+		if(!OUTPUT_DIR.exists()) {
+			OUTPUT_DIR.mkdir();
+		}
+		
+		try {
+			FileUtils.cleanDirectory(TEMP_DIR);
+		} catch(IOException e) {
+			log.error(e.getMessage());
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+		}
+		
 		this.model = model;
 	}
 	
@@ -49,10 +64,13 @@ public class VideoGenCompiler {
 		
 		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(videoGenFile.getPath()));
 		VideoGenCompiler compiler = new VideoGenCompiler(videoGen);
-		log.info("File loaded successfully");
+		log.info("VideoGen SourceCode loaded successfully");
 		
-		
-		compiler.compile();
+		try {
+			compiler.compile();
+		} catch(RuntimeException e) {
+			log.error(e.getMessage());
+		}
 	}
 	
 	private void compile() {
@@ -67,19 +85,21 @@ public class VideoGenCompiler {
 		duration = (endTime - startTime);
 		log.info("Generate {} variantes in {} ms", variantes.size(), duration);
 		
-		int success = 0, size=50;
-		for (int i =0 ; i < size ; i++) {
-			
-			startTime = System.currentTimeMillis();
+		
 			try {
 				Variante variante = Variante.generate(this.model.getMedias());
 				log.info("Generated Variante: {}", variante);
 				
 				if(!variantes.contains(variante))
 					throw new InvalidVarianteGeneration("Try to generate a variant that doesn't exist");
-				success++;
-				log.info("Variante previously found ? {}", variantes.contains(variante));
-			} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration e) {
+				
+				File video = variante.compile();
+				
+				File concatenedFile = FileUtils.getFile(OUTPUT_DIR, System.identityHashCode(variante) + ".mp4");
+				FileUtils.moveFile(video, concatenedFile);
+				
+				log.info("Result available here {}", concatenedFile.getAbsolutePath());
+			} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration | IOException e) {
 				log.error(e.getMessage());
 				
 				if(log.isDebugEnabled()) {
@@ -87,13 +107,8 @@ public class VideoGenCompiler {
 				}
 //				throw new RuntimeException("The compiler cannot compile the grammar: " + e.getMessage());
 			}
-			endTime = System.currentTimeMillis();
 			
-			duration = (endTime - startTime);
-			log.info("Randomly select one variant in {} ms", duration);
-		}
 		
-		log.info("{} / {} success to generate a correct variant", success, size);
 	}
 	
 }

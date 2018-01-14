@@ -24,3 +24,11 @@ org\.xtext\.example\.videogen/
 org\.xtext\.example\.videogen\.ide/
 
 antoineC/src/main/xtend-gen/
+
+antoineC/VideoGenOutput/
+
+antoineC/VideoGenTemp/
+
+*.mp4
+
+*.mkv

@@ -1,27 +1,22 @@
 package fr.istic.idm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
-import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
-import fr.istic.idm.model.MediaSequence;
+import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
+import fr.istic.idm.model.mediasequence.MediaSequence;
+import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
 
 
 public class RandomMediaSelector {
@@ -56,16 +51,16 @@ public class RandomMediaSelector {
 			if(probability.isPresent()) {
 				
 				if(random <= probability.get()) {
-					return new MediaSequence(optionalMedia, Optional.ofNullable(optionalMedia.getDescription()));
+					return new OptionalMediaSequence(optionalMedia, Optional.ofNullable(optionalMedia.getDescription()));
 				} else {
-					return new MediaSequence(optionalMedia, null);
+					return new OptionalMediaSequence(optionalMedia, null);
 				}
 			}
 			
 		}
 		
 		
-		return random > 50 ? new MediaSequence(optionalMedia, Optional.ofNullable(null)) : new MediaSequence(optionalMedia, Optional.ofNullable(optionalMedia.getDescription()));
+		return random > 50 ? new OptionalMediaSequence(optionalMedia, Optional.ofNullable(null)) : new OptionalMediaSequence(optionalMedia, Optional.ofNullable(optionalMedia.getDescription()));
 	}
 	
 	public static Optional<MediaSequence> selectAlternativesMedia(AlternativesMedia alternatives) throws InvalidVideoGenGrammarException {
@@ -113,7 +108,7 @@ public class RandomMediaSelector {
 					}
 					
 					if(probabilityCounter > random)
-						return Optional.ofNullable(new MediaSequence(alternatives, Optional.ofNullable(probabilities.get(probability))));
+						return Optional.ofNullable(new AlternativeMediaSequence(alternatives, Optional.ofNullable(probabilities.get(probability))));
 					
 				}
 			}	
@@ -121,7 +116,7 @@ public class RandomMediaSelector {
 		
 		//Pour quand c'est entièrement équiprobable, on tire juste un index de la liste au hasard.
 		return Optional.ofNullable(
-				new MediaSequence(
+				new AlternativeMediaSequence(
 						alternatives, 
 						Optional.ofNullable(alternatives.getMedias().get(
 								rand.nextInt(
