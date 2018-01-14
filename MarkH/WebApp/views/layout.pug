@@ -1,0 +1,30 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+	body
+		block content
+
+script.
+	var EnAttenteDeCreation = false;
+	var generate = function() {
+		if (!EnAttenteDeCreation){
+			EnAttenteDeCreation= true;
+			$('.graphic').html('<img src="/loading.gif" width="100" ><br><br> Création de la vidéo en cours !');
+			$.ajax({
+				type:"GET",
+				url:"/tools/generate",
+				data:{},
+				success:function(rep){
+					$('.graphic').html('<video controls width="782" height="440" src="GeneratedVideo/'+rep+'" type="video/mp4" ></video><br><br> Your video will be available for 10 minutes before disappearing into nothingness :(');
+					EnAttenteDeCreation= false;
+				},
+				error:function(err){
+					$('.graphic').html('Erreur de création de vidéo :<br>'+err);
+					EnAttenteDeCreation= false;
+				}
+			});
+		}
+	}
