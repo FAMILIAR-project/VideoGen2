@@ -11,23 +11,13 @@ import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
 public abstract class VideoGenCompilerVisitor extends MediaSequenceVisitor {
 
 	@Override
-	public void visit(AlternativeMediaSequence sequence) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void visit(AlternativeMediaSequence sequence) throws FileNotFoundException;
 
 	@Override
-	public void visit(OptionalMediaSequence sequence) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void visit(OptionalMediaSequence sequence) throws FileNotFoundException;
 
 	@Override
-	public void visit(MandatoryMediaSequence sequence) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-
-	}
-
+	public abstract void visit(MandatoryMediaSequence sequence) throws FileNotFoundException;
 	/**
 	 * Build The Video Compiled from the .videogen file and return an instance of File that points to it.
 	 * @return

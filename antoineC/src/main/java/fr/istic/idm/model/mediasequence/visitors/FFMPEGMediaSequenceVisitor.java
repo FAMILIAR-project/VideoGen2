@@ -1,19 +1,12 @@
 package fr.istic.idm.model.mediasequence.visitors;
 
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -27,7 +20,6 @@ import com.google.common.collect.ImmutableMap;
 
 import fr.istic.idm.VideoGenCompiler;
 import fr.istic.idm.ffmpeg.FFMPEGCommand;
-import fr.istic.idm.ffmpeg.StreamHandler;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
 import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
@@ -38,9 +30,14 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 	private LinkedList<File> videoParts;
 	private File videoConcatenationInstructionsFile;
 	private FileWriter concatenationInstructionsWriter;
+	private VarianteInformationsVisitor varianteInformations;
 	
 	
-	public FFMPEGMediaSequenceVisitor() {
+	
+	public FFMPEGMediaSequenceVisitor(VarianteInformationsVisitor visitor) {
+		this.varianteInformations = visitor;
+		
+		log.info("Minimum Width of variante {}", varianteInformations.getMinWidth());
 		this.videoParts = new LinkedList<>();
 		this.videoConcatenationInstructionsFile = FileUtils.getFile(VideoGenCompiler.TEMP_DIR_PATH + "concatenate.txt");
 		
@@ -131,10 +128,6 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		File output = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".jpg");
 		commandBuilder.append(filtersBuilder.toString()).append(" -y ").append(output.getAbsolutePath());
 		
-		// TODO: WARNING test in a unix system because development is made in windows, and it must work in unix.
-		// Bottom: ffmpeg -i image.png -vf drawtext=fontfile=src/main/resources/arial.ttf:fontcolor=white:fontsize=74:x="(w-text_w)/2":y="(h-text_h)":text="Bottom Text" -y bottom.png
-		// TP: ffmpeg -i image.png -vf drawtext=fontfile=src/main/resources/arial.ttf:fontcolor=white:fontsize=74:x="(w-text_w)/2":y=0:text="Top Text" -y top.png
-		
 		if(!new FFMPEGCommand(commandBuilder.toString()).execute()) {
 			throw new RuntimeException("Cannot generate image with text from '" + image.getAbsolutePath() + "'");
 		}
@@ -142,7 +135,9 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		File videoOutput = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
 		videoParts.add(videoOutput);
 		
-		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"trunc(iw/2)*2:trunc(ih/2)*2\" -t 3 -y " + videoOutput.getAbsolutePath();
+//		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"trunc(iw/2)*2:trunc(ih/2)*2\" -t 3 -y " + videoOutput.getAbsolutePath();
+		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"" + varianteInformations.getMinWidth() + ":-2\" -t 3 -y " + videoOutput.getAbsolutePath();
+		
 		
 		if(!new FFMPEGCommand(command).execute()) {
 			throw new RuntimeException("Cannot generate video from image '" + image.getAbsolutePath() + "'");
@@ -160,7 +155,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		File output = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
 		this.videoParts.add(output);
-		String command = "ffmpeg -i " + video.getAbsolutePath() + " " + output.getAbsolutePath() + " -y -hide_banner";
+		String command = "ffmpeg -i " + video.getAbsolutePath() + " -vf scale=\"" + varianteInformations.getMinWidth() + ":-2\" " + output.getAbsolutePath() + " -y -hide_banner";
 		
 		
 		if(!new FFMPEGCommand(command).execute()) {
@@ -172,6 +167,8 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 //		description.getProbability() zero, 
 //		description.getDuration() 0, 
 //		description.getDescription() nullable
+		// ffmpeg -i who.mp4 -i welcome.mp4 -filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" -map "[outv]" -map "[outa]" output.mkv
+		// ffmpeg -i who.mp4 -i welcome.mp4 -filter_complex "scale=640x640;[0]setdar=16/9[a];[1]setdar=16/9[b]; [a][b]concat=n=2:v=1:a=1" output.mp4
 	}
 
 	/**

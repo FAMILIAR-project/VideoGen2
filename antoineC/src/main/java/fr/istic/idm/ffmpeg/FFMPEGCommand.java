@@ -42,4 +42,34 @@ public class FFMPEGCommand {
 			return false;
 		}
 	}
+	
+	public String getResult() {
+		log.debug("Get Result of command {}", this.command);
+		Process process;
+		try {
+			process = Runtime.getRuntime().exec(this.command);
+			StreamHandler outStream = new StreamHandler(process.getInputStream(), "OUT");
+			Thread out = new Thread(outStream);
+			Thread err = new Thread(new StreamHandler(process.getErrorStream(), "ERR"));
+			
+			out.start(); err.start();
+			
+			int result = process.waitFor();
+			
+			log.debug("Process exit with code {}", result);
+			
+			if(result == 0) {
+				return outStream.getContent();
+			} else {
+				throw new RuntimeException("Cannot get result of command \"" + command + "\"");
+			}
+		} catch (IOException | InterruptedException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+			
+			throw new RuntimeException("Cannot get result of command \"" + command + "\"");
+		}
+	}
 }

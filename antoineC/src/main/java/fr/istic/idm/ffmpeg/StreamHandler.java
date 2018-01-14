@@ -18,10 +18,13 @@ public class StreamHandler implements Runnable {
 	
 	private InputStream stream;
 	private String type;
+	
+	private String content;
 
 	public StreamHandler(InputStream stream, String type) {
 		this.stream = stream;
 		this.type = type;
+		this.content = "";
 	}
 
 	@Override
@@ -33,6 +36,7 @@ public class StreamHandler implements Runnable {
 			String line = null;
 			
 			while ( (line = reader.readLine()) != null) {
+				content += line;
 				log.debug("[FFMPEG][{}] {}", type, line);
 			}
 			
@@ -42,6 +46,10 @@ public class StreamHandler implements Runnable {
 			if(log.isWarnEnabled())
 				e.printStackTrace();  
 		}
+	}
+
+	public String getContent() {
+		return content;
 	}
 
 }

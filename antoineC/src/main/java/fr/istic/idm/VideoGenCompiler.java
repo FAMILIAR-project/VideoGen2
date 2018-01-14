@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,11 @@ import fr.istic.idm.model.Variantes;
 
 public class VideoGenCompiler {
 	private static final String TEMP_DIR_NAME = "VideoGenTemp";
-	private static final File TEMP_DIR = FileUtils.getFile(FileUtils.getTempDirectoryPath() + TEMP_DIR_NAME);
+	private static final File TEMP_DIR = FileUtils.getFile(FilenameUtils.normalize(System.getProperty("user.dir") + "/" + TEMP_DIR_NAME));
+	private static final File OUTPUT_DIR = FileUtils.getFile(FilenameUtils.normalize(System.getProperty("user.dir") + "/" + "VideoGenOutput"));
 	
 	// TODO: Update this if linux failed to work
-	public static final String TEMP_DIR_PATH = TEMP_DIR.getAbsolutePath() + "\\";
+	public static final String TEMP_DIR_PATH = FilenameUtils.normalize(TEMP_DIR.getAbsolutePath() + "/");
 	
 	private static Logger log = LoggerFactory.getLogger(VideoGenCompiler.class);
 	
@@ -30,6 +32,10 @@ public class VideoGenCompiler {
 	public VideoGenCompiler(VideoGeneratorModel model) {
 		if(!TEMP_DIR.exists()) {
 			TEMP_DIR.mkdir();
+		}
+		
+		if(!OUTPUT_DIR.exists()) {
+			OUTPUT_DIR.mkdir();
 		}
 		
 		try {
@@ -89,7 +95,7 @@ public class VideoGenCompiler {
 				
 				File video = variante.compile();
 				
-				File concatenedFile = FileUtils.getFile(UUID.randomUUID() + ".mp4");
+				File concatenedFile = FileUtils.getFile(OUTPUT_DIR, System.identityHashCode(variante) + ".mp4");
 				FileUtils.moveFile(video, concatenedFile);
 				
 				log.info("Result available here {}", concatenedFile.getAbsolutePath());

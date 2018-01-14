@@ -20,6 +20,7 @@ import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
 import fr.istic.idm.model.mediasequence.MediaSequence;
 import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VarianteInformationsVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VideoGenCompilerVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 
@@ -51,11 +52,32 @@ public class Variante {
 		this.variante.add(sequence);
 	}
 	
+	
+	public VarianteInformationsVisitor getVarianteInformations() {
+		VarianteInformationsVisitor visitor = VisitorFactory.createInformationsVisitor();
+		
+		Iterator<MediaSequence> iterator = this.variante.iterator();
+		
+		try {
+			while(iterator.hasNext())
+				iterator.next().accept(visitor);
+		} catch(FileNotFoundException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled())
+				e.printStackTrace();
+			
+			throw new RuntimeException("Compiler aborted due to: " + e.getMessage());
+		}
+		
+		return visitor;
+	}
+	
 	/**
 	 * This method compile a video file using a tool like ffmpeg.
 	 */
 	public File compile() {
-		VideoGenCompilerVisitor visitor = VisitorFactory.createCompilerVisitor();
+		VideoGenCompilerVisitor visitor = VisitorFactory.createCompilerVisitor(getVarianteInformations());
 		
 		Iterator<MediaSequence> iterator = this.variante.iterator();
 		
