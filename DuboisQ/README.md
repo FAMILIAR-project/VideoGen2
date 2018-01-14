@@ -70,4 +70,4 @@ Je vous recommande donc d'utiliser des vidéos ayants:
 - Même codec vidéo (H.264 25/30 fps)
 - Même codec audio (MPEG-4 AAC)
 
-# Conclusion
+
