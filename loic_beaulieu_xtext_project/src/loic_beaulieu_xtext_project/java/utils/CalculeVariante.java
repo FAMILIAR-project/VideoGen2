@@ -10,6 +10,11 @@ import loic_beaulieu_xtext_project.java.media.VarianteVideo;
 import loic_beaulieu_xtext_project.java.media.video.IdVideo;
 
 
+/**
+ * Classe qui permet d'utilisé l'algo de génération de variante de video en fonction de plusieurs video.
+ * @author loic
+ *
+ */
 public class CalculeVariante {
 		
 	private List<VarianteVideo> listVariante2;
@@ -24,7 +29,11 @@ public class CalculeVariante {
 	}
 	
 
-	
+	/**
+	 * copy profonde d'une liste de variante de vidéo
+	 * @param toCopy
+	 * @return
+	 */
 	private List<VarianteVideo> copyOfListVariante(List<VarianteVideo> toCopy){
 		List<VarianteVideo> copy = new ArrayList<>();
 		for (VarianteVideo varianteVideo : toCopy) {
@@ -33,7 +42,10 @@ public class CalculeVariante {
 		return copy;
 	}
 	
-	
+	/**
+	 * ajoute une video/image obligatoire. consiste juste à ajouté la video dans toute les possibilité possible
+	 * @param video
+	 */
 	public void addMandatoryVideo(IdFile video) {
 		listItem.add(video);		
 		for (VarianteVideo variante : listVariante2) {
@@ -41,6 +53,10 @@ public class CalculeVariante {
 		}
 	}
 	
+	/**
+	 * ajoute une video/image optionnel. Cela aura pour effet de cloné la liste des possibilité de variante et à y rajouté cette video optionel tout en modifiant les probabilité
+	 * @param video
+	 */
 	public void addOptionnalVideo(IdFile video) {
 		listItem.add(video);
 				
@@ -56,7 +72,10 @@ public class CalculeVariante {
 		listVariante2.addAll(copy);
 	}
 	
-	
+	/**
+	 * ajoute une liste video/image alternative. Cela consiste à cloné la liste des possibilité pour chaque alternative et à y rajouter la video tout en modifiant les probabilités en conséquence
+	 * @param listAlternative
+	 */
 	public void addAlternativeVideo(List<IdFile> listAlternative) {
 		List<VarianteVideo> originVarianteVideo = copyOfListVariante(listVariante2);
 		listVariante2 = new ArrayList<>();
@@ -90,7 +109,10 @@ public class CalculeVariante {
 	
 	
 
-	
+	/**
+	 * Retourne une variante possible proportionel à sa probabilité d'apparition
+	 * @return
+	 */
 	public VarianteVideo getRandomVariante() {
 		double rand = ((double) (new Random().nextInt(101)+1))/100;
 		double acc = 0;

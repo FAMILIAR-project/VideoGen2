@@ -5,6 +5,9 @@ public interface IdFile {
 	String getPath();
 	double getProba();
 	
+	boolean isVideo();
+	boolean isImage();
+	
 	void setProba(double proba);
 
 	long getSizeVideo();

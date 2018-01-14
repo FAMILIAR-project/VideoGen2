@@ -33,6 +33,7 @@ public class GenerationVideo {
 		}
 		
 		pathVideoGenFile = pathToVideoGenFile;
+		
 	}
 	
 	
@@ -184,11 +185,11 @@ public class GenerationVideo {
 				
 				
 				if (totalProba > 1) {
-					throw new BadProba("Le total des probabilités de video alternative est supérieurs à 1");
+					throw new BadProba("Le total des probabilités de video alternative est supérieurs à 1, proba trouver :"+totalProba);
 				}
 				
 				if (totalProba < 0.99) {
-					throw new BadProba("Le total des probabilités de video alternative est inférieurs à 1");
+					throw new BadProba("Le total des probabilités de video alternative est inférieurs à 1, proba trouver :"+totalProba);
 				}
 				
 				variantes.addAlternativeVideo(listVideo);

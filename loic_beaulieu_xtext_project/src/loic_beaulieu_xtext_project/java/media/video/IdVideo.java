@@ -2,6 +2,7 @@ package loic_beaulieu_xtext_project.java.media.video;
 
 import java.io.File;
 
+import loic_beaulieu_xtext_project.java.Constante;
 import loic_beaulieu_xtext_project.java.media.IdFile;
 
 public class IdVideo implements IdFile {
@@ -22,7 +23,7 @@ public class IdVideo implements IdFile {
 	public IdVideo(String id, String path, double proba, Integer duration, String description, TextVideo videoText) {
 		super();
 		this.id = id;
-		this.path = path;
+		this.path = Constante.originalPathDirectory+"/"+path;
 		this.proba = proba;
 		this.duration = duration;
 		this.description = description;
@@ -108,6 +109,20 @@ public class IdVideo implements IdFile {
 	@Override
 	public String toString() {
 		return "IdVideo [path=" + path + "]";
+	}
+
+
+	@Override
+	public boolean isVideo() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+
+	@Override
+	public boolean isImage() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	
