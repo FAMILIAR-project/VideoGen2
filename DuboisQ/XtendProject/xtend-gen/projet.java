@@ -61,10 +61,10 @@ public class projet {
           }
         }
       }
-      int name = new Random().nextInt(99999999);
+      String name = Integer.valueOf(new Random().nextInt(9999)).toString();
       Writer writer = null;
       try {
-        FileOutputStream _fileOutputStream = new FileOutputStream((("public/TempTextFile/" + Integer.valueOf(name)) + ".txt"));
+        FileOutputStream _fileOutputStream = new FileOutputStream((("public/TempTextFile/" + name) + ".txt"));
         OutputStreamWriter _outputStreamWriter = new OutputStreamWriter(_fileOutputStream, "utf-8");
         BufferedWriter _bufferedWriter = new BufferedWriter(_outputStreamWriter);
         writer = _bufferedWriter;
@@ -86,13 +86,12 @@ public class projet {
           }
         }
       }
-      String command = (((("ffmpeg -f concat -safe 0 -i public/TempTextFile/" + Integer.valueOf(name)) + ".txt -y -c copy public/GeneratedVideo/") + Integer.valueOf(name)) + ".mp4");
+      String command = (((("ffmpeg -f concat -safe 0 -i public/TempTextFile/" + name) + ".txt -y -c copy public/GeneratedVideo/") + name) + ".mp4");
       Process p = Runtime.getRuntime().exec(command);
       p.waitFor();
-      final File file = new File((("public/TempTextFile/" + Integer.valueOf(name)) + ".txt"));
+      final File file = new File((("public/TempTextFile/" + name) + ".txt"));
       file.delete();
-      String _plus_6 = (Integer.valueOf(name) + ".mp4");
-      InputOutput.<String>println(_plus_6);
+      InputOutput.<String>println((name + ".mp4"));
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

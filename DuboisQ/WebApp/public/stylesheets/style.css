@@ -7,6 +7,12 @@ body {
   float: center;
 }
 
+video{
+  background: black;
+  background-color: black;
+  width: 800;
+  height: 300;
+}
 .title_panel{
 	height: 60px;
 	width: 100%;

@@ -3,7 +3,7 @@ var exec = require('child_process').exec, child;
 var router = express.Router();
 
 var interval = setInterval(function() {
-	child = exec('find public/GeneratedVideo/*.mp4 -maxdepth 1 -mmin +1 -delete',
+	child = exec('find public/GeneratedVideo/*.mp4 -maxdepth 1 -mmin +10 -delete',
 		function (error, stdout, stderr){
 			if(error !== null){
 				console.log('No video to remove..');

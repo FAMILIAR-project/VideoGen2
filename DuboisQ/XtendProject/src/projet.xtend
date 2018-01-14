@@ -53,7 +53,7 @@ class projet {
 		}
 		
 		// créé le nom aléatoire
-		var name = new Random().nextInt(99999999)
+		var name = new Random().nextInt(9999).toString()
 		
 		// crée un fichier texte avec les video a utilisé pour cette génération
 		var Writer writer = null
@@ -68,10 +68,8 @@ class projet {
 
 
 		//appel la commande FFMPEG pour crée la video a partir du fichier text
-		//var command = "ffmpeg -f concat -safe 0 -i public/TempTextFile/"+name+".txt -y -c copy public/GeneratedVideo/"+name+".mp4"		
-	
-		var command = "mkvmerge"		
-		
+		var command = "ffmpeg -f concat -safe 0 -i public/TempTextFile/"+name+".txt -y -c copy public/GeneratedVideo/"+name+".mp4"		
+			
 		var p = Runtime.runtime.exec(command)
 		p.waitFor
 

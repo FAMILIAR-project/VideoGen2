@@ -16,7 +16,7 @@ import java.util.Collections
 class analysis {
 	
 	def static void main(String[] args){
-		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("template.videogen"))
+		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("public/template.videogen"))
 		println("Auteur du fichier videogen : "+videoGen.information.authorName)		
 		println("Version du fichier videogen : "+videoGen.information.version)
 		
@@ -28,7 +28,7 @@ class analysis {
 				
 				if (media instanceof MandatoryMedia) {
 					if (media.getDescription() instanceof MediaDescription){
-						val file =new File(media.getDescription().location)
+						val file =new File("public/OriginVideo/"+media.getDescription().location)
 						val listpoidtemp = newArrayList()
 						for( i : listpoid){
 							listpoidtemp.add(i+file.length)
@@ -38,7 +38,7 @@ class analysis {
 				}
 				else if (media instanceof OptionalMedia) {
 					if (media.getDescription() instanceof MediaDescription){
-						val file =new File(media.getDescription().location)
+						val file =new File("public/OriginVideo/"+media.getDescription().location)
 						val listpoidtemp = newArrayList() 
 						for( i : listpoid){
 							listpoidtemp.add(i+file.length)
@@ -49,7 +49,7 @@ class analysis {
 				else if (media instanceof AlternativesMedia) {
 					var listpoidalter = newArrayList()
 					for (MediaDescription medialter : media.getMedias()){
-						val file =new File(medialter.location)
+						val file =new File("public/OriginVideo/"+medialter.location)
 						for( i : listpoid){
 							listpoidalter.add(i+file.length)
 						}
@@ -59,9 +59,22 @@ class analysis {
 			}
 		}
 		println(listpoid.size+" variantes possible.")
-		println("Poid max : "+Collections.max(listpoid));
-		println("Poid min : "+Collections.min(listpoid));
+		println("Poid max variante: "+Collections.max(listpoid)+"octets soit "+(Collections.max(listpoid)/1048576f)+"mo");
+		println("Poid min variante: "+Collections.min(listpoid)+"octets soit "+(Collections.min(listpoid)/1048576f)+"mo");
+		println("")
+		
+		println("liste des poid possible des vidéos en Octets :")
 		println(listpoid)
+		println("")
+		
+		var listpoidmo = newArrayList()
+		for (c : listpoid){
+			listpoidmo.add(c/1048576f)
+			
+		}
+		println("liste des poid possible des vidéos en Mega-Octets :")
+		println(listpoidmo)
+		println("")		
 		
 	}
 }
