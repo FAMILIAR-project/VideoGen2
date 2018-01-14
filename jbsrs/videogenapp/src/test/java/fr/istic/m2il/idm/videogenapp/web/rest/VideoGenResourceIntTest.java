@@ -39,6 +39,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = VideogenappApp.class)
 public class VideoGenResourceIntTest {
 
+    private static final String DEFAULT_AUTHOR = "AAAAAAAAAA";
+    private static final String UPDATED_AUTHOR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DATE = "AAAAAAAAAA";
+    private static final String UPDATED_DATE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VERSION = "AAAAAAAAAA";
+    private static final String UPDATED_VERSION = "BBBBBBBBBB";
+
     @Autowired
     private VideoGenRepository videoGenRepository;
 
@@ -79,7 +88,10 @@ public class VideoGenResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static VideoGen createEntity(EntityManager em) {
-        VideoGen videoGen = new VideoGen();
+        VideoGen videoGen = new VideoGen()
+            .author(DEFAULT_AUTHOR)
+            .date(DEFAULT_DATE)
+            .version(DEFAULT_VERSION);
         return videoGen;
     }
 
@@ -103,6 +115,9 @@ public class VideoGenResourceIntTest {
         List<VideoGen> videoGenList = videoGenRepository.findAll();
         assertThat(videoGenList).hasSize(databaseSizeBeforeCreate + 1);
         VideoGen testVideoGen = videoGenList.get(videoGenList.size() - 1);
+        assertThat(testVideoGen.getAuthor()).isEqualTo(DEFAULT_AUTHOR);
+        assertThat(testVideoGen.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testVideoGen.getVersion()).isEqualTo(DEFAULT_VERSION);
     }
 
     @Test
@@ -134,7 +149,10 @@ public class VideoGenResourceIntTest {
         restVideoGenMockMvc.perform(get("/api/video-gens?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(videoGen.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(videoGen.getId().intValue())))
+            .andExpect(jsonPath("$.[*].author").value(hasItem(DEFAULT_AUTHOR.toString())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION.toString())));
     }
 
     @Test
@@ -147,7 +165,10 @@ public class VideoGenResourceIntTest {
         restVideoGenMockMvc.perform(get("/api/video-gens/{id}", videoGen.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(videoGen.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(videoGen.getId().intValue()))
+            .andExpect(jsonPath("$.author").value(DEFAULT_AUTHOR.toString()))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
+            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION.toString()));
     }
 
     @Test
@@ -170,6 +191,10 @@ public class VideoGenResourceIntTest {
         VideoGen updatedVideoGen = videoGenRepository.findOne(videoGen.getId());
         // Disconnect from session so that the updates on updatedVideoGen are not directly saved in db
         em.detach(updatedVideoGen);
+        updatedVideoGen
+            .author(UPDATED_AUTHOR)
+            .date(UPDATED_DATE)
+            .version(UPDATED_VERSION);
 
         restVideoGenMockMvc.perform(put("/api/video-gens")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -180,6 +205,9 @@ public class VideoGenResourceIntTest {
         List<VideoGen> videoGenList = videoGenRepository.findAll();
         assertThat(videoGenList).hasSize(databaseSizeBeforeUpdate);
         VideoGen testVideoGen = videoGenList.get(videoGenList.size() - 1);
+        assertThat(testVideoGen.getAuthor()).isEqualTo(UPDATED_AUTHOR);
+        assertThat(testVideoGen.getDate()).isEqualTo(UPDATED_DATE);
+        assertThat(testVideoGen.getVersion()).isEqualTo(UPDATED_VERSION);
     }
 
     @Test

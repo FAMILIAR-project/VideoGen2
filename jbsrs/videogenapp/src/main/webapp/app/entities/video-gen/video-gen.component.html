@@ -17,12 +17,18 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
+            <th><span>Author</span></th>
+            <th><span>Date</span></th>
+            <th><span>Version</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let videoGen of videoGens ;trackBy: trackId">
                 <td><a [routerLink]="['../video-gen', videoGen.id ]">{{videoGen.id}}</a></td>
+                <td>{{videoGen.author}}</td>
+                <td>{{videoGen.date}}</td>
+                <td>{{videoGen.version}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

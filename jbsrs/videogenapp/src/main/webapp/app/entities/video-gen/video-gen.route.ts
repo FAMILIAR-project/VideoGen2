@@ -11,18 +11,18 @@ export const videoGenRoute: Routes = [
         path: 'video-gen',
         component: VideoGenComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            //authorities: ['ROLE_USER'],
             pageTitle: 'VideoGens'
         },
-        canActivate: [UserRouteAccessService]
+        //canActivate: [UserRouteAccessService]
     }, {
         path: 'video-gen/:id',
         component: VideoGenDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            //authorities: ['ROLE_USER'],
             pageTitle: 'VideoGens'
         },
-        canActivate: [UserRouteAccessService]
+        //canActivate: [UserRouteAccessService]
     }
 ];
 

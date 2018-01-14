@@ -2,6 +2,7 @@
 Main page styles
 ========================================================================== */
 
+
 .hipster {
     display: inline-block;
     width: 347px;
@@ -24,3 +25,37 @@ only screen and (                min-resolution: 2dppx) {
     }
 }
 
+
+.bigTitleFirstLine {
+    font-family: LubalinGraphStd-Book,Arial,sans-serif;
+    font-size: 70px;
+    text-transform: lowercase;
+}
+
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+.videoGenCenter {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    max-width: 1280px;
+    margin-top: -180px;
+    font-size: 70.67%;
+}
+
+.content {
+    background-color: #000;
+    color: #fff;
+}
+
+.bigTitleOtherLines {
+    font-family: LubalinGraphStd-Book,Arial,sans-serif;
+    font-size: 70px;
+}

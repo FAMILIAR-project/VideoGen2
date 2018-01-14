@@ -12,6 +12,21 @@
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="videoGen.id" readonly />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_author">Author</label>
+            <input type="text" class="form-control" name="author" id="field_author"
+                [(ngModel)]="videoGen.author" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_date">Date</label>
+            <input type="text" class="form-control" name="date" id="field_date"
+                [(ngModel)]="videoGen.date" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_version">Version</label>
+            <input type="text" class="form-control" name="version" id="field_version"
+                [(ngModel)]="videoGen.version" />
+        </div>
 
     </div>
     <div class="modal-footer">

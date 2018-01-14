@@ -2,15 +2,26 @@ package fr.istic.m2il.idm.videogenapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import fr.istic.m2il.idm.videogenapp.domain.VideoGen;
+import fr.istic.m2il.idm.videogenapp.domain.VideoGeneratorModelWrapper;
 import fr.istic.m2il.idm.videogenapp.service.VideoGenService;
 import fr.istic.m2il.idm.videogenapp.web.rest.errors.BadRequestAlertException;
 import fr.istic.m2il.idm.videogenapp.web.rest.util.HeaderUtil;
+import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs;
+import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenHelper;
+import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations;
+import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils;
+import fr.istic.m2il.idm.videogentransformations.utils.VideoGenUtils;
+import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
+import javax.validation.Valid;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -29,9 +40,14 @@ public class VideoGenResource {
     private static final String ENTITY_NAME = "videoGen";
 
     private final VideoGenService videoGenService;
+    private VideoGenHelper videogenHelper = new VideoGenHelper();
+    private VideoGenConfigs videoGenConfigs = new VideoGenConfigs();
 
     public VideoGenResource(VideoGenService videoGenService) {
         this.videoGenService = videoGenService;
+        this.videoGenConfigs.setOutPutFoulder("data/output");
+        this.videoGenConfigs.setServerIP("http://localhost:8080/");
+        this.videoGenConfigs.setGifResolutions(190, 60);
     }
 
     /**
@@ -115,4 +131,46 @@ public class VideoGenResource {
         videoGenService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/videogen/{filename}")
+    public VideoGeneratorModelWrapper getVideoGenModel(@PathVariable String filename){
+        filename = "data/input/videogen/" + filename + ".videogen";
+        log.debug("getVideoGenModel : " + filename);
+        return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
+    }
+
+    @GetMapping("/videogen/gifs/{filename}")
+    public VideoGeneratorModelWrapper getGifs(@PathVariable String filename){
+        filename = "data/input/videogen/" + filename + ".videogen";
+        log.debug("getVideoGenModel : " + filename);
+        return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
+    }
+
+    @PostMapping("/videogen")
+    public ResponseEntity generatePlaylist(@Valid @RequestBody List<String> videos){
+
+        String location = VideoGenUtils.makePlaylist(videos, CommonUtils.getOutPutFileName("data/output/playlists/playlist.mp4"));
+        return ResponseEntity.accepted()
+            .headers(HeaderUtil.createAlert( "Generated playlist location ", location))
+            .body(location);
+    }
+
+    @GetMapping("videogen/random/{filename}")
+    public String generateRandomVariant(@PathVariable String filename){
+        filename = "data/input/videogen/" + filename + ".videogen";
+        log.debug("getRandomVariant : " + filename);
+        VideoGeneratorModel model = videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename));
+        String location = VideoGenPlayTransformations.generateRandomPlayList(model);
+        return location;
+    }
+
+    @GetMapping("videogen/files")
+    public String[] getVideoGenFiles(){
+        File videoGenFolder = new File("data/input/videogen");
+        return videoGenFolder.list(
+            (dir,name)-> name.endsWith(".videogen")
+        );
+    }
+
+
 }
