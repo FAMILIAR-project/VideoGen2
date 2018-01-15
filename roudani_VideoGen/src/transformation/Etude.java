@@ -1,10 +1,8 @@
 package transformation;
 
-import java.awt.List;
 import java.io.File;
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.eclipse.emf.common.util.EList;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
@@ -17,8 +15,14 @@ import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 import util.Utils;
 
-public class VariantSizes {
+public class Etude {
 
+	
+	/**
+	 * generer toutes les variantes poussibles d'un model 
+	 * @param videoGen
+	 * @return
+	 */
 	public static String getAllVariants(VideoGeneratorModel videoGen) {
 
 		ArrayList<ArrayList<VideoDescription>> list_of_mediaList = new ArrayList<ArrayList<VideoDescription>>();
@@ -75,12 +79,13 @@ public class VariantSizes {
 	}
 
 	public static void getSizes(ArrayList<ArrayList<VideoDescription>> content, ArrayList<String> entete) {
+		ArrayList<Long> real_size = realSize(content);
 		int id = 0;
 		String csv = "id; ";
 		for (String s: entete) {
 			csv += s + "; ";
 		}
-		csv += "taille; \n";
+		csv += "taille; taille reel\n";
 		for (ArrayList<VideoDescription> mediaList : content) {
 			Boolean[] tab = new Boolean[entete.size()];	
 			double taille = 0.;
@@ -96,25 +101,14 @@ public class VariantSizes {
 				else ligne += "FALSE; ";
 			}
 			
-			csv += ligne + taille +"\n";
+			csv += ligne + taille + "; "+ real_size.get(id-1) +"\n";
 		}
-		//System.out.println(csv);
-		Utils.toFile(csv, "tab.csv");
+		//creation du fichier
+		Utils.toFile(csv, "textFiles/tab.csv");
 		
 	}
 
-	static void toString(ArrayList<ArrayList<MediaDescription>> l) {
-		int id = 0;
-		for (ArrayList<MediaDescription> mediaList : l) {
-			System.out.println("id " + id++);
-			for (MediaDescription elm : mediaList) {
-				System.out.println(elm.getLocation());
-			}
-			System.out.println();
-		}
-
-	}
-
+	//fonction auxl pour cloner une liste de VideoDescription
 	static ArrayList<ArrayList<VideoDescription>> clone(ArrayList<ArrayList<VideoDescription>> l) {
 		ArrayList<ArrayList<VideoDescription>> res = new ArrayList<>();
 
@@ -125,6 +119,50 @@ public class VariantSizes {
 		}
 
 		return res;
+	}
+	
+	
+	static ArrayList<Long> realSize(ArrayList<ArrayList<VideoDescription>> l){
+		//file '4.mp4'
+		ArrayList<Long> res = new ArrayList<>();
+		for(ArrayList<VideoDescription> descList: l) {
+			String variante = "";
+			for(VideoDescription d:descList) {
+				variante += '\n'+ "file ../" + d.getLocation();
+			}
+			Utils.toFile(variante, "textFiles/tmpVariante.tmp");
+			try {
+				String cmd = "ffmpeg -f concat -safe 0 -i " + "textFiles/tmpVariante.tmp" + " -c copy " + "generatedVideos/tmpVariante" + ".mp4";
+				System.out.println(cmd);
+				String[] a = new String[] {"/bin/sh", "-c", cmd};
+				Runtime.getRuntime().exec(a)
+						.waitFor();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			res.add(new File("generatedVideos/tmpVariante.mp4").length());
+			
+			try {
+				String cmd = "rm generatedVideos/tmpVariante.mp4";
+				String[] b = new String[] {"/bin/sh", "-c", cmd};
+				Runtime.getRuntime().exec(b).waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return res;
+		
 	}
 
 }
