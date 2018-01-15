@@ -5,6 +5,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginModalService, Principal } from '../shared';
 import {VideoGenService} from '../videogen/videogen.service';
 import {VideoGeneratorModel} from '../videogen/model/videogen.model';
+import {isNullOrUndefined} from "util";
 
 @Component({
     selector: 'jhi-home',
@@ -20,6 +21,8 @@ export class HomeComponent implements OnInit {
     videoGen: string;
     listFiles: string[];
     videoGenModel: VideoGeneratorModel;
+    loadingString: string;
+    videoLocation: string;
 
     constructor(
         private principal: Principal,
@@ -30,20 +33,33 @@ export class HomeComponent implements OnInit {
     }
 
     getFiles(){
+        this.loadingString = "Loading files";
         this.videoGenService.getVideoGenFiles().subscribe((files) => {
             console.log("GetVideoGenFiles : files");
             console.log(files);
             this.listFiles = files ;
+            this.loadingString = null;
         });
-
     }
 
-    test(){
+    loadModel(){
         console.log(this.videoGen);
-        /*this.videoGenService.getModel(this.videoGen.split(".")[0]).subscribe((model) => {
+        this.loadingString = "Loading Model";
+        this.videoGenService.getModel(this.videoGen).subscribe((model) => {
             console.log(model);
             this.videoGenModel = model;
-        });*/
+            this.loadingString = null;
+            //this.videoLocation = "data/output/output_1516027553770.mp4";
+        });
+    }
+
+    generateRandomVariant(){
+        this.loadingString = "Generating Random Variant";
+        this.videoGenService.generateRandomVariant(this.videoGen).subscribe((randomVariant) => {
+            console.log(randomVariant._body);
+            this.videoLocation = randomVariant._body;
+            this.loadingString = null;
+        });
     }
 
     ngOnInit() {
@@ -51,18 +67,6 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-
-        /*
-        let videos:string[] = [
-            "data/input/video/jaunatan.mp4",
-            "data/input/video/sheep.mp4"
-        ];
-        console.log("GENERATING PLAYLIST");
-        this.videoGenService.generatePlaylist(videos).subscribe((response) => {
-            console.log(response);
-            console.log("PLAYLIST GENERATED");
-        });
-        */
     }
 
     registerAuthenticationSuccess() {
@@ -75,7 +79,11 @@ export class HomeComponent implements OnInit {
     }
 
     isAuthenticated() {
-        return this.principal.isAuthenticated();
+        var bool = this.principal.isAuthenticated();
+        if(bool && isNullOrUndefined(this.listFiles)){
+            this.getFiles();
+        }
+        return bool;
     }
 
     login() {

@@ -33,34 +33,41 @@ public class VideoGenResource {
         filename = "data/input/videogen/" + filename + ".videogen";
         log.debug("getVideoGenModel : " + filename);
         VideoGeneratorModel model = videogenHelper.loadVideoGenerator(URI.createURI(filename));
-        VideoGenUtils.generateThumbnails(model, "data/output/thumbnails");
+        VideoGenUtils.generateThumbnails(model, "target/www/data/output/thumbnails");
         return wrap(model);
     }
 
     @PostMapping("/videogen")
     public ResponseEntity generatePlaylist(@Valid @RequestBody List<String> videos){
-        String location = VideoGenUtils.generatePlaylist(videos.toArray(new String[0]), "data/output");
+        String location = VideoGenUtils.generatePlaylist(videos.toArray(new String[0]), "target/www/data/output");
         return ResponseEntity.accepted()
             .headers(HeaderUtil.createAlert( "A playlist was generated at ", location))
-            .body(location);
+            .body(location.replace("target/www/", ""));
     }
 
     @GetMapping("videogen/random/{filename}")
-    public String generateRandomVariant(@PathVariable String filename){
+    public ResponseEntity generateRandomVariant(@PathVariable String filename){
         filename = "data/input/videogen/" + filename + ".videogen";
         log.debug("getRandomVariant : " + filename);
         VideoGeneratorModel model = videogenHelper.loadVideoGenerator(URI.createURI(filename));
         String[] variant = VideoGenUtils.getRandomVariant(model);
-        String location = VideoGenUtils.generatePlaylist(variant, "data/output");
-        return location;
+        String location = VideoGenUtils.generatePlaylist(variant, "target/www/data/output");
+        return ResponseEntity.accepted()
+            .headers(HeaderUtil.createAlert( "A Random Variant was generated at ", location))
+            .body(location.replace("target/www/", ""));
     }
 
     @GetMapping("videogen/files")
     public String[] getVideoGenFiles(){
         File videoGenFolder = new File("data/input/videogen");
-        return videoGenFolder.list(
+        String[] res = videoGenFolder.list(
             (dir,name)-> name.endsWith(".videogen")
         );
+        String[] output = new String[res.length];
+        for(int i = 0; i < res.length; i++){
+            output[i] = res[i].replace(".videogen", "");
+        }
+        return output;
     }
 
     @Deprecated

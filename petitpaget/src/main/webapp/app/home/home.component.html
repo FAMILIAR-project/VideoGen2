@@ -114,9 +114,16 @@
                 <!-- SearchText (Here > videos) ############## //TODO modifier le nom de ces methodes et mettre les bonnes-->
                 <!-- ######################################### -->
                 <!-- <br><br>-->
-                <select [(ngModel)]="videoGen" (change)="test()">
+                <select [(ngModel)]="videoGen" (change)="loadModel()">
                     <option *ngFor="let file of listFiles" [value]="file">{{file}}</option>
                 </select>
+                <button *ngIf="videoGenModel" (click)="generateRandomVariant()">Random</button>
+                <div *ngIf="loadingString" style="color: red">{{loadingString}}</div>
+                <div *ngIf="videoLocation">
+                    <video preload="auto" controls autoplay>
+                        <source src="{{ videoLocation }}" type="video/mp4">
+                    </video>
+                </div>
                 <!--  <input [(ngModel)]="videoGen" (change)="getFiles()" type="text"/>
                  Press enter to search
              <br><br>-->
