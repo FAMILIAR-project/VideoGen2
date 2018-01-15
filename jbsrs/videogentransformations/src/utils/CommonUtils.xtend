@@ -16,6 +16,6 @@ class CommonUtils {
 	}
 	
 	static def String writeFile(String file){
-		
+		//traduction xtend de java
 	}
 }
