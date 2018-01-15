@@ -1,4 +1,1 @@
 #bref playlist
-file '/home/chak/Documents/IDM/Video/v0.mp4'
-file '/home/chak/Documents/IDM/Video/v22.mp4'
-file '/home/chak/Documents/IDM/Video/v0.mp4'

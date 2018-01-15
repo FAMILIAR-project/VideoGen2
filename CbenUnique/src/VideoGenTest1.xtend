@@ -9,6 +9,7 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.VideoDescription
 
 import static org.junit.Assert.*
+import org.xtext.example.mydsl.videoGen.ImageDescription
 
 class VideoGenTest1 {
 
@@ -30,70 +31,95 @@ class VideoGenTest1 {
 	int longestPosition
 	ArrayList<VideoDescription> videos = new ArrayList<VideoDescription>
 
+	/**
+	 * The launcher app
+	 * 
+	 */
 	@Test
 	def void testLoadModel() {
 		assertNotNull(videoGen)
 		println(videoGen.information.authorName)
-		// println(startcommand+command)
-		// and then visit the model
-		// eg access video sequences: videoGen.videoseqs
-		// getPossiility()
 		totalvideos = getPossility()
 
-		println("total :" + totalvideos)
+		println("total playlists :" + totalvideos)
 
 		playlists = new ArrayList<ArrayList<VideoDescription>>
 		for (i = 0; i < totalvideos; i++) {
 
 			playlists.add(new ArrayList<VideoDescription>)
 
-		// println("1")		
 		}
 		videoGen.medias.forEach [ m |
 
 			if (m instanceof MandatoryMedia) {
-				videos.add(m.description as VideoDescription)
-				for (i = 0; i < totalvideos; i++) {
+				if (m instanceof VideoDescription) {
 
-					playlists.get(i).add(m.description as VideoDescription)
+					// if video
+					createGIF(m.description as VideoDescription)
+					videos.add(m.description as VideoDescription)
+					for (i = 0; i < totalvideos; i++) {
+
+						playlists.get(i).add(m.description as VideoDescription)
+					}
+					playmsg = playmsg + m.description.location + "\n"
+					longplaylist.add(m.description as VideoDescription)
+
+				} else { // if image
+					if (m instanceof ImageDescription) {
+						println("image found :" + m.top + "AND " + m.bottom)
+					}
 				}
-				playmsg = playmsg + m.description.location + "\n"
-				longplaylist.add(m.description as VideoDescription)
-
-			// medias.add (new Media(m.description.location,1 ))
 			}
 			if (m instanceof OptionalMedia) {
-				videos.add(m.description as VideoDescription)
-				// medias.add (new Media(m.description.location,2 ))
-				for (i = 0; i < totalvideos / 2; i++) {
+				if (m instanceof VideoDescription) {
 
-					playlists.get(i).add(m.description as VideoDescription)
+					// if video
+					createGIF(m.description as VideoDescription)
+					videos.add(m.description as VideoDescription)
+					for (i = 0; i < totalvideos / 2; i++) {
+
+						playlists.get(i).add(m.description as VideoDescription)
+
+					}
+					longplaylist.add(m.description as VideoDescription)
+					playmsg = playmsg + m.description.location + "\n"
+				} else { // if image
+					if (m instanceof ImageDescription) {
+						println("image found :" + m.top + "AND " + m.bottom)
+
+					}
 
 				}
-				longplaylist.add(m.description as VideoDescription)
-				playmsg = playmsg + m.description.location + "\n"
 
 			}
 			if (m instanceof AlternativesMedia) {
-				// medtmp= new Media ("",3) 
 				alt = m.medias.size
 				for (j = 0; j < m.medias.size; j++) {
-					videos.add(m.medias.get(j) as VideoDescription)
-					// altmedia.medias.add (new Media (alter.location.toString  )); 
-					// medtmp.altmedias.add (new Media(alter.location,1 ))
-					for (i = poss; i < totalvideos; i = i + alt) {
+					if (m instanceof VideoDescription) {
+						// if video
+						createGIF(m.medias.get(j) as VideoDescription)
 
-						playlists.get(i).add(m.medias.get(j) as VideoDescription)
-						playmsg = playmsg + m.medias.get(j).location + "\n"
+						videos.add(m.medias.get(j) as VideoDescription)
+
+						for (i = poss; i < totalvideos; i = i + alt) {
+
+							playlists.get(i).add(m.medias.get(j) as VideoDescription)
+							playmsg = playmsg + m.medias.get(j).location + "\n"
+
+						}
+
+						if (Util.getFileDuration(m.medias.get(j).location).longValue > longestAltDuration) {
+							longestAltDuration = Util.getFileDuration(m.medias.get(j).location).longValue
+							longestPosition = j
+						}
+						poss++
+					} else { // if image
+						if (m instanceof ImageDescription) {
+							println("image found :" + m.top + "AND " + m.bottom)
+
+						}
 
 					}
-					// println("Here is the standard output of the command:\n");
-					if (Util.getFileDuration(m.medias.get(j).location).longValue > longestAltDuration) {
-						longestAltDuration = Util.getFileDuration(m.medias.get(j).location).longValue
-						longestPosition = j
-					}
-					println("*****************" + Util.getFileDuration(m.medias.get(j).location))
-					poss++
 
 				}
 				longplaylist.add(m.medias.get(longestPosition) as VideoDescription)
@@ -103,6 +129,7 @@ class VideoGenTest1 {
 			}
 		]
 
+		// display of the playlists with the videos in them
 		println("Debut*************************\n")
 		println("playlists   :\n")
 		playlists.forEach [ list |
@@ -118,32 +145,34 @@ class VideoGenTest1 {
 
 		println("Fin*************************\n")
 
-		// println(random.nextInt(totalvideos))
+		// get a random playlist from the playlists
 		playlist = playlists.get(random.nextInt(totalvideos))
 		createfffFile()
-		//executeVLC()
-		//createCSV()
+		createCSV()
+		executeVLC()
+		assertEquals(totalvideos, playlists.size)
 
 	}
 
+	/**
+	 * Get the number of possible playlists from the videogen file
+	 * 
+	 */
 	def int getPossility() {
 		videoGen.medias.forEach [ m |
 
 			if (m instanceof OptionalMedia) {
-				// random
-				// idem
+
 				opt = opt + 2
 			}
 			if (m instanceof AlternativesMedia) {
-				// random with choice
-				// idem
+
 				if (alt == 0) {
 					alt = alt + m.medias.size()
 				} else {
 					alt = alt * m.medias.size()
 				}
 
-			// println("alternative "+m.medias.size)		
 			}
 		]
 		if(opt == 0) opt++
@@ -153,32 +182,62 @@ class VideoGenTest1 {
 
 	}
 
+	/**
+	 * create a playlist.txt file for ffmpeg and concatenate from this file
+	 */
 	def createfffFile() {
+		// create file
 		writer.println("#bref playlist");
 		playlist.forEach [ video |
 			writer.println("file '" + video.location + "'");
 
 		]
 		writer.close();
-
+		// run ffmpeg to concatenate
 		Runtime.runtime.exec("ffmpeg -f concat -safe 0 -i ./playlist.txt -c copy ./out.mp4")
 	}
 
+	/**
+	 * Launch vlc media player with the generated video
+	 */
 	def executeVLC() {
-		// file:///home/chak/Documents/IDM/projet/VideoGen2/CbenUnique/bref.mp4
+		// run vlc player
 		var p = Runtime.runtime.exec("vlc  videos/bref.mp4")
 		p.waitFor
 	}
 
 	def longest() {
+
+		// launch the longest video with vlc
 		var p = Runtime.runtime.exec("vlc  videos/long.mp4")
 		p.waitFor
 
 	}
 
+	/**
+	 * Create a CSV file with the size and lenght information
+	 */
 	def createCSV() {
+		// create a CSV file
 		csvfile = new CSVFileWriter
 		csvfile.writeCsvFile(videos, playlists)
 
 	}
+
+	/**
+	 * generate a GIF for the videos in the videogen file
+	 */
+	def createGIF(VideoDescription videodescription) {
+
+		// create a gif for the video
+		if (videodescription.videoid !== null) {
+			var p = Runtime.runtime.exec(
+				"ffmpeg -i " + videodescription.location + "  " + videodescription.videoid + ".gif")
+			p.waitFor
+		} else {
+			var p = Runtime.runtime.exec("ffmpeg -i " + videodescription.location + ".gif")
+			p.waitFor
+		}
+	}
+
 }
