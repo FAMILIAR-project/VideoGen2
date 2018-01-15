@@ -49,7 +49,7 @@ class VideoGenTest1 {
 			}
 		}
 		
-		val file = new File("playlist.txt")
+		val file = new File("out/playlist.txt")
 		file.createNewFile
 		
 		val writer = new FileWriter(file)
@@ -61,7 +61,7 @@ class VideoGenTest1 {
 		writer.flush()
 		writer.close()
 		
-		var command = ffmpegConcatenateCommand("playlist.txt",  "out/o.mp4")
+		var command = ffmpegConcatenateCommand("out/playlist.txt",  "out/o.mp4")
 		var p = Runtime.runtime.exec(command.toString)
 		p.waitFor	
 	}
