@@ -1,0 +1,8 @@
+@author "IL(A)? students"
+VideoGen {
+	mandatory videoseq v1 "~/Video/TEST/exemple2.mp4" { duration 3 text { content "TOP" position TOP color "BLUE" size 104 } }
+	mandatory videoseq v2 "~/Video/TEST/exemple2.mp4" { duration 3 text { content "CENTER" position CENTER color "WHITE" size 84 } }
+	mandatory videoseq v3 "~/Video/TEST/exemple2.mp4" { duration 3 text { content "BOTTOM" position BOTTOM color "RED" size 64 } }
+
+
+}

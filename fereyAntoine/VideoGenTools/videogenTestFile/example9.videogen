@@ -1,0 +1,7 @@
+VideoGen {
+	mandatory videoseq v0 "~/Video/TEST/exemple1.mp4" {duration 2 filter b&w }
+	mandatory videoseq v01 "~/Video/TEST/exemple2.mp4" {duration 2  }
+	mandatory videoseq v02 "~/Video/TEST/exemple3.mp4" {duration 2 filter flip h }
+	mandatory videoseq jadqs "~/Video/TEST/exemple4.mp4" {duration 2 text { content "soulman" position TOP color "BLUE" size 104 }}
+
+}
