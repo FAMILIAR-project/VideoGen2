@@ -73,6 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/i18n/**")
             .antMatchers("/content/**")
             .antMatchers("/swagger-ui/index.html")
+            .antMatchers("/data/**")
             .antMatchers("/test/**");
     }
 
@@ -94,6 +95,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()
+            .antMatchers(HttpMethod.GET,"/**").permitAll()
+            .antMatchers(HttpMethod.GET,"/data/").permitAll()
             .antMatchers(HttpMethod.GET, "/api/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/**").permitAll()
             .antMatchers(HttpMethod.PUT, "/api/**").permitAll()

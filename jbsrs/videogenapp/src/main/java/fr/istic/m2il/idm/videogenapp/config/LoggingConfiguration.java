@@ -83,7 +83,7 @@ public class LoggingConfiguration {
         logstashAppender.setEncoder(logstashEncoder);
         logstashAppender.start();
 
-        // Wrap the appender in an Async appender for performance
+        // Wrap the appender input an Async appender for performance
         AsyncAppender asyncLogstashAppender = new AsyncAppender();
         asyncLogstashAppender.setContext(context);
         asyncLogstashAppender.setName(ASYNC_LOGSTASH_APPENDER_NAME);

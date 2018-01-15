@@ -90,35 +90,14 @@ public class VideoGenPlayTransformations {
               if ((media instanceof AlternativesMedia)) {
                 EList<MediaDescription> _medias_1 = ((AlternativesMedia)media).getMedias();
                 for (final MediaDescription alternativeMedia : _medias_1) {
-                  {
-                    if ((alternativeMedia instanceof VideoDescription)) {
-                      thumbs.add(FFMPEGHelper.generateThumbnail(((VideoDescription)alternativeMedia).getLocation()));
-                    }
-                    if ((alternativeMedia instanceof ImageDescription)) {
-                      thumbs.add(((ImageDescription)alternativeMedia).getLocation());
-                    }
-                  }
+                  thumbs.add(FFMPEGHelper.generateThumbnail(alternativeMedia.getLocation()));
                 }
               }
               if ((media instanceof MandatoryMedia)) {
-                MediaDescription _description = ((MandatoryMedia)media).getDescription();
-                if ((_description instanceof VideoDescription)) {
-                  thumbs.add(FFMPEGHelper.generateThumbnail(((MandatoryMedia)media).getDescription().getLocation()));
-                }
-                MediaDescription _description_1 = ((MandatoryMedia)media).getDescription();
-                if ((_description_1 instanceof ImageDescription)) {
-                  thumbs.add(((MandatoryMedia)media).getDescription().getLocation());
-                }
+                thumbs.add(FFMPEGHelper.generateThumbnail(((MandatoryMedia)media).getDescription().getLocation()));
               }
               if ((media instanceof OptionalMedia)) {
-                MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
-                if ((_description_2 instanceof VideoDescription)) {
-                  thumbs.add(FFMPEGHelper.generateThumbnail(((OptionalMedia)media).getDescription().getLocation()));
-                }
-                MediaDescription _description_3 = ((OptionalMedia)media).getDescription();
-                if ((_description_3 instanceof ImageDescription)) {
-                  thumbs.add(((OptionalMedia)media).getDescription().getLocation());
-                }
+                thumbs.add(FFMPEGHelper.generateThumbnail(((OptionalMedia)media).getDescription().getLocation()));
               }
             }
           }

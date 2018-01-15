@@ -15,7 +15,7 @@ const extractCSS = new ExtractTextPlugin(`[name].[hash].css`);
 
 module.exports = webpackMerge(commonConfig({ env: ENV }), {
     // Enable source maps. Please note that this will slow down the build.
-    // You have to enable it in UglifyJSPlugin config below and in tsconfig-aot.json as well
+    // You have to enable it input UglifyJSPlugin config below and input tsconfig-aot.json as well
     // devtool: 'source-map',
     entry: {
         polyfills: './src/main/webapp/app/polyfills',
@@ -48,7 +48,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     plugins: [
         extractCSS,
         new Visualizer({
-            // Webpack statistics in target folder
+            // Webpack statistics input target folder
             filename: '../stats.html'
         }),
         new UglifyJSPlugin({

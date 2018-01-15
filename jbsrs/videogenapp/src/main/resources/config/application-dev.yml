@@ -103,7 +103,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: my-secret-token-to-change-in-production
+                secret: my-secret-token-to-change-input-production
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
@@ -120,9 +120,9 @@ jhipster:
         prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
             enabled: false
             endpoint: /prometheusMetrics
-        logs: # Reports Dropwizard metrics in the logs
+        logs: # Reports Dropwizard metrics input the logs
             enabled: false
-            report-frequency: 60 # in seconds
+            report-frequency: 60 # input seconds
     logging:
         logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
             enabled: false
@@ -134,7 +134,7 @@ jhipster:
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
+# to have type-safe configuration, like input the JHipsterProperties above
 #
 # More documentation is available at:
 # http://www.jhipster.tech/common-application-properties/

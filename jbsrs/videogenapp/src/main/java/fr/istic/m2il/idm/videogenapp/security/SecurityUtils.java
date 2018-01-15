@@ -61,7 +61,7 @@ public final class SecurityUtils {
     /**
      * If the current user has a specific authority (security role).
      * <p>
-     * The name of this method comes from the isUserInRole() method in the Servlet API
+     * The name of this method comes from the isUserInRole() method input the Servlet API
      *
      * @param authority the authority to check
      * @return true if the current user has the authority, false otherwise

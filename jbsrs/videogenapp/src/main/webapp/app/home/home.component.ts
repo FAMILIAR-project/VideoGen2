@@ -3,7 +3,10 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { Router } from '@angular/router';
 
+import { Http, Response, ResponseContentType, RequestOptions } from '@angular/http';
+
 import { Account, LoginModalService, Principal } from '../shared';
+import { VideoGenService } from '../entities/video-gen/';
 
 @Component({
     selector: 'jhi-home',
@@ -18,12 +21,15 @@ export class HomeComponent implements OnInit {
     modalRef: NgbModalRef;
 
     guestname: string;
+    modes = ['Aléatoire', 'Configurateur'];
+    selectedMode = null;
 
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
-        private router: Router
+        private router: Router,
+        private videoGenService: VideoGenService
     ) {
     }
 
@@ -51,6 +57,16 @@ export class HomeComponent implements OnInit {
     }
 
     setMode(){
-      this.router.navigate(['video-gen']);
+
+      if(this.selectedMode = "Aléatoire"){
+        this.videoGenService.getRandomPlayList().subscribe((response) => {
+            console.log("Response get "+response)
+            this.videoGenService.setVideoUrlShare(response);
+            this.router.navigate(['video-gen-player']);
+        });
+      }
+      else{
+        this.router.navigate(['video-gen-configurator']);
+      }
     }
 }

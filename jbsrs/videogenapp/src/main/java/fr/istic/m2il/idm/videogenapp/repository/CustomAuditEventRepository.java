@@ -26,7 +26,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
 
     /**
-     * Should be the same as in Liquibase migration.
+     * Should be the same as input Liquibase migration.
      */
     protected static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
 

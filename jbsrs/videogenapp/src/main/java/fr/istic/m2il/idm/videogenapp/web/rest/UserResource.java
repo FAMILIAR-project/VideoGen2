@@ -47,7 +47,7 @@ import java.util.*;
  * application because of this use-case.</li>
  * <li> Not having an outer join causes n+1 requests to the database. This is not a real issue as
  * we have by default a second-level cache. This means on the first HTTP call we do the n+1 requests,
- * but then all authorities come from the cache, so in fact it's much better than doing an outer join
+ * but then all authorities come from the cache, so input fact it's much better than doing an outer join
  * (which will get lots of data from the database, for each HTTP call).</li>
  * <li> As this manages users, for security reasons, we'd rather have a DTO layer.</li>
  * </ul>
@@ -81,9 +81,9 @@ public class UserResource {
      * The user needs to be activated on creation.
      *
      * @param userDTO the user to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
+     * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already input use
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already in use
+     * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already input use
      */
     @PostMapping("/users")
     @Timed
@@ -112,8 +112,8 @@ public class UserResource {
      *
      * @param userDTO the user to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated user
-     * @throws EmailAlreadyUsedException 400 (Bad Request) if the email is already in use
-     * @throws LoginAlreadyUsedException 400 (Bad Request) if the login is already in use
+     * @throws EmailAlreadyUsedException 400 (Bad Request) if the email is already input use
+     * @throws LoginAlreadyUsedException 400 (Bad Request) if the login is already input use
      */
     @PutMapping("/users")
     @Timed

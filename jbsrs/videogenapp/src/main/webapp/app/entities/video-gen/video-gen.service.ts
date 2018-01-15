@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, ResponseContentType, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { SERVER_API_URL } from '../../app.constants';
 
-import { VideoGen } from './video-gen.model';
+import { VideoGen, VideoGeneratorModel } from './video-gen.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
 export class VideoGenService {
 
     private resourceUrl = SERVER_API_URL + 'api/video-gens';
+    private videoUrlShare: string;
+    private file = "v0.mp4";
+    private fil = "file";
 
     constructor(private http: Http) { }
 
@@ -32,6 +35,7 @@ export class VideoGenService {
     find(id: number): Observable<VideoGen> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             const jsonResponse = res.json();
+            console.log(jsonResponse);
             return this.convertItemFromServer(jsonResponse);
         });
     }
@@ -69,5 +73,38 @@ export class VideoGenService {
     private convert(videoGen: VideoGen): VideoGen {
         const copy: VideoGen = Object.assign({}, videoGen);
         return copy;
+    }
+
+    getModel(filename: string): Observable<VideoGeneratorModel> {
+        return this.http.get(`${this.resourceUrl}/${filename}`).map((res: Response) => res.json());
+    }
+
+    generatePlaylist(videos: string[]): any {
+        return this.http.post(this.resourceUrl, videos)
+            .map((res: Response) => res);
+    }
+
+    getVideoGenFiles(): any{
+        return this.http.get(this.resourceUrl+ '/files').map((res: Response) => res.json());
+    }
+
+    getFile() : any {
+      return this.http.get(this.resourceUrl + '/video-gens/file/data/input/v0.mp4').map((res: Response)=> res.json());
+    }
+
+    getVideoUrlShare(){
+      return this.videoUrlShare;
+    }
+
+    setVideoUrlShare(videoUrl : string){
+      this.videoUrlShare = videoUrl;
+    }
+
+    getRandomPlayList(){
+      return this.http.get(this.resourceUrl + '/random').map((res: Response) => (res.text()));
+    }
+
+    getRandomVariant(){
+      return this.http.get(this.resourceUrl + '/variant/random').map((res: Response) => (res.json()));
     }
 }

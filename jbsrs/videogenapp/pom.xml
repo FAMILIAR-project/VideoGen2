@@ -169,7 +169,7 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
-            <!-- parent POM declares this dependency in default (compile) scope -->
+            <!-- parent POM declares this dependency input default (compile) scope -->
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -410,6 +410,44 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>input-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/data/input</outputDirectory>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <delimiters>
+                                <delimiter>#</delimiter>
+                            </delimiters>
+                            <resources>
+                                <resource>
+                                    <directory>data/input/</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>output-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/www/data/output</outputDirectory>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <delimiters>
+                                <delimiter>#</delimiter>
+                            </delimiters>
+                            <resources>
+                                <resource>
+                                    <directory>data/output/</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>docker-resources</id>
                         <phase>validate</phase>
                         <goals>
@@ -556,30 +594,6 @@
                 </configuration>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
-
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${start-class}</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
         <pluginManagement>
             <plugins>
@@ -713,6 +727,18 @@
                                         <include>WEB-INF/**</include>
                                     </includes>
                                 </resource>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                    <includes>
+                                        <include>WEB-INF/**</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>data/output/</directory>
+                                </resource>
+                                <resource>
+                                    <directory>data/input/</directory>
+                                </resource>
                             </webResources>
                         </configuration>
                     </plugin>
@@ -757,6 +783,12 @@
                                     <includes>
                                         <include>WEB-INF/**</include>
                                     </includes>
+                                </resource>
+                                <resource>
+                                    <directory>data/output/</directory>
+                                </resource>
+                                <resource>
+                                    <directory>data/input/</directory>
                                 </resource>
                             </webResources>
                         </configuration>
@@ -836,7 +868,7 @@
             <!--
                 Profile for doing "continuous compilation" with the Scala Maven plugin.
                 It allows automatic compilation of Java classes as soon as they are saved.
-                To use it, run in 3 terminals:
+                To use it, run input 3 terminals:
                 - './mvnw -Pcc scala:cc' for continuous compilation of your classes
                 - './mvnw -Pcc' for hot reload of Spring boot
                 - 'npm start/yarn start' for hot reload of the HTML/JavaScript asset
