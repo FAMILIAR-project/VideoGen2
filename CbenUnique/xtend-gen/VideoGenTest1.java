@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,11 +18,15 @@ import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 @SuppressWarnings("all")
 public class VideoGenTest1 {
+  private CSVFileWriter csvfile;
+  
   private int poss = 0;
   
   private int alt = 0;
   
   private int i;
+  
+  private int j;
   
   private final Random random = new Random();
   
@@ -54,28 +55,14 @@ public class VideoGenTest1 {
   
   private final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example3.videogen"));
   
-  private String command;
+  private long longestAltDuration = 0;
   
-  private String startcommand;
+  private int longestPosition;
   
-  private Process process;
-  
-  private BufferedReader stdInput;
-  
-  private String s;
-  
-  private BufferedReader stdError;
+  private ArrayList<VideoDescription> videos = new ArrayList<VideoDescription>();
   
   @Test
   public void testLoadModel() {
-    this.startcommand = "ffmpeg -i ";
-    this.command = " 2>&1 | grep \"";
-    this.command = (this.command + "Duration\"");
-    this.command = ((this.command + "| cut -d \' \' -f 4 | sed s/,// | sed \'s@\\") + "..*@@g\' | awk \'{ split($1, A, \"");
-    this.command = (this.command + ":\"");
-    this.command = (this.command + "); split(A[3], B, \"");
-    this.command = (this.command + ".\"");
-    this.command = (this.command + "); print 3600*A[1] + 60*A[2] + B[1] }\'");
     Assert.assertNotNull(this.videoGen);
     InputOutput.<String>println(this.videoGen.getInformation().getAuthorName());
     this.totalvideos = this.getPossility();
@@ -88,24 +75,28 @@ public class VideoGenTest1 {
     }
     final Consumer<Media> _function = (Media m) -> {
       if ((m instanceof MandatoryMedia)) {
+        MediaDescription _description = ((MandatoryMedia)m).getDescription();
+        this.videos.add(((VideoDescription) _description));
         for (this.i = 0; (this.i < this.totalvideos); this.i++) {
-          MediaDescription _description = ((MandatoryMedia)m).getDescription();
-          this.playlists.get(this.i).add(((VideoDescription) _description));
+          MediaDescription _description_1 = ((MandatoryMedia)m).getDescription();
+          this.playlists.get(this.i).add(((VideoDescription) _description_1));
         }
         String _location = ((MandatoryMedia)m).getDescription().getLocation();
         String _plus = (this.playmsg + _location);
         String _plus_1 = (_plus + "\n");
         this.playmsg = _plus_1;
-        MediaDescription _description = ((MandatoryMedia)m).getDescription();
-        this.longplaylist.add(((VideoDescription) _description));
+        MediaDescription _description_1 = ((MandatoryMedia)m).getDescription();
+        this.longplaylist.add(((VideoDescription) _description_1));
       }
       if ((m instanceof OptionalMedia)) {
+        MediaDescription _description_2 = ((OptionalMedia)m).getDescription();
+        this.videos.add(((VideoDescription) _description_2));
         for (this.i = 0; (this.i < (this.totalvideos / 2)); this.i++) {
-          MediaDescription _description_1 = ((OptionalMedia)m).getDescription();
-          this.playlists.get(this.i).add(((VideoDescription) _description_1));
+          MediaDescription _description_3 = ((OptionalMedia)m).getDescription();
+          this.playlists.get(this.i).add(((VideoDescription) _description_3));
         }
-        MediaDescription _description_1 = ((OptionalMedia)m).getDescription();
-        this.longplaylist.add(((VideoDescription) _description_1));
+        MediaDescription _description_3 = ((OptionalMedia)m).getDescription();
+        this.longplaylist.add(((VideoDescription) _description_3));
         String _location_1 = ((OptionalMedia)m).getDescription().getLocation();
         String _plus_2 = (this.playmsg + _location_1);
         String _plus_3 = (_plus_2 + "\n");
@@ -113,49 +104,56 @@ public class VideoGenTest1 {
       }
       if ((m instanceof AlternativesMedia)) {
         this.alt = ((AlternativesMedia)m).getMedias().size();
-        final Consumer<MediaDescription> _function_1 = (MediaDescription alter) -> {
-          try {
+        for (this.j = 0; (this.j < ((AlternativesMedia)m).getMedias().size()); this.j++) {
+          {
+            MediaDescription _get = ((AlternativesMedia)m).getMedias().get(this.j);
+            this.videos.add(((VideoDescription) _get));
             for (this.i = this.poss; (this.i < this.totalvideos); this.i = (this.i + this.alt)) {
               {
-                this.playlists.get(this.i).add(((VideoDescription) alter));
-                String _location_2 = alter.getLocation();
+                MediaDescription _get_1 = ((AlternativesMedia)m).getMedias().get(this.j);
+                this.playlists.get(this.i).add(((VideoDescription) _get_1));
+                String _location_2 = ((AlternativesMedia)m).getMedias().get(this.j).getLocation();
                 String _plus_4 = (this.playmsg + _location_2);
                 String _plus_5 = (_plus_4 + "\n");
                 this.playmsg = _plus_5;
               }
             }
-            String _location_2 = alter.getLocation();
-            String _plus_4 = (this.startcommand + _location_2);
-            String _plus_5 = (_plus_4 + this.command);
-            this.s = _plus_5;
-            InputOutput.<String>println(this.s);
-            this.process = Runtime.getRuntime().exec(this.s);
-            InputStream _inputStream = this.process.getInputStream();
-            InputStreamReader _inputStreamReader = new InputStreamReader(_inputStream);
-            BufferedReader _bufferedReader = new BufferedReader(_inputStreamReader);
-            this.stdInput = _bufferedReader;
-            InputStream _errorStream = this.process.getErrorStream();
-            InputStreamReader _inputStreamReader_1 = new InputStreamReader(_errorStream);
-            BufferedReader _bufferedReader_1 = new BufferedReader(_inputStreamReader_1);
-            this.stdError = _bufferedReader_1;
-            this.process.getOutputStream().toString();
-            while (((this.s = this.stdInput.readLine()) != null)) {
-              InputOutput.<String>println(("//" + this.s));
+            long _longValue = Float.valueOf(Util.getFileDuration(((AlternativesMedia)m).getMedias().get(this.j).getLocation())).longValue();
+            boolean _greaterThan = (_longValue > this.longestAltDuration);
+            if (_greaterThan) {
+              this.longestAltDuration = Float.valueOf(Util.getFileDuration(((AlternativesMedia)m).getMedias().get(this.j).getLocation())).longValue();
+              this.longestPosition = this.j;
             }
-            while (((this.s = this.stdError.readLine()) != null)) {
-              System.out.println(("Err:" + this.s));
-            }
+            float _fileDuration = Util.getFileDuration(((AlternativesMedia)m).getMedias().get(this.j).getLocation());
+            String _plus_4 = ("*****************" + Float.valueOf(_fileDuration));
+            InputOutput.<String>println(_plus_4);
             this.poss++;
-          } catch (Throwable _e) {
-            throw Exceptions.sneakyThrow(_e);
           }
-        };
-        ((AlternativesMedia)m).getMedias().forEach(_function_1);
+        }
+        MediaDescription _get = ((AlternativesMedia)m).getMedias().get(this.longestPosition);
+        this.longplaylist.add(((VideoDescription) _get));
+        this.j = 0;
         this.poss = 0;
       }
     };
     this.videoGen.getMedias().forEach(_function);
+    InputOutput.<String>println("Debut*************************\n");
+    InputOutput.<String>println("playlists   :\n");
+    final Consumer<ArrayList<VideoDescription>> _function_1 = (ArrayList<VideoDescription> list) -> {
+      InputOutput.<String>println("element:\n");
+      final Consumer<VideoDescription> _function_2 = (VideoDescription element) -> {
+        String _videoid = element.getVideoid();
+        String _plus = (_videoid + ";");
+        InputOutput.<String>print(_plus);
+      };
+      list.forEach(_function_2);
+      InputOutput.<String>println("\n");
+    };
+    this.playlists.forEach(_function_1);
+    InputOutput.<String>println("\n");
+    InputOutput.<String>println("Fin*************************\n");
     this.playlist = this.playlists.get(this.random.nextInt(this.totalvideos));
+    this.createfffFile();
   }
   
   public int getPossility() {
@@ -185,11 +183,11 @@ public class VideoGenTest1 {
     return (this.opt * this.alt);
   }
   
-  public Process createffFile() {
+  public Process createfffFile() {
     try {
       Process _xblockexpression = null;
       {
-        this.writer.println("#bref file");
+        this.writer.println("#bref playlist");
         final Consumer<VideoDescription> _function = (VideoDescription video) -> {
           String _location = video.getLocation();
           String _plus = ("file \'" + _location);
@@ -198,7 +196,7 @@ public class VideoGenTest1 {
         };
         this.playlist.forEach(_function);
         this.writer.close();
-        _xblockexpression = Runtime.getRuntime().exec("ffmpeg -f concat 0 -i ./playlist.txt -c copy ./bref.mp4");
+        _xblockexpression = Runtime.getRuntime().exec("ffmpeg -f concat -safe 0 -i ./playlist.txt -c copy ./out.mp4");
       }
       return _xblockexpression;
     } catch (Throwable _e) {
@@ -230,5 +228,11 @@ public class VideoGenTest1 {
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
+  }
+  
+  public void createCSV() {
+    CSVFileWriter _cSVFileWriter = new CSVFileWriter();
+    this.csvfile = _cSVFileWriter;
+    this.csvfile.writeCsvFile(this.videos, this.playlists);
   }
 }
