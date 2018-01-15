@@ -51,7 +51,7 @@ public class UserJWTController {
     }
 
     /**
-     * Object to return as body in JWT Authentication.
+     * Object to return as body input JWT Authentication.
      */
     static class JWTToken {
 

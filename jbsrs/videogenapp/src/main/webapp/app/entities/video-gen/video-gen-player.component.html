@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+  <vg-player>
+    <vg-overlay-play></vg-overlay-play>
+    <vg-buffering></vg-buffering>
+
+    <vg-scrub-bar>
+        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+    </vg-scrub-bar>
+
+    <vg-controls>
+        <vg-play-pause></vg-play-pause>
+        <vg-playback-button></vg-playback-button>
+
+        <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+
+        <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-track-selector></vg-track-selector>
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+
+        <vg-fullscreen></vg-fullscreen>
+    </vg-controls>
+    <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+        <source src="{{ videourl }}" type="video/mp4">
+    </video>
+  </vg-player>
+  <button type="submit" class="btn btn-primary mb-2">Exporter en Gif</button>
+</div>
+<br>
+<div class="row justify-content-center">
+  <form class="form-inline" name="guest_form" role="form" (ngSubmit)="setMode()">
+    <button type="submit" class="btn btn-primary mb-2">Créer un nouvel épisode</button>
+    <div class="form-group">
+      <label for="mode">Choisir le mode </label>
+      <select [(ngModel)]="selectedMode" class="form-control" id="mode">
+        <option *ngFor="let mode of modes" [ngValue]="mode"> {{mode}} </option>
+     </select>
+    </div>
+  </form>
+</div>

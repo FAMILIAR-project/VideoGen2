@@ -12,7 +12,7 @@ module.exports = (config) => {
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine', 'intl-shim'],
 
-        // list of files / patterns to load in the browser
+        // list of files / patterns to load input the browser
         files: [
             'spec/entry.ts'
         ],
@@ -55,7 +55,7 @@ module.exports = (config) => {
         // web server port
         port: 9876,
 
-        // enable / disable colors in the output (reporters and logs)
+        // enable / disable colors input the output (reporters and logs)
         colors: true,
 
         // level of logging
@@ -69,7 +69,7 @@ module.exports = (config) => {
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['PhantomJS'],
 
-        // Ensure all browsers can run tests written in .ts files
+        // Ensure all browsers can run tests written input .ts files
         mime: {
             'text/x-typescript': ['ts','tsx']
         },

@@ -49,7 +49,7 @@ module.exports = (WATCH) => ({
             test: /\.(ts|js)($|\?)/i // process .js and .ts files only
         }),
         new webpack.ContextReplacementPlugin(
-            // The (\\|\/) piece accounts for path separators in *nix and Windows
+            // The (\\|\/) piece accounts for path separators input *nix and Windows
             /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
             utils.root('./src') // location of your src
         ),

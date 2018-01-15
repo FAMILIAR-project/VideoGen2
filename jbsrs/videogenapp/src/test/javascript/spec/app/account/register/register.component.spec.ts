@@ -61,7 +61,7 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should notify of user existence upon 400/login already in use',
+        it('should notify of user existence upon 400/login already input use',
             inject([Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(Observable.throw({
@@ -82,7 +82,7 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should notify of email existence upon 400/email address already in use',
+        it('should notify of email existence upon 400/email address already input use',
             inject([Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(Observable.throw({

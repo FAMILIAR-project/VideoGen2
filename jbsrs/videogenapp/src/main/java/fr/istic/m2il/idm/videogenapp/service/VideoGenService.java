@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xtext.example.mydsl.videoGen.*;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -107,7 +109,7 @@ public class VideoGenService {
                 AlternativesMedia alternativesMedia = (AlternativesMedia) media;
                 ((AlternativesMediaWrapper) mediaWrapper).medias = alternativesMedia.getMedias();
                 String type;
-                // Videos not mixed in with images
+                // Videos not mixed input with images
                 if(alternativesMedia.getMedias().get(0) instanceof VideoDescription){
                     type = "av";
                 }else{
@@ -119,5 +121,28 @@ public class VideoGenService {
         }
 
         return wrapper;
+    }
+
+    public String getRandomVideoGenSpecification() throws URISyntaxException {
+
+        File videoGenFolder = new File("data/input/videogen");
+
+        String[] specifications = videoGenFolder.list(
+            (dir,name)-> name.endsWith(".videogen")
+        );
+
+
+        int randomIndex = (int) Math.random() * specifications.length ;
+        File file = new File(specifications[randomIndex]);
+
+        String[] files = file.getAbsolutePath().replace("\\", "/").split("/");
+
+        return "data/input/videogen/" + files[files.length -1];
+    }
+
+    public String getRealName(File file){
+        String[] files = file.getAbsolutePath().replace("\\", "/").split("/");
+
+        return "data/input/videogen/" + files[files.length -1];
     }
 }

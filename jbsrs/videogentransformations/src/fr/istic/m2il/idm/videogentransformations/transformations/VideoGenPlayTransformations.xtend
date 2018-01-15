@@ -53,28 +53,14 @@ class VideoGenPlayTransformations {
 				for(media: videoGen.medias){
 					if(media instanceof AlternativesMedia){
 						for(alternativeMedia: media.medias){
-							if(alternativeMedia instanceof VideoDescription)
-								thumbs.add(FFMPEGHelper.generateThumbnail(alternativeMedia.location))
-							if(alternativeMedia instanceof ImageDescription)
-								thumbs.add(alternativeMedia.location)		
+							thumbs.add(FFMPEGHelper.generateThumbnail(alternativeMedia.location))	
 						}
 				   }
 					if(media instanceof MandatoryMedia){
-						if(media.description instanceof VideoDescription){
-							thumbs.add(FFMPEGHelper.generateThumbnail(media.description.location))
-						}
-						if(media.description instanceof ImageDescription){
-							thumbs.add(media.description.location)
-						}
-							
+						thumbs.add(FFMPEGHelper.generateThumbnail(media.description.location))		
 					}
 					if(media instanceof OptionalMedia){
-						if(media.description instanceof VideoDescription){
-								thumbs.add(FFMPEGHelper.generateThumbnail(media.description.location))
-						}
-						if(media.description instanceof ImageDescription){
-							thumbs.add(media.description.location)
-						}
+						thumbs.add(FFMPEGHelper.generateThumbnail(media.description.location))
 					}
 				}
 		

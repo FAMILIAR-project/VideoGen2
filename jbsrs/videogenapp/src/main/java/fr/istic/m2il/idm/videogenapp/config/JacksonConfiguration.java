@@ -12,7 +12,7 @@ import org.zalando.problem.validation.ConstraintViolationProblemModule;
 public class JacksonConfiguration {
 
     /*
-     * Support for Hibernate types in Jackson.
+     * Support for Hibernate types input Jackson.
      */
     @Bean
     public Hibernate5Module hibernate5Module() {

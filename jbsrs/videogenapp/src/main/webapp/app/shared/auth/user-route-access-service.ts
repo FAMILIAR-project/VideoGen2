@@ -18,7 +18,7 @@ export class UserRouteAccessService implements CanActivate {
 
         const authorities = route.data['authorities'];
         // We need to call the checkLogin / and so the principal.identity() function, to ensure,
-        // that the client has a principal too, if they already logged in by the server.
+        // that the client has a principal too, if they already logged input by the server.
         // This could happen on a page refresh.
         return true
         //return this.checkLogin(authorities, state.url);
@@ -43,7 +43,7 @@ export class UserRouteAccessService implements CanActivate {
 
             this.stateStorageService.storeUrl(url);
             this.router.navigate(['accessdenied']).then(() => {
-                // only show the login dialog, if the user hasn't logged in yet
+                // only show the login dialog, if the user hasn't logged input yet
                 if (!account) {
                     this.loginModalService.open();
                 }

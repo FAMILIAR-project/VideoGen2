@@ -1,0 +1,17 @@
+<div class="row justify-content-center">
+  <div class="col-md-12">
+    <h2>
+      Choisir les vidéos
+      <small class="text-muted">Mode Configurable</small>
+    </h2>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-12">
+    <div class="row">
+      <div *ngFor = "let thumb of thumbs" class="col-md-3">
+        <!--i class="fa fa-check-square-o" aria-hidden="true"></i-->
+        <img src="{{ thumb }}" style="width:190;height:60">
+      </div>
+    </div>
+</div>

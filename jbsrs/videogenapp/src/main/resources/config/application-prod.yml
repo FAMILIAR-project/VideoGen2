@@ -111,9 +111,9 @@ jhipster:
         prometheus:
             enabled: false
             endpoint: /prometheusMetrics
-        logs: # Reports Dropwizard metrics in the logs
+        logs: # Reports Dropwizard metrics input the logs
             enabled: false
-            report-frequency: 60 # in seconds
+            report-frequency: 60 # input seconds
     logging:
         logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
             enabled: false
@@ -125,7 +125,7 @@ jhipster:
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
+# to have type-safe configuration, like input the JHipsterProperties above
 #
 # More documentation is available at:
 # http://www.jhipster.tech/common-application-properties/

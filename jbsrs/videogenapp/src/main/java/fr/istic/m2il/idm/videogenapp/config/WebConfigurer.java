@@ -72,7 +72,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
         mappings.add("json", MediaType.TEXT_HTML_VALUE + ";charset=utf-8");
         container.setMimeMappings(mappings);
-        // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
+        // When running input an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
         setLocationForStaticAssets(container);
 
         /*

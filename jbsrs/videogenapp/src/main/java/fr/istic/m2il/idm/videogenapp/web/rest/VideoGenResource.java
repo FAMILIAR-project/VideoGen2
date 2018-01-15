@@ -1,9 +1,12 @@
 package fr.istic.m2il.idm.videogenapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import fr.istic.m2il.idm.videogenapp.VideogenappApp;
+import fr.istic.m2il.idm.videogenapp.config.DefaultProfileUtil;
 import fr.istic.m2il.idm.videogenapp.domain.VideoGen;
 import fr.istic.m2il.idm.videogenapp.domain.VideoGeneratorModelWrapper;
 import fr.istic.m2il.idm.videogenapp.service.VideoGenService;
+import fr.istic.m2il.idm.videogenapp.service.util.DevUtils;
 import fr.istic.m2il.idm.videogenapp.web.rest.errors.BadRequestAlertException;
 import fr.istic.m2il.idm.videogenapp.web.rest.util.HeaderUtil;
 import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs;
@@ -11,20 +14,23 @@ import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenHelper;
 import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations;
 import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils;
 import fr.istic.m2il.idm.videogentransformations.utils.VideoGenUtils;
-import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,15 +45,16 @@ public class VideoGenResource {
 
     private static final String ENTITY_NAME = "videoGen";
 
+    private final Environment env;
+
     private final VideoGenService videoGenService;
     private VideoGenHelper videogenHelper = new VideoGenHelper();
     private VideoGenConfigs videoGenConfigs = new VideoGenConfigs();
 
-    public VideoGenResource(VideoGenService videoGenService) {
+    public VideoGenResource(VideoGenService videoGenService, Environment env) {
         this.videoGenService = videoGenService;
-        this.videoGenConfigs.setOutPutFoulder("data/output");
-        this.videoGenConfigs.setServerIP("http://localhost:8080/");
-        this.videoGenConfigs.setGifResolutions(190, 60);
+        this.env = env;
+
     }
 
     /**
@@ -95,7 +102,7 @@ public class VideoGenResource {
     /**
      * GET  /video-gens : get all the videoGens.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of videoGens in body
+     * @return the ResponseEntity with status 200 (OK) and the list of videoGens input body
      */
     @GetMapping("/video-gens")
     @Timed
@@ -132,21 +139,21 @@ public class VideoGenResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/videogen/{filename}")
+    @GetMapping("/video-gens/{filename}")
     public VideoGeneratorModelWrapper getVideoGenModel(@PathVariable String filename){
-        filename = "data/input/videogen/" + filename + ".videogen";
+        filename = "data/videogen/" + filename + ".videogen";
         log.debug("getVideoGenModel : " + filename);
         return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
     }
 
-    @GetMapping("/videogen/gifs/{filename}")
+    @GetMapping("/video-gens/gifs/{filename}")
     public VideoGeneratorModelWrapper getGifs(@PathVariable String filename){
-        filename = "data/input/videogen/" + filename + ".videogen";
+        filename = "data/videogen/" + filename + ".videogen";
         log.debug("getVideoGenModel : " + filename);
         return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
     }
 
-    @PostMapping("/videogen")
+    @PostMapping("/video-gens/playlist/configure")
     public ResponseEntity generatePlaylist(@Valid @RequestBody List<String> videos){
 
         String location = VideoGenUtils.makePlaylist(videos, CommonUtils.getOutPutFileName("data/output/playlists/playlist.mp4"));
@@ -155,22 +162,105 @@ public class VideoGenResource {
             .body(location);
     }
 
-    @GetMapping("videogen/random/{filename}")
+    @GetMapping("/video-gens/random/{filename}")
     public String generateRandomVariant(@PathVariable String filename){
-        filename = "data/input/videogen/" + filename + ".videogen";
+        filename = "data/videogen/" + filename + ".videogen";
         log.debug("getRandomVariant : " + filename);
         VideoGeneratorModel model = videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename));
         String location = VideoGenPlayTransformations.generateRandomPlayList(model);
         return location;
     }
 
-    @GetMapping("videogen/files")
+    @GetMapping("/video-gens/files")
     public String[] getVideoGenFiles(){
-        File videoGenFolder = new File("data/input/videogen");
+        File videoGenFolder = new File("data/videogen");
         return videoGenFolder.list(
             (dir,name)-> name.endsWith(".videogen")
         );
     }
 
+    @GetMapping(value = "/video-gens/file/{filename}")
+    public String getVideoFile(@PathVariable String filename)throws IOException {
+        File videoGenFolder = new File("data/videogen");
+        return videoGenFolder.getName();
+    }
+
+    @GetMapping("/video-gens/random")
+    public String generateRandomPlaylist() throws URISyntaxException {
+
+        VideoGenConfigs.setOutPutFoulder(new File("data/output").getPath());
+        VideoGenConfigs.setServerIP("http://localhost:8080/");
+        VideoGenConfigs.setGifResolutions(190, 60);
+        VideoGenConfigs.initSubOutPutFolders();
+
+        String specificationpath = this.videoGenService.getRandomVideoGenSpecification();
+        System.out.println(new File(specificationpath).getAbsolutePath());
+        VideoGeneratorModel videoGeneratorModel =
+           new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+        String playlist = VideoGenPlayTransformations.generateRandomPlayList(videoGeneratorModel);
+
+        File devToTarget = new File("target/www/data/output/playlists");
+
+        String [] profiles = this.env.getActiveProfiles();
+
+        boolean isDev = false;
+        for(String p:profiles){
+            if(p.equals("dev")){
+                isDev = true;
+                break;
+            }
+        }
+
+        if(isDev){
+            try {
+                FileUtils.copyFileToDirectory(new File(playlist), devToTarget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return playlist;
+
+    }
+
+    @GetMapping("/video-gens/variant/random")
+    public List<String> getRandomVariant() throws URISyntaxException {
+        VideoGenConfigs.setOutPutFoulder(new File("data/output").getPath());
+        VideoGenConfigs.setServerIP("http://localhost:8080/");
+        VideoGenConfigs.setGifResolutions(190, 60);
+        VideoGenConfigs.initSubOutPutFolders();
+
+        String specificationpath = this.videoGenService.getRandomVideoGenSpecification();
+
+        VideoGeneratorModel videoGeneratorModel =
+            new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+
+        List<String> thumbs = VideoGenPlayTransformations.makeThumbnails(videoGeneratorModel);
+
+        File devToTarget = new File("target/www/data/output/thumbs");
+
+        String [] profiles = this.env.getActiveProfiles();
+
+        boolean isDev = false;
+        for(String p:profiles){
+            if(p.equals("dev")){
+                isDev = true;
+                break;
+            }
+        }
+
+        if(isDev){
+            for(String thumb: thumbs){
+                try {
+                    FileUtils.copyFileToDirectory(new File(thumb), devToTarget);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return thumbs;
+    }
 
 }

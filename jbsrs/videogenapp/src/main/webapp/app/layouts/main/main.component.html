@@ -1,11 +1,33 @@
-<jhi-page-ribbon></jhi-page-ribbon>
-<div>
+<!--jhi-page-ribbon></jhi-page-ribbon-->
+<!--div>
     <router-outlet name="navbar"></router-outlet>
-</div>
-<div class="container-fluid">
+</div-->
+<!--div class="container-fluid">
     <div class="card jh-card">
         <router-outlet></router-outlet>
         <router-outlet name="popup"></router-outlet>
     </div>
-    <jhi-footer></jhi-footer>
-</div>
+    <div class="justify-content-center"><jhi-footer></jhi-footer></div>
+</div-->
+
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+      <div class="cover-container">
+         <header class="masthead clearfix">
+              <div class="inner">
+                  <h3 class="masthead-brand">VideoGen</h3>
+                  <nav class="nav nav-masthead">
+                      <a class="nav-link active" href="#">Home</a>
+                  </nav>
+              </div>
+          </header>
+          <main role="main" class="inner cover">
+              <div class="">
+                  <router-outlet></router-outlet>
+                  <router-outlet name="popup"></router-outlet>
+              </div>
+          </main>
+          <div class="justify-content-center"><jhi-footer></jhi-footer></div>
+      </div>
+  </div>
+<div>
