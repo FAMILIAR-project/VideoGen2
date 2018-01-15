@@ -21,9 +21,9 @@ import {
     FooterComponent,
     ProfileService,
     PageRibbonComponent,
-    ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import { Component } from './src/main/webapp/app/entities/.component';
 
 @NgModule({
     imports: [
@@ -42,8 +42,8 @@ import {
         NavbarComponent,
         ErrorComponent,
         PageRibbonComponent,
-        ActiveMenuDirective,
-        FooterComponent
+        FooterComponent,
+        Component
     ],
     providers: [
         ProfileService,

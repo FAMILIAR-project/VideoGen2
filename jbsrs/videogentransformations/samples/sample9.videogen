@@ -1,0 +1,10 @@
+VideoGen {
+	mandatory videoseq v0 "/home/ismael/videogen/v01.mp4" {filter negate}
+	mandatory image i0 "/home/ismael/videogen/i0.jpg"
+	alternatives v1 {
+		videoseq v11 "/home/ismael/videogen/v12.mp4" {probability 20 filter flip h}
+		videoseq v12 "/home/ismael/videogen/v2.mp4" {probability 20}
+		videoseq v13 "/home/ismael/videogen/v01.mp4" {probability 50}
+	}
+	optional videoseq v2 "/home/ismael/videogen/v01.mp4" {filter b&w}
+}

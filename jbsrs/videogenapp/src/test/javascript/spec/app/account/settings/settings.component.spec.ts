@@ -40,7 +40,7 @@ describe('Component Tests', () => {
 
                 activated: true,
                 email: 'john.doe@mail.com',
-                langKey: 'fr',
+                langKey: 'en',
                 login: 'john'
             };
             mockPrincipal.setResponse(accountValues);
