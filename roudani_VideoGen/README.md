@@ -4,11 +4,11 @@ Notre programme principale est le main de la class Main.java, nous avons pu impl
 
 # Organisation
 - Le dossier 'variante' contient un exemple de variante obtenue par notre generateur
-- Le dossier generatedVideos comme son nom l'indique contient les videos generer qu'ils soit intermédiaires ou finales
-- Le dossier video contient les vidéos utilisées pour les tests
+- Le dossier generatedVideos comme son nom l'indique contient les videos generés qu'ils soit intermédiaires ou finales
+- Le dossier videos contient les vidéos utilisées pour les tests
 - Le dossier textFiles contient les fichiers playLists générés (txt) les fichiers CSV, les pages html et tout autre fichier text généré
 - Le package transformation contient les differentes classes permettant la transformation de notre grammaire
-- Le package Utils contients les fonctionalités nessaisaires pour les transforamtions
+- Le package util contients les fonctionalités nessaisaires pour les transforamtions (ex: filtres)
 - La class Main.java est notre programme principale
 - La classe Test.xtend permet le tests de certaines fonctionalités
 
