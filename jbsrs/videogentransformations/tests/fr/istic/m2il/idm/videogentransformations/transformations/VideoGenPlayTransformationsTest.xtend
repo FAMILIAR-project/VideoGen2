@@ -236,7 +236,7 @@ class VideoGenPlayTransformationsTest {
 				VideoGenConfigs.setGifResolutions(Integer.parseInt(System.getProperty("gif_width")), Integer.parseInt(System.getProperty("gif_heigth")))	
 			}
 			Assert.assertTrue(
-			"Le fichier CSV produit pour la spcécification videogen du fichier " + System.getProperty("videogenspecification")  +" contient autant de lignes que de nombre de variantes possibles (+ 1)." ,
+			"Le fichier CSV produit pour la spécification videogen du fichier " + System.getProperty("videogenspecification")  +" contient autant de lignes que de nombre de variantes possibles (+ 1)." ,
 			(VideoGenUtils.getVariantNumber(videoGen) +1) == CSVHelper.create(videoGen, isDuration ,csv_type).size)
 		}
 	}
@@ -257,7 +257,7 @@ class VideoGenPlayTransformationsTest {
 	}
 	
 	@Test
-	def void checksWebPageThums(){
+	def void checksWebPageThumbs(){
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
