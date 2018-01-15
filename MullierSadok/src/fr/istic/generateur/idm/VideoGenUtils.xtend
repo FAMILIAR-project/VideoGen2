@@ -39,14 +39,14 @@ class VideoGenUtils {
             playlist.add(VideoGenUtils.resize(video, r.get(0), r.get(1), output_width, output_height, outputFolder))
         }
 
-        return VideoGenUtils.concatVideos(playlist, outputFolder + "/", "video_" + System.currentTimeMillis + ".mp4")  
+        return VideoGenUtils.concatenerVideos(playlist, outputFolder + "/", "video_" + System.currentTimeMillis + ".mp4")  
     }
     
     /**
      * permet de concatener des videos grace a ffmpeg
      * @return : le nom du fichier
      */
-     private static def String concatVideos(String[] filenames, String outputfilename, String videoName){
+     private static def String concatenerVideos(String[] filenames, String outputfilename, String videoName){
         val COMMAND = new ArrayList<String>
         var filter = ""
         val video = outputfilename + videoName
@@ -91,7 +91,7 @@ class VideoGenUtils {
                     variant.add((media as OptionalMedia).description.location)
                 }
             }else if(media instanceof AlternativesMedia && (media as AlternativesMedia).medias.get(0) instanceof VideoDescription){
-                variant.add(choose(media as AlternativesMedia))
+                variant.add(selectAlternativeVideo(media as AlternativesMedia))
             }
         }
 
@@ -101,7 +101,7 @@ class VideoGenUtils {
     /**
      * @return : le media choisi parmi les alternatives
      */
-    private def static String choose(AlternativesMedia media) {
+    private def static String selectAlternativeVideo(AlternativesMedia media) {
         var chosen = ""
         chosen = null
         var total = 0
