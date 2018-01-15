@@ -7,6 +7,6 @@ We need to add some very nice tools like :
     - import videos ?
     - concat huge videos and insert short videos ?
     - rapport ( Jules 2 )
-    
+    - dockerisation
     
  Maël, Jules, Emmanuel ...& add your name___ _Here_ 
