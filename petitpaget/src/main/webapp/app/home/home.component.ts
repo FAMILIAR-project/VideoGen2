@@ -35,8 +35,6 @@ export class HomeComponent implements OnInit {
     getFiles(){
         this.loadingString = "Loading files";
         this.videoGenService.getVideoGenFiles().subscribe((files) => {
-            console.log("GetVideoGenFiles : files");
-            console.log(files);
             this.listFiles = files ;
             this.loadingString = null;
         });

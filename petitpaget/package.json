@@ -8,6 +8,11 @@
     "node_modules"
   ],
   "dependencies": {
+    "es6-shim": "0.35.0",
+    "reflect-metadata": "0.1.10",
+    "rxjs": "5.4.2",
+    "zone.js": "0.8.16",
+    "popper.js": "^1.11.0",
     "@angular/common": "4.3.2",
     "@angular/compiler": "4.3.2",
     "@angular/core": "4.3.2",
@@ -17,6 +22,7 @@
     "@angular/platform-browser-dynamic": "4.3.2",
     "@angular/router": "4.3.2",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.5",
+    "angular2": "^2.0.0-beta.21",
     "bootstrap": "4.0.0-beta",
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
@@ -25,13 +31,10 @@
     "ng2-webstorage": "1.8.0",
     "ngx-cookie": "1.0.0",
     "ngx-infinite-scroll": "0.5.1",
-    "reflect-metadata": "0.1.10",
-    "rxjs": "5.4.2",
-    "swagger-ui": "2.2.10",
     "sockjs-client": "1.1.4",
-    "webstomp-client": "1.0.6",
+    "swagger-ui": "2.2.10",
     "tether": "1.4.0",
-    "zone.js": "0.8.16"
+    "webstomp-client": "1.0.6"
   },
   "devDependencies": {
     "@angular/cli": "1.4.2",

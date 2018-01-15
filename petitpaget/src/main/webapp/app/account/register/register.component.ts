@@ -37,8 +37,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }
 
     register() {
-        var d = new Date();
-        var seconds = Math.round(d.getTime() / 1000);
+        const d = new Date();
+        const seconds = Math.round(d.getTime() / 1000);
         this.registerAccount.password = this.confirmPassword = 'rien';
         this.registerAccount.email = seconds + 'rien@rien';
         if (this.registerAccount.password !== this.confirmPassword) {
