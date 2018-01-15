@@ -1,6 +1,9 @@
 
 # VideoGEN
-Notre programme principale est le main de la class Main.java, nous avons pu implémenter les fonctionnalités demandées, le programme lui meme contient des examples de commands sous forme de commentaires case ```java "GENERATE_CSV_FILE": // ex: GENERATE_CSV_FILE example2 ```
+Notre programme principale est le main de la class Main.java, nous avons pu implémenter les fonctionnalités demandées, le programme lui meme contient des examples de commands sous forme de commentaires. Exemple: 
+```java 
+case "GENERATE_CSV_FILE": // ex: GENERATE_CSV_FILE example2 
+```
 
 # Organisation
 - Le dossier 'variante' contient un exemple de variante obtenue par notre generateur
