@@ -1,33 +1,37 @@
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
-import org.xtext.example.mydsl.videoGen.*;
 
 import static org.junit.Assert.*;
-import java.io.*;
 import transformation.Ffmpeg
 import transformation.LongestVariant
 import transformation.Html
 import util.Utils
-import transformation.VariantSizes
+import util.Filters
+import transformation.VideoToGif
+import org.junit.Before
+import transformation.Etude
 
 class VideoGenTest2 {
-	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example2.videogen"));
+	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example4.videogen"));
+	@Before
+	def void befor(){
+		println("Ne pas oublier de nettoyer les dossiers avant de lancer de nouvelles generations de videos")
+	}
+	
 
 	@Test
 	def void testVariantFfmpeg() {
-
-		// supprimer le fichier output.mp4 avant de relancer!!
-		val variant = Ffmpeg.toFfmpeg(videoGen)
-		assertTrue(Utils.validator(videoGen))
-		//Utils.toFile(variant, "variant.txt")
-		//Utils.concat_and_play("variant.txt", "variant")
+		//supprimer le fichier output.mp4 avant de relancer!!
+		val variant = Ffmpeg.generatePlayList(videoGen)
+		Utils.toFile(variant, "textFiles/variant.txt")
+		Utils.concat_and_play("textFiles/variant.txt", "generatedVideos/variante")
 
 	}
 
 	@Test
 	def void testLongestFfmpeg() {
 
-		val logestVariant = LongestVariant.toLongestVar(videoGen)
+		val logestVariant = LongestVariant.toLongestPlayList(videoGen)
 		Utils.toFile(logestVariant, "logestVariant.txt");
 
 	}
@@ -36,17 +40,49 @@ class VideoGenTest2 {
 	def void testHtmlPage() {
 
 		val htmlPage = Html.toHtml(videoGen)
-		Utils.toFile(htmlPage, "vignette.html");
+		Utils.toFile(htmlPage, "textFiles/vignette.html");
+		assertTrue(Utils.isFileExist("textFiles/vignette.html"))
 
 	}
 	
 	@Test
 	def void testVariantSizes(){
-		val variantSizes = VariantSizes.getAllVariants(videoGen)
+		val variantSizes = Etude.getAllVariants(videoGen)
 	}
 	
 	@Test
 	def void testVideoToGif(){
-		Utils.videoToGif("output.mp4", "gifFromVideo", 50, 50);
+		val toGif = new VideoToGif
+		assertTrue(toGif.modelToGifs(videoGen,200,200))	
 	}
+	
+	@Test
+	def void testFilterBlackWhite(){
+		Filters.blackWhiteFilter("videos/1.mp4", false)
+		assertTrue(Utils.isFileExist("generatedVideos/1_bw.avi"))
+	}
+	
+		@Test
+	def void testFilterNegate(){
+		Filters.negateFilter("videos/1.mp4", false)
+		assertTrue(Utils.isFileExist("generatedVideos/1_neg.avi"))
+	}
+			@Test
+	def void testFilterFlip(){
+		Filters.flipFilter("videos/1.mp4", "h",false)
+		assertTrue(Utils.isFileExist("generatedVideos/1_hflip.avi"))
+	}
+	
+	@Test
+	def void testClean(){
+		//decomenter pour tester clean
+		//Utils.cleanTestFiles();
+		assertTrue(true)
+	}
+	
+	@Test 
+		def void testAddText(){
+		//Filters.addText("videos/1.mp4",)
+	}
+	
 }
