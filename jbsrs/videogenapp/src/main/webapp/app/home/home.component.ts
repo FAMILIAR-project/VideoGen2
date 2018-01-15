@@ -21,8 +21,9 @@ export class HomeComponent implements OnInit {
     modalRef: NgbModalRef;
 
     guestname: string;
-    modes = ['Aléatoire', 'Configurateur'];
-    selectedMode = null;
+    modes: string[] = ['Aléatoire','Configurateur'];
+    selectedMode: string;
+    mode: string;
 
     constructor(
         private principal: Principal,
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();*/
+        this.selectedMode = '';
     }
 
     registerAuthenticationSuccess() {
@@ -56,8 +58,8 @@ export class HomeComponent implements OnInit {
         this.modalRef = this.loginModalService.open();
     }
 
-    setMode(){
-
+    validate(){
+      console.log("Mode Sele" + this.selectedMode);
       if(this.selectedMode = "Aléatoire"){
         this.videoGenService.getRandomPlayList().subscribe((response) => {
             console.log("Response get "+response)
@@ -68,5 +70,9 @@ export class HomeComponent implements OnInit {
       else{
         this.router.navigate(['video-gen-configurator']);
       }
+    }
+
+    onChange($event: any){
+      console.log("Mode " + $event);
     }
 }

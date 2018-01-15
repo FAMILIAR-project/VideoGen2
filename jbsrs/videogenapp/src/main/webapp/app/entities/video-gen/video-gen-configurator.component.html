@@ -9,9 +9,9 @@
 <div class="row justify-content-center">
   <div class="col-md-12">
     <div class="row">
-      <div *ngFor = "let thumb of thumbs" class="col-md-3">
-        <!--i class="fa fa-check-square-o" aria-hidden="true"></i-->
-        <img src="{{ thumb }}" style="width:190;height:60">
+      <div *ngFor="let thumb of thumbs" (click)="select(thumb)" class="col-md-2">
+        <i *ngIf="thumb.selected" class="fa fa-check-square-o" aria-hidden="true"></i>
+        <img src="{{ thumb.url }}" style="width: 104.3px; height: 104.3px">
       </div>
     </div>
 </div>

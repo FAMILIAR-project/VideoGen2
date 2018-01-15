@@ -10,6 +10,8 @@ import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
 import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils
 import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenAnalysisTransformations
 import org.xtext.example.mydsl.videoGen.ImageDescription
+import org.xtext.example.mydsl.videoGen.BlackWhiteFilter
+import org.xtext.example.mydsl.videoGen.NegateFilter
 
 class CSVHelper {
 	
@@ -25,6 +27,11 @@ class CSVHelper {
 							size += (mediaDescription as VideoDescription).duration
 						}
 						else{
+							if(mediaDescription.filter !== null){
+								
+								mediaDescription.location = FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(mediaDescription), mediaDescription.location)
+							}
+								
 							size += FFMPEGHelper.getVideoDuration(mediaDescription.location)
 						}
 					}

@@ -21,7 +21,7 @@ public class VideoGenAppRunTests {
     choices.put("exporter_gifs", "videoToGif");
     choices.put("tailles_variantes", "checksCSVLinesNumber");
     choices.put("durees_variantes", "checksCSVLinesNumber");
-    choices.put("appliquer_filtres", "filterizeVideo");
+    choices.put("appliquer_filtres", "generateRandomPlayList");
     int _size = ((List<String>)Conversions.doWrapArray(args)).size();
     boolean _lessThan = (_size < 3);
     if (_lessThan) {

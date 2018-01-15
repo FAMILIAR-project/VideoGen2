@@ -13,6 +13,10 @@ import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import java.util.Random
 import org.xtext.example.mydsl.videoGen.ImageDescription
+import org.xtext.example.mydsl.videoGen.FlipFilter
+import org.xtext.example.mydsl.videoGen.BlackWhiteFilter
+import org.xtext.example.mydsl.videoGen.NegateFilter
+import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations
 
 class VideoGenUtils {
 	
@@ -287,6 +291,25 @@ class VideoGenUtils {
 				
 			}
 		}
-		getMediaDescriptionsLocation(playlist)
+		VideoGenPlayTransformations.applyFilters(playlist)
+	}
+	
+	static def String getFilter(VideoDescription videoDescription){
+		var String filter
+		if(videoDescription.filter instanceof BlackWhiteFilter)
+			filter = "format=gray"
+		if(videoDescription.filter instanceof NegateFilter)
+			filter = "negate"
+		if(videoDescription.filter instanceof FlipFilter){
+			if((videoDescription.filter as FlipFilter).orientation.equals("horizontal") || 
+				(videoDescription.filter as FlipFilter).orientation.equals("h")
+				)
+				filter = "h"
+			if((videoDescription.filter as FlipFilter).orientation.equals("vertical") || 
+				(videoDescription.filter as FlipFilter).orientation.equals("v")
+				)
+				filter = "v"
+		}
+		filter
 	}
 }

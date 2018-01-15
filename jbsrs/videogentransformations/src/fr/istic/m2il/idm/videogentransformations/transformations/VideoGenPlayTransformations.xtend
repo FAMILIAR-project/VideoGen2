@@ -130,10 +130,12 @@ class VideoGenPlayTransformations {
 	
 	static def String videoGenToGif(List<MediaDescription> playlist){
 		
+		var filterizedList = applyFilters(playlist);
+		
 		if(VideoGenConfigs.outPutFoulder !== null  && VideoGenConfigs.getGifResolutions.get(0) > 0 && VideoGenConfigs.getGifResolutions.get(1) > 0){
 			return FFMPEGHelper.videoToGif(
 								VideoGenUtils.makePlaylist(
-															VideoGenUtils.getMediaDescriptionsLocation(playlist), 
+															filterizedList, 
 															CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")
 														  ),
 								VideoGenConfigs.getGifResolutions().get(0),
@@ -148,59 +150,41 @@ class VideoGenPlayTransformations {
 		FFMPEGHelper.videoToGif(video, VideoGenConfigs.getGifResolutions().get(0),VideoGenConfigs.getGifResolutions().get(1))
 	}
 	
-	static def String videoGenApplyFilters(VideoGeneratorModel videoGen){
-		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
-			if(VideoGenConfigs.outPutFoulder !== null ){
-				for(media:videoGen.medias){
-					if(media instanceof AlternativesMedia){
-						for(m:media.medias){
-							if(m instanceof VideoDescription){
-								val vdescription = media as VideoDescription
-								if(vdescription.filter instanceof BlackWhiteFilter){
-									vdescription.location = FFMPEGHelper.applyFilter("format=gray", vdescription.location)
-								}
-								if(vdescription.filter instanceof NegateFilter){
-									vdescription.location = FFMPEGHelper.applyFilter("negate", vdescription.location)
-								}
-				
-								if(vdescription.filter instanceof FlipFilter){
-									val flipFilter = vdescription.filter as FlipFilter
-									var flipOrientation = flipFilter.orientation
-									if(flipOrientation.equals("horizontal"))
-										flipOrientation = "h"
-									if(flipOrientation.equals("vertical"))
-										flipOrientation = "v"	
-						
-									vdescription.location = FFMPEGHelper.applyFilter(flipOrientation+"flip", vdescription.location)
-								}
-							}
+	
+	static def List<String> applyFilters(List<MediaDescription> mediaDescriptions){
+		var medias = newArrayList
+		
+		for(media: mediaDescriptions){
+			if(media instanceof AlternativesMedia){
+				for(alternative: media.medias){
+					if(alternative instanceof VideoDescription){
+						if(alternative.filter !== null){
+							medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(alternative), alternative.location))
+						}
+						else{
+							medias.add(alternative.location)
 						}
 					}
 					else{
-						if(media instanceof VideoDescription){
-							val vdescription = media as VideoDescription
-							if(vdescription.filter instanceof BlackWhiteFilter){
-								vdescription.location = FFMPEGHelper.applyFilter("format=gray", vdescription.location)
-							}
-							if(vdescription.filter instanceof NegateFilter){
-								vdescription.location = FFMPEGHelper.applyFilter("negate", vdescription.location)
-							}
-				
-							if(vdescription.filter instanceof FlipFilter){
-								val flipFilter = vdescription.filter as FlipFilter
-								var flipOrientation = flipFilter.orientation
-								if(flipOrientation.equals("horizontal"))
-									flipOrientation = "h"
-								if(flipOrientation.equals("vertical"))
-									flipOrientation = "v"	
-						
-								vdescription.location = FFMPEGHelper.applyFilter(flipOrientation+"flip", vdescription.location)
-							}
-						}
+						medias.add(alternative.location)
 					}
 				}
 			}
+			else{
+				if(media instanceof VideoDescription){
+					if(media.filter !== null){
+							medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(media), media.location))
+					}else{
+						medias.add(media.location)
+					}
+				}
+				else{
+					medias.add(media.location)
+				}
+			}
 		}
+		
+		medias
 	}
 	
 }

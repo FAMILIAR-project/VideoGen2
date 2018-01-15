@@ -194,18 +194,6 @@ class VideoGenPlayTransformationsTest {
 	}
 	
 	@Test
-	def void filterizeVideo(){
-		if(System.getProperty("file_filter") !== null){
-			if(System.getProperty("output_folder") === null)
-				VideoGenConfigs.setOutPutFoulder("output")
-			var filter = System.getProperty("filter")
-			if(filter.equals("b&w"))
-				filter = "format=gray"
-			FFMPEGHelper.applyFilter(filter,System.getProperty("file_filter"))
-		}
-	}
-	
-	@Test
 	def void checksCSVLinesNumber(){
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){

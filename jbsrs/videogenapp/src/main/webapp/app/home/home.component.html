@@ -22,13 +22,12 @@
 </div>
 
 <div class="row justify-content-center">
-  <form class="form-inline" name="guest_form" role="form" (ngSubmit)="setMode()">
+  <form class="form-inline" name="guest_form" role="form" (ngSubmit)="validate()">
     <div class="form-group">
       <label for="mode">Choisir le mode</label>
-      <select class="form-control" id="mode">
-        <option>Aléatoire</option>
-        <option>Configurateur</option>
-      </select>
+      <select [(ngModel)]="selectedMode" (ngModelChange)="onChange($event)" class="form-control" id="mode">
+        <option *ngFor="let mode of modes" [ngValue]="mode"> {{ mode }} </option>
+     </select>
     </div>
     <div class="form-group mx-sm-3 mb-2">
       <label for="guest_name" class="sr-only">Entrer votre prénom</label>

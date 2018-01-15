@@ -21,4 +21,18 @@ export class VideoGenPlayerComponent implements OnInit {
     console.log('Video Url' + this.videourl);
   }
 
+  validate(){
+
+    console.log("Mode " + this.selectedMode);
+    if(this.selectedMode = "Aléatoire"){
+      this.videoGenService.getRandomPlayList().subscribe((response) => {
+          console.log("Response get "+response)
+          this.videoGenService.setVideoUrlShare(response);
+          //this.router.navigate(['video-gen-player']);
+      });
+    }
+    else{
+      //this.router.navigate(['video-gen-configurator']);
+    }
+  }
 }
