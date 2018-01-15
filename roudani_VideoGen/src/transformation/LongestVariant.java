@@ -13,8 +13,12 @@ import util.Utils;
 
 public class LongestVariant {
 
-	// transformation de videoGen vers la variante de la plus longue durée
-	public static String toLongestVar(VideoGeneratorModel videoGen) {
+	/**
+	 * genere la playlist de la plus longue durée
+	 * @param videoGen
+	 * @return
+	 */
+	public static String toLongestPlayList(VideoGeneratorModel videoGen) {
 		String res = "#this is a comment";
 		double totalDuree = 0.;
 		for (Media media : videoGen.getMedias()) {
