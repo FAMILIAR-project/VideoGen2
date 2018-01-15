@@ -11,7 +11,7 @@ export class VideoGenConfiguratorComponent implements OnInit {
 
   videoGen: string;
   listFiles: string[];
-  thumbs: string[] = [];
+  thumbs: any[] = [];
   videoGenModel: VideoGeneratorModel;
 
   constructor(private videoGenService: VideoGenService) { }
@@ -20,7 +20,10 @@ export class VideoGenConfiguratorComponent implements OnInit {
     this.videoGenService.getRandomVariant().subscribe(response => {
       console.log(response);
       response.forEach(thumb => {
-        this.thumbs.push(thumb);
+        this.thumbs.push({
+          selected : false,
+          url: thumb
+        });
       })
     });
   }
@@ -32,6 +35,7 @@ export class VideoGenConfiguratorComponent implements OnInit {
             this.listFiles = files ;
         });
     }
-
-
+  selecte(thumb: any){
+    thumb.seleced = !thumb.selected;
+  }
 }

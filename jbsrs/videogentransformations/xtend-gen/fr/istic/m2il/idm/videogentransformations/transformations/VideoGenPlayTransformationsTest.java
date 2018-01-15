@@ -233,25 +233,6 @@ public class VideoGenPlayTransformationsTest {
   }
   
   @Test
-  public void filterizeVideo() {
-    String _property = System.getProperty("file_filter");
-    boolean _tripleNotEquals = (_property != null);
-    if (_tripleNotEquals) {
-      String _property_1 = System.getProperty("output_folder");
-      boolean _tripleEquals = (_property_1 == null);
-      if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
-      }
-      String filter = System.getProperty("filter");
-      boolean _equals = filter.equals("b&w");
-      if (_equals) {
-        filter = "format=gray";
-      }
-      FFMPEGHelper.applyFilter(filter, System.getProperty("file_filter"));
-    }
-  }
-  
-  @Test
   public void checksCSVLinesNumber() {
     final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")));
     boolean _isGoodVideoGenSpecification = VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen);

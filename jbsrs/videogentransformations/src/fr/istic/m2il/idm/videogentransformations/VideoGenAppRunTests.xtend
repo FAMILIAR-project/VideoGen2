@@ -17,7 +17,7 @@ class VideoGenAppRunTests {
 		choices.put("exporter_gifs", "videoToGif")
 		choices.put("tailles_variantes", "checksCSVLinesNumber")
 		choices.put("durees_variantes", "checksCSVLinesNumber")
-		choices.put("appliquer_filtres", "filterizeVideo")
+		choices.put("appliquer_filtres", "generateRandomPlayList")
 		if(args.size < 3){
 			System.err.println("Veuillez indiquez tous les arguments !!!")
 			System.exit(0)

@@ -2,6 +2,7 @@ package fr.istic.m2il.idm.videogentransformations.utils;
 
 import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs;
 import fr.istic.m2il.idm.videogentransformations.helpers.FFMPEGHelper;
+import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations;
 import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils;
 import java.io.File;
 import java.util.ArrayList;
@@ -12,10 +13,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
+import org.xtext.example.mydsl.videoGen.BlackWhiteFilter;
+import org.xtext.example.mydsl.videoGen.Filter;
+import org.xtext.example.mydsl.videoGen.FlipFilter;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MandatoryMedia;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
+import org.xtext.example.mydsl.videoGen.NegateFilter;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
@@ -359,7 +364,35 @@ public class VideoGenUtils {
           }
         }
       }
-      _xblockexpression = VideoGenUtils.getMediaDescriptionsLocation(playlist);
+      _xblockexpression = VideoGenPlayTransformations.applyFilters(playlist);
+    }
+    return _xblockexpression;
+  }
+  
+  public static String getFilter(final VideoDescription videoDescription) {
+    String _xblockexpression = null;
+    {
+      String filter = null;
+      Filter _filter = videoDescription.getFilter();
+      if ((_filter instanceof BlackWhiteFilter)) {
+        filter = "format=gray";
+      }
+      Filter _filter_1 = videoDescription.getFilter();
+      if ((_filter_1 instanceof NegateFilter)) {
+        filter = "negate";
+      }
+      Filter _filter_2 = videoDescription.getFilter();
+      if ((_filter_2 instanceof FlipFilter)) {
+        if ((((FlipFilter) videoDescription.getFilter()).getOrientation().equals("horizontal") || 
+          ((FlipFilter) videoDescription.getFilter()).getOrientation().equals("h"))) {
+          filter = "h";
+        }
+        if ((((FlipFilter) videoDescription.getFilter()).getOrientation().equals("vertical") || 
+          ((FlipFilter) videoDescription.getFilter()).getOrientation().equals("v"))) {
+          filter = "v";
+        }
+      }
+      _xblockexpression = filter;
     }
     return _xblockexpression;
   }

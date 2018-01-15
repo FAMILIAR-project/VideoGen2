@@ -33,13 +33,13 @@
 </div>
 <br>
 <div class="row justify-content-center">
-  <form class="form-inline" name="guest_form" role="form" (ngSubmit)="setMode()">
-    <button type="submit" class="btn btn-primary mb-2">Créer un nouvel épisode</button>
+  <form class="form-inline" name="guest_form" role="form" (ngSubmit)="validate()">
     <div class="form-group">
       <label for="mode">Choisir le mode </label>
       <select [(ngModel)]="selectedMode" class="form-control" id="mode">
-        <option *ngFor="let mode of modes" [ngValue]="mode"> {{mode}} </option>
+        <option *ngFor="let mode of modes" [ngValue]="mode"> {{ mode }} </option>
      </select>
     </div>
+    <button type="submit" class="btn btn-primary mb-2">Créer un nouvel épisode</button>
   </form>
 </div>

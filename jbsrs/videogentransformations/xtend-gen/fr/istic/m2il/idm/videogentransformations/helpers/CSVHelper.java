@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.xtext.example.mydsl.videoGen.Filter;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
@@ -31,14 +32,19 @@ public class CSVHelper {
               int _duration = ((VideoDescription) mediaDescription).getDuration();
               size = (_size + _duration);
             } else {
+              Filter _filter = ((VideoDescription)mediaDescription).getFilter();
+              boolean _tripleNotEquals_1 = (_filter != null);
+              if (_tripleNotEquals_1) {
+                ((VideoDescription)mediaDescription).setLocation(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)mediaDescription)), ((VideoDescription)mediaDescription).getLocation()));
+              }
               double _size_1 = size;
               int _videoDuration = FFMPEGHelper.getVideoDuration(((VideoDescription)mediaDescription).getLocation());
               size = (_size_1 + _videoDuration);
             }
           } else {
             VideoText _text_1 = ((VideoDescription) mediaDescription).getText();
-            boolean _tripleNotEquals_1 = (_text_1 != null);
-            if (_tripleNotEquals_1) {
+            boolean _tripleNotEquals_2 = (_text_1 != null);
+            if (_tripleNotEquals_2) {
               double _size_2 = size;
               int _size_3 = ((VideoDescription) mediaDescription).getText().getSize();
               size = (_size_2 + _size_3);

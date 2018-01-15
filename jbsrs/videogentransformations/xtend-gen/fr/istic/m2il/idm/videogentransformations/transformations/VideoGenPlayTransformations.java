@@ -9,15 +9,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
-import org.xtext.example.mydsl.videoGen.BlackWhiteFilter;
 import org.xtext.example.mydsl.videoGen.Filter;
-import org.xtext.example.mydsl.videoGen.FlipFilter;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MandatoryMedia;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
-import org.xtext.example.mydsl.videoGen.NegateFilter;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
@@ -218,12 +216,12 @@ public class VideoGenPlayTransformations {
   }
   
   public static String videoGenToGif(final List<MediaDescription> playlist) {
+    List<String> filterizedList = VideoGenPlayTransformations.applyFilters(playlist);
     if ((((VideoGenConfigs.getOutPutFoulder() != null) && (VideoGenConfigs.getGifResolutions()[0] > 0)) && (VideoGenConfigs.getGifResolutions()[1] > 0))) {
       File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
       String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
       return FFMPEGHelper.videoToGif(
-        VideoGenUtils.makePlaylist(
-          VideoGenUtils.getMediaDescriptionsLocation(playlist), 
+        VideoGenUtils.makePlaylist(filterizedList, 
           CommonUtils.getOutPutFileName(_plus)), 
         VideoGenConfigs.getGifResolutions()[0], 
         VideoGenConfigs.getGifResolutions()[1]);
@@ -243,78 +241,42 @@ public class VideoGenPlayTransformations {
     return _xblockexpression;
   }
   
-  public static String videoGenApplyFilters(final VideoGeneratorModel videoGen) {
-    Object _xifexpression = null;
-    boolean _isGoodVideoGenSpecification = VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen);
-    if (_isGoodVideoGenSpecification) {
-      Object _xifexpression_1 = null;
-      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
-      boolean _tripleNotEquals = (_outPutFoulder != null);
-      if (_tripleNotEquals) {
-        EList<Media> _medias = videoGen.getMedias();
-        for (final Media media : _medias) {
-          if ((media instanceof AlternativesMedia)) {
-            EList<MediaDescription> _medias_1 = ((AlternativesMedia)media).getMedias();
-            for (final MediaDescription m : _medias_1) {
-              if ((m instanceof VideoDescription)) {
-                final VideoDescription vdescription = ((VideoDescription) media);
-                Filter _filter = vdescription.getFilter();
-                if ((_filter instanceof BlackWhiteFilter)) {
-                  vdescription.setLocation(FFMPEGHelper.applyFilter("format=gray", vdescription.getLocation()));
-                }
-                Filter _filter_1 = vdescription.getFilter();
-                if ((_filter_1 instanceof NegateFilter)) {
-                  vdescription.setLocation(FFMPEGHelper.applyFilter("negate", vdescription.getLocation()));
-                }
-                Filter _filter_2 = vdescription.getFilter();
-                if ((_filter_2 instanceof FlipFilter)) {
-                  Filter _filter_3 = vdescription.getFilter();
-                  final FlipFilter flipFilter = ((FlipFilter) _filter_3);
-                  String flipOrientation = flipFilter.getOrientation();
-                  boolean _equals = flipOrientation.equals("horizontal");
-                  if (_equals) {
-                    flipOrientation = "h";
-                  }
-                  boolean _equals_1 = flipOrientation.equals("vertical");
-                  if (_equals_1) {
-                    flipOrientation = "v";
-                  }
-                  vdescription.setLocation(FFMPEGHelper.applyFilter((flipOrientation + "flip"), vdescription.getLocation()));
-                }
+  public static List<String> applyFilters(final List<MediaDescription> mediaDescriptions) {
+    ArrayList<String> _xblockexpression = null;
+    {
+      ArrayList<String> medias = CollectionLiterals.<String>newArrayList();
+      for (final MediaDescription media : mediaDescriptions) {
+        if ((media instanceof AlternativesMedia)) {
+          EList<MediaDescription> _medias = ((AlternativesMedia)media).getMedias();
+          for (final MediaDescription alternative : _medias) {
+            if ((alternative instanceof VideoDescription)) {
+              Filter _filter = ((VideoDescription)alternative).getFilter();
+              boolean _tripleNotEquals = (_filter != null);
+              if (_tripleNotEquals) {
+                medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)alternative)), ((VideoDescription)alternative).getLocation()));
+              } else {
+                medias.add(((VideoDescription)alternative).getLocation());
               }
+            } else {
+              medias.add(alternative.getLocation());
+            }
+          }
+        } else {
+          if ((media instanceof VideoDescription)) {
+            Filter _filter_1 = ((VideoDescription)media).getFilter();
+            boolean _tripleNotEquals_1 = (_filter_1 != null);
+            if (_tripleNotEquals_1) {
+              medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)media)), ((VideoDescription)media).getLocation()));
+            } else {
+              medias.add(((VideoDescription)media).getLocation());
             }
           } else {
-            if ((media instanceof VideoDescription)) {
-              final VideoDescription vdescription_1 = ((VideoDescription) media);
-              Filter _filter_4 = vdescription_1.getFilter();
-              if ((_filter_4 instanceof BlackWhiteFilter)) {
-                vdescription_1.setLocation(FFMPEGHelper.applyFilter("format=gray", vdescription_1.getLocation()));
-              }
-              Filter _filter_5 = vdescription_1.getFilter();
-              if ((_filter_5 instanceof NegateFilter)) {
-                vdescription_1.setLocation(FFMPEGHelper.applyFilter("negate", vdescription_1.getLocation()));
-              }
-              Filter _filter_6 = vdescription_1.getFilter();
-              if ((_filter_6 instanceof FlipFilter)) {
-                Filter _filter_7 = vdescription_1.getFilter();
-                final FlipFilter flipFilter_1 = ((FlipFilter) _filter_7);
-                String flipOrientation_1 = flipFilter_1.getOrientation();
-                boolean _equals_2 = flipOrientation_1.equals("horizontal");
-                if (_equals_2) {
-                  flipOrientation_1 = "h";
-                }
-                boolean _equals_3 = flipOrientation_1.equals("vertical");
-                if (_equals_3) {
-                  flipOrientation_1 = "v";
-                }
-                vdescription_1.setLocation(FFMPEGHelper.applyFilter((flipOrientation_1 + "flip"), vdescription_1.getLocation()));
-              }
-            }
+            medias.add(media.getLocation());
           }
         }
       }
-      _xifexpression = _xifexpression_1;
+      _xblockexpression = medias;
     }
-    return ((String)_xifexpression);
+    return _xblockexpression;
   }
 }
