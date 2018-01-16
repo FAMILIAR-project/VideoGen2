@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.xtext.example.mydsl.videoGen.Filter;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
@@ -23,7 +22,8 @@ public class CSVHelper {
   private static String addLine(final List<MediaDescription> playlist, final int index, final boolean isDuration, final boolean isGif) {
     String line = (Integer.valueOf(index) + ";");
     double size = 0.0;
-    for (final MediaDescription mediaDescription : playlist) {
+    List<MediaDescription> playlistTemp = playlist;
+    for (final MediaDescription mediaDescription : playlistTemp) {
       if ((mediaDescription != null)) {
         if ((mediaDescription instanceof VideoDescription)) {
           if (isDuration) {
@@ -37,34 +37,46 @@ public class CSVHelper {
               Filter _filter = ((VideoDescription)mediaDescription).getFilter();
               boolean _tripleNotEquals_1 = (_filter != null);
               if (_tripleNotEquals_1) {
-                ((VideoDescription)mediaDescription).setLocation(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)mediaDescription)), ((VideoDescription)mediaDescription).getLocation()));
+                FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)mediaDescription)), ((VideoDescription)mediaDescription).getLocation());
+                double _size_1 = size;
+                int _videoDuration = VideoGenUtils.getVideoDuration(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)mediaDescription)), ((VideoDescription)mediaDescription).getLocation()));
+                size = (_size_1 + _videoDuration);
+              } else {
+                double _size_2 = size;
+                int _videoDuration_1 = VideoGenUtils.getVideoDuration(((VideoDescription)mediaDescription).getLocation());
+                size = (_size_2 + _videoDuration_1);
               }
-              double _size_1 = size;
-              int _videoDuration = FFMPEGHelper.getVideoDuration(((VideoDescription)mediaDescription).getLocation());
-              size = (_size_1 + _videoDuration);
             }
           } else {
             VideoText _text_1 = ((VideoDescription) mediaDescription).getText();
             boolean _tripleNotEquals_2 = (_text_1 != null);
             if (_tripleNotEquals_2) {
-              double _size_2 = size;
-              int _size_3 = ((VideoDescription) mediaDescription).getText().getSize();
-              size = (_size_2 + _size_3);
+              double _size_3 = size;
+              int _size_4 = ((VideoDescription) mediaDescription).getText().getSize();
+              size = (_size_3 + _size_4);
             } else {
-              double _size_4 = size;
-              double _videoSize = VideoGenUtils.getVideoSize(mediaDescription);
-              size = (_size_4 + _videoSize);
+              Filter _filter_1 = ((VideoDescription)mediaDescription).getFilter();
+              boolean _tripleNotEquals_3 = (_filter_1 != null);
+              if (_tripleNotEquals_3) {
+                double _size_5 = size;
+                double _videoSize = VideoGenUtils.getVideoSize(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)mediaDescription)), ((VideoDescription)mediaDescription).getLocation()));
+                size = (_size_5 + _videoSize);
+              } else {
+                double _size_6 = size;
+                double _videoSize_1 = VideoGenUtils.getVideoSize(mediaDescription);
+                size = (_size_6 + _videoSize_1);
+              }
             }
           }
         } else {
           if (isDuration) {
-            double _size_5 = size;
-            int _videoDuration_1 = FFMPEGHelper.getVideoDuration(mediaDescription.getLocation());
-            size = (_size_5 + ((double) _videoDuration_1));
+            double _size_7 = size;
+            int _videoDuration_2 = VideoGenUtils.getVideoDuration(mediaDescription.getLocation());
+            size = (_size_7 + ((double) _videoDuration_2));
           } else {
-            double _size_6 = size;
-            double _videoSize_1 = VideoGenUtils.getVideoSize(mediaDescription);
-            size = (_size_6 + _videoSize_1);
+            double _size_8 = size;
+            double _videoSize_2 = VideoGenUtils.getVideoSize(mediaDescription);
+            size = (_size_8 + _videoSize_2);
           }
         }
         String _line = line;
@@ -75,16 +87,16 @@ public class CSVHelper {
       }
     }
     if (isDuration) {
-      int _realDuration = VideoGenAnalysisTransformations.getRealDuration(playlist);
+      int _realDuration = VideoGenAnalysisTransformations.getRealDuration(playlistTemp);
       return (((line + Double.valueOf(size)) + ";") + Integer.valueOf(_realDuration));
     } else {
-      if (isGif) {
-        double _realSize = VideoGenAnalysisTransformations.getRealSize(playlist);
+      if ((!isGif)) {
+        double _realSize = VideoGenAnalysisTransformations.getRealSize(playlistTemp);
         return (((line + Double.valueOf(size)) + ";") + Double.valueOf(_realSize));
       } else {
         File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
         String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
-        double _realSize_1 = VideoGenAnalysisTransformations.getRealSize(VideoGenUtils.getGif(playlist, CommonUtils.getOutPutFileName(_plus), 190, 60));
+        double _realSize_1 = VideoGenAnalysisTransformations.getRealSize(VideoGenUtils.getGif(playlistTemp, CommonUtils.getOutPutFileName(_plus), 190, 60));
         return (((line + Double.valueOf(size)) + ";") + Double.valueOf(_realSize_1));
       }
     }
@@ -134,9 +146,6 @@ public class CSVHelper {
   }
   
   public static List<String> create(final VideoGeneratorModel videoGen, final boolean isDuration, final boolean isGif) {
-    int _size = VideoGenUtils.generatePlaylists(videoGen).size();
-    String _plus = ("Taille " + Integer.valueOf(_size));
-    InputOutput.<String>println(_plus);
     return CSVHelper.create(VideoGenUtils.generatePlaylists(videoGen), isDuration, isGif);
   }
   

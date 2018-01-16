@@ -260,8 +260,8 @@ class VideoGenPlayTransformationsTest {
 			VideoGenConfigs.setGifResolutions(190, 60)
 			Assert.assertTrue("Le nombre de vignettes produites par la spécification videogen du fichier "+ System.getProperty("videogenspecification") +" est bien égal au nombre de medias", 
 			VideoGenUtils.getVideoGenMediasNumber(videoGen) == VideoGenPlayTransformations.makeThumbnails(videoGen).size
-		)
+			)
 		}
+		
 	}
-	
 }

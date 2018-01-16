@@ -115,7 +115,7 @@ public class VideoGenPlayTransformations {
       boolean _tripleNotEquals = (_outPutFoulder != null);
       if (_tripleNotEquals) {
         ArrayList<String> html = new ArrayList<String>();
-        html.add("<div id=\"gallery\">");
+        html.add("<div class=\"row\" id=\"gallery\">");
         EList<Media> _medias = videoGen.getMedias();
         for (final Media media : _medias) {
           {
@@ -125,20 +125,16 @@ public class VideoGenPlayTransformations {
               for (final MediaDescription alternativeMedia : _medias_1) {
                 {
                   if ((alternativeMedia instanceof VideoDescription)) {
-                    String _serverIP = VideoGenConfigs.getServerIP();
-                    String _plus = ("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP);
                     String _generateThumbnail = FFMPEGHelper.generateThumbnail(((VideoDescription)alternativeMedia).getLocation());
-                    String _plus_1 = (_plus + _generateThumbnail);
-                    String _plus_2 = (_plus_1 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
-                    html.add(_plus_2);
+                    String _plus = ("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _generateThumbnail);
+                    String _plus_1 = (_plus + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                    html.add(_plus_1);
                   }
                   if ((alternativeMedia instanceof ImageDescription)) {
-                    String _serverIP_1 = VideoGenConfigs.getServerIP();
-                    String _plus_3 = ("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_1);
                     String _location = ((ImageDescription)alternativeMedia).getLocation();
-                    String _plus_4 = (_plus_3 + _location);
-                    String _plus_5 = (_plus_4 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
-                    html.add(_plus_5);
+                    String _plus_2 = ("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _location);
+                    String _plus_3 = (_plus_2 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                    html.add(_plus_3);
                   }
                   html.add("    </div>");
                 }
@@ -148,42 +144,34 @@ public class VideoGenPlayTransformations {
             if ((media instanceof MandatoryMedia)) {
               MediaDescription _description = ((MandatoryMedia)media).getDescription();
               if ((_description instanceof VideoDescription)) {
-                String _serverIP = VideoGenConfigs.getServerIP();
-                String _plus = ("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP);
                 String _generateThumbnail = FFMPEGHelper.generateThumbnail(((MandatoryMedia)media).getDescription().getLocation());
-                String _plus_1 = (_plus + _generateThumbnail);
-                String _plus_2 = (_plus_1 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
-                html.add(_plus_2);
+                String _plus = ("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _generateThumbnail);
+                String _plus_1 = (_plus + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                html.add(_plus_1);
               }
               MediaDescription _description_1 = ((MandatoryMedia)media).getDescription();
               if ((_description_1 instanceof ImageDescription)) {
-                String _serverIP_1 = VideoGenConfigs.getServerIP();
-                String _plus_3 = ("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_1);
                 String _location = ((MandatoryMedia)media).getDescription().getLocation();
-                String _plus_4 = (_plus_3 + _location);
-                String _plus_5 = (_plus_4 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
-                html.add(_plus_5);
+                String _plus_2 = ("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _location);
+                String _plus_3 = (_plus_2 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                html.add(_plus_3);
               }
               html.add("  </div>");
             }
             if ((media instanceof OptionalMedia)) {
               MediaDescription _description_2 = ((OptionalMedia)media).getDescription();
               if ((_description_2 instanceof VideoDescription)) {
-                String _serverIP_2 = VideoGenConfigs.getServerIP();
-                String _plus_6 = ("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_2);
                 String _generateThumbnail_1 = FFMPEGHelper.generateThumbnail(((OptionalMedia)media).getDescription().getLocation());
-                String _plus_7 = (_plus_6 + _generateThumbnail_1);
-                String _plus_8 = (_plus_7 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
-                html.add(_plus_8);
+                String _plus_4 = ("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _generateThumbnail_1);
+                String _plus_5 = (_plus_4 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                html.add(_plus_5);
               }
               MediaDescription _description_3 = ((OptionalMedia)media).getDescription();
               if ((_description_3 instanceof ImageDescription)) {
-                String _serverIP_3 = VideoGenConfigs.getServerIP();
-                String _plus_9 = ("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _serverIP_3);
                 String _location_1 = ((OptionalMedia)media).getDescription().getLocation();
-                String _plus_10 = (_plus_9 + _location_1);
-                String _plus_11 = (_plus_10 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
-                html.add(_plus_11);
+                String _plus_6 = ("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + _location_1);
+                String _plus_7 = (_plus_6 + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">");
+                html.add(_plus_7);
               }
               html.add("  </div>");
             }
@@ -246,31 +234,18 @@ public class VideoGenPlayTransformations {
     {
       ArrayList<String> medias = CollectionLiterals.<String>newArrayList();
       for (final MediaDescription media : mediaDescriptions) {
-        if ((media instanceof AlternativesMedia)) {
-          EList<MediaDescription> _medias = ((AlternativesMedia)media).getMedias();
-          for (final MediaDescription alternative : _medias) {
-            if ((alternative instanceof VideoDescription)) {
-              Filter _filter = ((VideoDescription)alternative).getFilter();
-              boolean _tripleNotEquals = (_filter != null);
-              if (_tripleNotEquals) {
-                medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)alternative)), ((VideoDescription)alternative).getLocation()));
-              } else {
-                medias.add(((VideoDescription)alternative).getLocation());
-              }
-            } else {
-              medias.add(alternative.getLocation());
-            }
-          }
-        } else {
-          if ((media instanceof VideoDescription)) {
-            Filter _filter_1 = ((VideoDescription)media).getFilter();
-            boolean _tripleNotEquals_1 = (_filter_1 != null);
-            if (_tripleNotEquals_1) {
+        if ((media instanceof VideoDescription)) {
+          if ((media != null)) {
+            Filter _filter = ((VideoDescription)media).getFilter();
+            boolean _tripleNotEquals = (_filter != null);
+            if (_tripleNotEquals) {
               medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(((VideoDescription)media)), ((VideoDescription)media).getLocation()));
             } else {
               medias.add(((VideoDescription)media).getLocation());
             }
-          } else {
+          }
+        } else {
+          if ((((ImageDescription) media) != null)) {
             medias.add(media.getLocation());
           }
         }

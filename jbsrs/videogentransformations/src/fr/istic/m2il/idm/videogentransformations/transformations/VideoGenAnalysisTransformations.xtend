@@ -127,7 +127,8 @@ class VideoGenAnalysisTransformations {
 	}
 	
 	static def double getRealSize(List<MediaDescription> playlist){
-		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
+		var list = VideoGenPlayTransformations.applyFilters(playlist)
+		VideoGenUtils.getVideoSize(VideoGenUtils.makePlaylist(list, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
 	}
 	
 	static def double getRealSize(String playlistLocation){
@@ -135,11 +136,8 @@ class VideoGenAnalysisTransformations {
 	}
 	
 	static def int getRealDuration(List<MediaDescription> playlist){
-		var list = VideoGenUtils.getMediaDescriptionsLocation(playlist)
-		for(l: list){
-			println("loc " +l)
-		}
-		VideoGenUtils.getVideoDuration(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
+		var list = VideoGenPlayTransformations.applyFilters(playlist)
+		VideoGenUtils.getVideoDuration(VideoGenUtils.makePlaylist(list, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4")))
 	}
 
 }

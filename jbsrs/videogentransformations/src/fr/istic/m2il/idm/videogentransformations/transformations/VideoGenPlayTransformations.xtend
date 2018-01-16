@@ -14,9 +14,7 @@ import org.xtext.example.mydsl.videoGen.MediaDescription
 import java.util.List
 import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
 import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenChekerHelper
-import org.xtext.example.mydsl.videoGen.BlackWhiteFilter
-import org.xtext.example.mydsl.videoGen.NegateFilter
-import org.xtext.example.mydsl.videoGen.FlipFilter
+
 
 class VideoGenPlayTransformations {
 	
@@ -30,6 +28,7 @@ class VideoGenPlayTransformations {
 		else
 			return null
 	}
+	
 	
 	static def List<String> getRandomPlayList(VideoGeneratorModel videoGen){
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
@@ -73,32 +72,32 @@ class VideoGenPlayTransformations {
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(VideoGenConfigs.outPutFoulder !== null ){
 				var html = new ArrayList
-				html.add("<div id=\"gallery\">")
+				html.add("<div class=\"row\" id=\"gallery\">")
 				for(media: videoGen.medias){
 					if(media instanceof AlternativesMedia){
 						html.add("  <div class=\"row alternatives\">")
 						for(alternativeMedia: media.medias){
 							if(alternativeMedia instanceof VideoDescription)
-								html.add("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + FFMPEGHelper.generateThumbnail(alternativeMedia.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
+								html.add("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + FFMPEGHelper.generateThumbnail(alternativeMedia.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
 							if(alternativeMedia instanceof ImageDescription)
-								html.add("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + alternativeMedia.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
+								html.add("    <div class=\"thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + alternativeMedia.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
 							html.add("    </div>")
 						}
 						html.add("  </div>")
 					}
 					if(media instanceof MandatoryMedia){
 						if(media.description instanceof VideoDescription)
-							html.add("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + FFMPEGHelper.generateThumbnail(media.description.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
+							html.add("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + FFMPEGHelper.generateThumbnail(media.description.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
 						if(media.description instanceof ImageDescription)
-							html.add("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + media.description.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
+							html.add("  <div class=\"row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + media.description.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
 						html.add("  </div>")
 				
 					}
 					if(media instanceof OptionalMedia){
 						if(media.description instanceof VideoDescription)
-							html.add("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + FFMPEGHelper.generateThumbnail(media.description.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
+							html.add("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + FFMPEGHelper.generateThumbnail(media.description.location) + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">")
 						if(media.description instanceof ImageDescription)
-							html.add("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + VideoGenConfigs.getServerIP() + media.description.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
+							html.add("  <div class=\" row thumb\" style=\"width: 104.3px; height: 104.3px; background-image: url(&quot;http://" + media.description.location + "&quot;);background-size: 3764.8px 110.729px; background-position: -2549.63px -2.85753px;\">") 
 						html.add("  </div>")
 					}
 				}
@@ -155,35 +154,22 @@ class VideoGenPlayTransformations {
 		var medias = newArrayList
 		
 		for(media: mediaDescriptions){
-			if(media instanceof AlternativesMedia){
-				for(alternative: media.medias){
-					if(alternative instanceof VideoDescription){
-						if(alternative.filter !== null){
-							medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(alternative), alternative.location))
-						}
-						else{
-							medias.add(alternative.location)
-						}
-					}
-					else{
-						medias.add(alternative.location)
-					}
-				}
-			}
-			else{
-				if(media instanceof VideoDescription){
+			if(media instanceof VideoDescription){
+				if(media !== null ){
 					if(media.filter !== null){
-							medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(media), media.location))
-					}else{
-						medias.add(media.location)
-					}
+					medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(media), media.location))
 				}
 				else{
 					medias.add(media.location)
 				}
+				}
+			}
+			else{
+				if( (media as ImageDescription) !== null){
+					medias.add(media.location)
+				}
 			}
 		}
-		
 		medias
 	}
 	

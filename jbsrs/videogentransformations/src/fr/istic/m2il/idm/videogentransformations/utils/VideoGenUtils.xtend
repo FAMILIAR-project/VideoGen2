@@ -65,10 +65,10 @@ class VideoGenUtils {
 					list.add(null);
 				}
 				list.add(desc as MediaDescription)
+				newPlaylists.add(list)
 				for(var i = 0; i < size; i++){
 					list.add(null);
 				}
-				newPlaylists.add(list)
 				size--;
 				index++;
 			}
@@ -82,12 +82,7 @@ class VideoGenUtils {
 	static def String makePlaylist(List<String> locations, String playlistName){
 		val resolutions = newArrayList
 		
-		
-		println("Size "+locations.size)
-		
 		for(location: locations){
-			
-			var templocation = location;
 			
 			if(location !== null && 
 				
@@ -98,40 +93,27 @@ class VideoGenUtils {
 					!location.replace(".","@").split("@").get(1).equals("bpm") &&
 					!location.replace(".","@").split("@").get(1).equals("tiff")
 				)
-			){
-				resolutions.add(FFMPEGHelper.getVideoResolution(location))
-				println("Locin "+location)
-				}
-				else{
-					println("Locin "+location)
-				}
+			)
+			resolutions.add(FFMPEGHelper.getVideoResolution(location))
+	
 		}
 		
-		println("Sizeeeeeeeeeee "+ locations.size)
-		for(location: locations){
-			println("Locationnnnnnnnnnnnn "+ location)
-		}
 		
+	
 		var maxOutputWidth = 0
 		var maxOutputHeight = 0
 		
-		for(resolution : resolutions){
+		for(resolution: resolutions){
 			if(resolution.get(0) > maxOutputWidth){
 				maxOutputWidth = resolution.get(0)
-				println("OUt "+ maxOutputWidth)
 			}
 			if(resolution.get(1) > maxOutputHeight){
 				maxOutputHeight = resolution.get(1)
-				println("Int "+ maxOutputHeight)
 			}
 		}
-		var i = 0
-		println("i " + i)
-		println(" Actual size "+ locations.size)
 		var playlist = newArrayList
-		println(" Actual size "+ locations.size)
+		
 		for(location: locations){
-			println("Loc LOc "+ location)
 				if(location !== null){
 					playlist.add(FFMPEGHelper.homogenizeMediaResolution(
 															location, 
@@ -145,14 +127,13 @@ class VideoGenUtils {
 			
 		}
 		var playlistWrite = newArrayList
-		for(p : playlist){
-			//playlistWrite.add("file '" + p + "'" + '\n')
-			println("file '" + p + "'" )
+		for(p: playlist){
+			playlistWrite.add("file '" + p + "'" + '\n')
 		}
-		println(" Actual hereeeeeeeeeeeee ")
 		CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.txt"), playlistWrite)
-		println("ppsize" + playlist.size)
 		return FFMPEGHelper.concatVideos(playlist, playlistName)
+		
+		
 		
 	}
 	
@@ -191,7 +172,7 @@ class VideoGenUtils {
 	}
 	
 	static def String getGif(List<MediaDescription> playlist, String playlistName, int width, int heigth){
-		FFMPEGHelper.videoToGif(makePlaylist(getMediaDescriptionsLocation(playlist), playlistName), width, heigth)
+		FFMPEGHelper.videoToGif(makePlaylist(VideoGenPlayTransformations.applyFilters(playlist), playlistName), width, heigth)
 	}
 	
 	static def VideoDescription getRandom(List<VideoDescription> videos){
@@ -333,11 +314,11 @@ class VideoGenUtils {
 			if((videoDescription.filter as FlipFilter).orientation.equals("horizontal") || 
 				(videoDescription.filter as FlipFilter).orientation.equals("h")
 				)
-				filter = "h"
+				filter = "hflip"
 			if((videoDescription.filter as FlipFilter).orientation.equals("vertical") || 
 				(videoDescription.filter as FlipFilter).orientation.equals("v")
 				)
-				filter = "v"
+				filter = "vflip"
 		}
 		filter
 	}

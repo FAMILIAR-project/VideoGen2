@@ -197,7 +197,7 @@ class FFMPEGHelper {
 
 		command.add(videoLocation)
 		
-		val outputFile =  CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/gifs/" + new File(videoLocation).absolutePath.replace("\\", "/").split("/").last.replace(".", "@").split("@").get(0) + ".gif")
+		val outputFile =  CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/gifs/" + new File(videoLocation).absolutePath.replace("\\", "/").split("/").last.replace(".", "@").split("@").get(0).split("_").get(0) + ".gif")
 		
 		command.add("-vf")
 		command.add("scale=" + width + ":" + height)
