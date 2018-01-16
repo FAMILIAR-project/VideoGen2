@@ -38,7 +38,7 @@ public class VideoGenPlayTransformationsTest {
     String _property = System.getProperty("output_folder");
     boolean _tripleEquals = (_property == null);
     if (_tripleEquals) {
-      VideoGenConfigs.setOutPutFoulder("output");
+      VideoGenConfigs.setOutPutFolder("output");
       VideoGenConfigs.initSubOutPutFolders();
     }
     InputOutput.<Boolean>println(Boolean.valueOf(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)));
@@ -50,7 +50,7 @@ public class VideoGenPlayTransformationsTest {
     String _property = System.getProperty("output_folder");
     boolean _tripleEquals = (_property == null);
     if (_tripleEquals) {
-      VideoGenConfigs.setOutPutFoulder("output");
+      VideoGenConfigs.setOutPutFolder("output");
       VideoGenConfigs.initSubOutPutFolders();
     }
     InputOutput.<Boolean>println(Boolean.valueOf(VideoGenChekerHelper.isAllMediasFilesExist(videoGen)));
@@ -62,7 +62,7 @@ public class VideoGenPlayTransformationsTest {
     String _property = System.getProperty("output_folder");
     boolean _tripleEquals = (_property == null);
     if (_tripleEquals) {
-      VideoGenConfigs.setOutPutFoulder("output");
+      VideoGenConfigs.setOutPutFolder("output");
       VideoGenConfigs.initSubOutPutFolders();
     }
     InputOutput.<Boolean>println(Boolean.valueOf(VideoGenChekerHelper.isAllMediasIdIsUnique(videoGen)));
@@ -76,7 +76,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       VideoGenPlayTransformations.generateRandomPlayList(videoGen);
@@ -91,7 +91,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       final List<String> thumbs = VideoGenPlayTransformations.makeThumbnails(videoGen);
@@ -107,7 +107,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       VideoGenConfigs.setGifResolutions(190, 60);
@@ -126,7 +126,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       VideoGenConfigs.setGifResolutions(190, 60);
@@ -142,7 +142,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       String _property_1 = System.getProperty("gif_width");
@@ -164,7 +164,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       VideoGenConfigs.setGifResolutions(190, 60);
@@ -184,7 +184,7 @@ public class VideoGenPlayTransformationsTest {
       String _property_1 = System.getProperty("output_folder");
       boolean _tripleEquals = (_property_1 == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
       }
       String[] files = System.getProperty("concat_files").split(" ");
       final ArrayList<int[]> resolutions = CollectionLiterals.<int[]>newArrayList();
@@ -240,9 +240,15 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
+        File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+        String _plus = ("put " + _outPutFoulder);
+        InputOutput.<String>println(_plus);
       }
+      File _outPutFoulder_1 = VideoGenConfigs.getOutPutFoulder();
+      String _plus_1 = ("put " + _outPutFoulder_1);
+      InputOutput.<String>println(_plus_1);
       boolean csv_type = false;
       boolean isDuration = false;
       String _property_1 = System.getProperty("csv_duration");
@@ -276,14 +282,16 @@ public class VideoGenPlayTransformationsTest {
       } else {
         VideoGenConfigs.setGifResolutions(Integer.parseInt(System.getProperty("gif_width")), Integer.parseInt(System.getProperty("gif_heigth")));
       }
+      InputOutput.<String>println(("dur " + Boolean.valueOf(isDuration)));
+      InputOutput.<String>println(("gif " + Boolean.valueOf(csv_type)));
       String _property_4 = System.getProperty("videogenspecification");
-      String _plus = ("Le fichier CSV produit pour la spcécification videogen du fichier " + _property_4);
-      String _plus_1 = (_plus + " contient autant de lignes que de nombre de variantes possibles (+ 1).");
+      String _plus_2 = ("Le fichier CSV produit pour la spcécification videogen du fichier " + _property_4);
+      String _plus_3 = (_plus_2 + " contient autant de lignes que de nombre de variantes possibles (+ 1).");
       int _variantNumber = VideoGenUtils.getVariantNumber(videoGen);
-      int _plus_2 = (_variantNumber + 1);
+      int _plus_4 = (_variantNumber + 1);
       int _size = CSVHelper.create(videoGen, isDuration, csv_type).size();
-      boolean _equals_2 = (_plus_2 == _size);
-      Assert.assertTrue(_plus_1, _equals_2);
+      boolean _equals_2 = (_plus_4 == _size);
+      Assert.assertTrue(_plus_3, _equals_2);
     }
   }
   
@@ -295,7 +303,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       VideoGenConfigs.setGifResolutions(190, 60);
@@ -317,7 +325,7 @@ public class VideoGenPlayTransformationsTest {
       String _property = System.getProperty("output_folder");
       boolean _tripleEquals = (_property == null);
       if (_tripleEquals) {
-        VideoGenConfigs.setOutPutFoulder("output");
+        VideoGenConfigs.setOutPutFolder("output");
         VideoGenConfigs.initSubOutPutFolders();
       }
       VideoGenConfigs.setGifResolutions(190, 60);

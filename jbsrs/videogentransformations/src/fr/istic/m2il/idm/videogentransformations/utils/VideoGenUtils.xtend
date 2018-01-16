@@ -80,9 +80,15 @@ class VideoGenUtils {
 	
 	
 	static def String makePlaylist(List<String> locations, String playlistName){
-		val resolutions = new ArrayList
+		val resolutions = newArrayList
 		
-		for(location : locations){
+		
+		println("Size "+locations.size)
+		
+		for(location: locations){
+			
+			var templocation = location;
+			
 			if(location !== null && 
 				
 				(
@@ -92,8 +98,18 @@ class VideoGenUtils {
 					!location.replace(".","@").split("@").get(1).equals("bpm") &&
 					!location.replace(".","@").split("@").get(1).equals("tiff")
 				)
-			)
-			resolutions.add(FFMPEGHelper.getVideoResolution(location))
+			){
+				resolutions.add(FFMPEGHelper.getVideoResolution(location))
+				println("Locin "+location)
+				}
+				else{
+					println("Locin "+location)
+				}
+		}
+		
+		println("Sizeeeeeeeeeee "+ locations.size)
+		for(location: locations){
+			println("Locationnnnnnnnnnnnn "+ location)
 		}
 		
 		var maxOutputWidth = 0
@@ -102,14 +118,20 @@ class VideoGenUtils {
 		for(resolution : resolutions){
 			if(resolution.get(0) > maxOutputWidth){
 				maxOutputWidth = resolution.get(0)
+				println("OUt "+ maxOutputWidth)
 			}
 			if(resolution.get(1) > maxOutputHeight){
 				maxOutputHeight = resolution.get(1)
+				println("Int "+ maxOutputHeight)
 			}
 		}
-		var i = 0;
-		val playlist = new ArrayList
-		for(location : locations){
+		var i = 0
+		println("i " + i)
+		println(" Actual size "+ locations.size)
+		var playlist = newArrayList
+		println(" Actual size "+ locations.size)
+		for(location: locations){
+			println("Loc LOc "+ location)
 				if(location !== null){
 					playlist.add(FFMPEGHelper.homogenizeMediaResolution(
 															location, 
@@ -124,19 +146,26 @@ class VideoGenUtils {
 		}
 		var playlistWrite = newArrayList
 		for(p : playlist){
-			playlistWrite.add("file '" + p + "'" + '\n')
+			//playlistWrite.add("file '" + p + "'" + '\n')
+			println("file '" + p + "'" )
 		}
+		println(" Actual hereeeeeeeeeeeee ")
 		CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.txt"), playlistWrite)
+		println("ppsize" + playlist.size)
 		return FFMPEGHelper.concatVideos(playlist, playlistName)
 		
 	}
 	
 	static def double getVideoSize(MediaDescription media){
-		VideoGenUtils.getVideoSize(media.location)
+		getVideoSize(media.location)
 	}
 	
 	static def double getVideoSize(String location){
 		new File(location).length
+	}
+	
+	static def int getVideoDuration(String location){
+		FFMPEGHelper.getVideoDuration(location)
 	}
 	
 	static def int getVariantNumber(VideoGeneratorModel videoGen){

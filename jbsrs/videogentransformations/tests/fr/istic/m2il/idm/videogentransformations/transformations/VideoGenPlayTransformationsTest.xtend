@@ -25,7 +25,7 @@ class VideoGenPlayTransformationsTest {
 	def void checksValidVideoGenSpecification(){
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 		}
 		println(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen))
@@ -35,7 +35,7 @@ class VideoGenPlayTransformationsTest {
 	def void checksValidFiles(){
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 		}
 		println(VideoGenChekerHelper.isAllMediasFilesExist(videoGen))
@@ -45,7 +45,7 @@ class VideoGenPlayTransformationsTest {
 	def void checksValidIds(){
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 		println(VideoGenChekerHelper.isAllMediasIdIsUnique(videoGen))
@@ -56,7 +56,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 		
@@ -70,7 +70,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 		
@@ -84,7 +84,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 			VideoGenConfigs.setGifResolutions(190, 60)
@@ -99,7 +99,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 		VideoGenConfigs.setGifResolutions(190, 60)
@@ -112,7 +112,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 			if(System.getProperty("gif_width") === null)
@@ -129,7 +129,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 			VideoGenConfigs.setGifResolutions(190, 60)
@@ -145,7 +145,7 @@ class VideoGenPlayTransformationsTest {
 		
 		if(System.getProperty("concat_files") !== null){
 			if(System.getProperty("output_folder") === null)
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 			var files = System.getProperty("concat_files").split(" ")
 			
 			val resolutions = newArrayList
@@ -198,9 +198,11 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
+				println("put " + VideoGenConfigs.outPutFoulder)
 			}
+			println("put " + VideoGenConfigs.outPutFoulder)
 			var boolean csv_type
 			var boolean isDuration
 			if(System.getProperty("csv_duration") === null){
@@ -223,6 +225,9 @@ class VideoGenPlayTransformationsTest {
 			else{
 				VideoGenConfigs.setGifResolutions(Integer.parseInt(System.getProperty("gif_width")), Integer.parseInt(System.getProperty("gif_heigth")))	
 			}
+			
+			println("dur " + isDuration)
+			println("gif " + csv_type)
 			Assert.assertTrue(
 			"Le fichier CSV produit pour la spcécification videogen du fichier " + System.getProperty("videogenspecification")  +" contient autant de lignes que de nombre de variantes possibles (+ 1)." ,
 			(VideoGenUtils.getVariantNumber(videoGen) +1) == CSVHelper.create(videoGen, isDuration ,csv_type).size)
@@ -234,7 +239,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 			VideoGenConfigs.setGifResolutions(190, 60)
@@ -249,7 +254,7 @@ class VideoGenPlayTransformationsTest {
 		val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")))
 		if(VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen)){
 			if(System.getProperty("output_folder") === null){
-				VideoGenConfigs.setOutPutFoulder("output")
+				VideoGenConfigs.setOutPutFolder("output")
 				VideoGenConfigs.initSubOutPutFolders
 			}
 			VideoGenConfigs.setGifResolutions(190, 60)

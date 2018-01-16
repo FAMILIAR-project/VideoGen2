@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 
@@ -49,10 +50,14 @@ public class FFMPEGHelper {
     String filter = "";
     command.add("ffmpeg");
     command.add("-y");
+    int _size = files.size();
+    String _plus = ("fi " + Integer.valueOf(_size));
+    InputOutput.<String>println(_plus);
     int i = 0;
     for (final String file : files) {
       {
         command.add("-i");
+        InputOutput.<String>println(("fi " + file));
         command.add(file);
         if (((((file.replace(".", "@").split("@")[1].equals("jpg") || 
           file.replace(".", "@").split("@")[1].equals("png")) || 
@@ -140,13 +145,19 @@ public class FFMPEGHelper {
     int _xblockexpression = (int) 0;
     {
       int duration = 0;
+      int i = 0;
       for (final MediaDescription media : playlist) {
-        if ((media != null)) {
-          int _duration = duration;
-          int _videoDuration = FFMPEGHelper.getVideoDuration(media.getLocation());
-          duration = (_duration + _videoDuration);
+        {
+          if ((media != null)) {
+            InputOutput.<String>println(("I " + Integer.valueOf(i)));
+            int _duration = duration;
+            int _videoDuration = FFMPEGHelper.getVideoDuration(media.getLocation());
+            duration = (_duration + _videoDuration);
+          }
+          i++;
         }
       }
+      InputOutput.<String>println(("Duration " + Integer.valueOf(duration)));
       _xblockexpression = duration;
     }
     return _xblockexpression;
