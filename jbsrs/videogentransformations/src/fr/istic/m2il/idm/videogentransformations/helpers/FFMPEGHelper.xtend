@@ -44,9 +44,12 @@ class FFMPEGHelper {
 		command.add("ffmpeg")
 		command.add("-y")
 		
+		println("fi "+files.size)
+		
 		var i = 0
 		for(file : files){
 			command.add("-i")
+			println("fi "+file)
 			command.add(file)
 			if(
 				file.replace(".","@").split("@").get(1).equals("jpg") ||
@@ -133,12 +136,15 @@ class FFMPEGHelper {
 	static def int getVideoDuration(List<MediaDescription> playlist){
 		var duration = 0
 		
+		var i = 0;
 		for(media: playlist){
 			if(media !== null){
+				println("I " + i)
 				duration += getVideoDuration(media.location)
 			}
+			i++
 		}
-		
+		println("Duration " + duration)
 		duration
 	}
 	

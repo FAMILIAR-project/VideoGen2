@@ -10,7 +10,7 @@ public class VideoGenConfigs {
   
   private static String serverIP = "localhost:8080/";
   
-  public static void setOutPutFoulder(final String outPut) {
+  public static void setOutPutFolder(final String outPut) {
     File _file = new File(outPut);
     VideoGenConfigs.outPutFolder = _file;
     boolean _exists = VideoGenConfigs.outPutFolder.exists();

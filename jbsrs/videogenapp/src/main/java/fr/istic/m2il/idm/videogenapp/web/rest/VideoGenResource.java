@@ -22,6 +22,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xtext.example.mydsl.videoGen.Media;
+import org.xtext.example.mydsl.videoGen.MediaDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 import javax.validation.Valid;
@@ -139,45 +141,29 @@ public class VideoGenResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/video-gens/{filename}")
+    /*@GetMapping("/video-gens/{filename}")
     public VideoGeneratorModelWrapper getVideoGenModel(@PathVariable String filename){
         filename = "data/videogen/" + filename + ".videogen";
         log.debug("getVideoGenModel : " + filename);
         return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
-    }
+    }*/
 
-    @GetMapping("/video-gens/gifs/{filename}")
-    public VideoGeneratorModelWrapper getGifs(@PathVariable String filename){
-        filename = "data/videogen/" + filename + ".videogen";
-        log.debug("getVideoGenModel : " + filename);
-        return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
-    }
-
-    @PostMapping("/video-gens/playlist/configure")
-    public ResponseEntity generatePlaylist(@Valid @RequestBody List<String> videos){
-
-        String location = VideoGenUtils.makePlaylist(videos, CommonUtils.getOutPutFileName("data/output/playlists/playlist.mp4"));
-        return ResponseEntity.accepted()
-            .headers(HeaderUtil.createAlert( "Generated playlist location ", location))
-            .body(location);
-    }
-
-    @GetMapping("/video-gens/random/{filename}")
+   /* @GetMapping("/video-gens/random/{filename}")
     public String generateRandomVariant(@PathVariable String filename){
         filename = "data/videogen/" + filename + ".videogen";
         log.debug("getRandomVariant : " + filename);
         VideoGeneratorModel model = videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename));
         String location = VideoGenPlayTransformations.generateRandomPlayList(model);
         return location;
-    }
+    }*/
 
-    @GetMapping("/video-gens/files")
+    /*@GetMapping("/video-gens/files")
     public String[] getVideoGenFiles(){
         File videoGenFolder = new File("data/videogen");
         return videoGenFolder.list(
             (dir,name)-> name.endsWith(".videogen")
         );
-    }
+    }*/
 
     @GetMapping(value = "/video-gens/file/{filename}")
     public String getVideoFile(@PathVariable String filename)throws IOException {
@@ -185,7 +171,23 @@ public class VideoGenResource {
         return videoGenFolder.getName();
     }
 
-    @GetMapping("/video-gens/random")
+    @GetMapping("/video-gens/playlist/gif/{filename}")
+    public VideoGeneratorModelWrapper getPlaylistGifs(@PathVariable String filename){
+        filename = "data/videogen/" + filename + ".videogen";
+        log.debug("getVideoGenModel : " + filename);
+        return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
+    }
+
+    @PostMapping("/video-gens/playlist/configure")
+    public ResponseEntity generateConfigurePlaylist(@Valid @RequestBody List<String> videos){
+
+        String location = VideoGenUtils.makePlaylist(videos, CommonUtils.getOutPutFileName("data/output/playlists/playlist.mp4"));
+        return ResponseEntity.accepted()
+            .headers(HeaderUtil.createAlert( "Generated playlist location ", location))
+            .body(location);
+    }
+
+    @GetMapping("/video-gens/playlist/random")
     public String generateRandomPlaylist() throws URISyntaxException {
 
         VideoGenConfigs.setOutPutFoulder(new File("data/output").getPath());
@@ -237,6 +239,9 @@ public class VideoGenResource {
 
         List<String> thumbs = VideoGenPlayTransformations.makeThumbnails(videoGeneratorModel);
 
+        System.out.println("Thumbs size " + thumbs.size());
+        System.out.println("Videogen medias size " + videoGeneratorModel.getMedias().size());
+
         File devToTarget = new File("target/www/data/output/thumbs");
 
         String [] profiles = this.env.getActiveProfiles();
@@ -257,6 +262,12 @@ public class VideoGenResource {
                     e.printStackTrace();
                 }
             }
+        }
+
+        int i = 0;
+
+        for(Media mediad: videoGeneratorModel.getMedias()){
+
         }
 
 

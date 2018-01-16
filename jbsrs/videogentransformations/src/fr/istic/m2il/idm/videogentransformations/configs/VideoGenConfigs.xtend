@@ -8,7 +8,7 @@ class VideoGenConfigs {
 	static var int[] gifResolutions = newIntArrayOfSize(2)
 	static var String serverIP = "localhost:8080/"
 	
-	static def void setOutPutFoulder(String outPut){
+	static def void setOutPutFolder(String outPut){
 		outPutFolder = new File(outPut)
 		if(!outPutFolder.exists)
 			outPutFolder = null

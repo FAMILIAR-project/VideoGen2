@@ -8,7 +8,9 @@ import fr.istic.m2il.idm.videogentransformations.utils.VideoGenUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.xtext.example.mydsl.videoGen.Filter;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
@@ -73,8 +75,8 @@ public class CSVHelper {
       }
     }
     if (isDuration) {
-      int _videoDuration_2 = FFMPEGHelper.getVideoDuration(playlist);
-      return (((line + Double.valueOf(size)) + ";") + Integer.valueOf(_videoDuration_2));
+      int _realDuration = VideoGenAnalysisTransformations.getRealDuration(playlist);
+      return (((line + Double.valueOf(size)) + ";") + Integer.valueOf(_realDuration));
     } else {
       if (isGif) {
         double _realSize = VideoGenAnalysisTransformations.getRealSize(playlist);
@@ -132,11 +134,14 @@ public class CSVHelper {
   }
   
   public static List<String> create(final VideoGeneratorModel videoGen, final boolean isDuration, final boolean isGif) {
+    int _size = VideoGenUtils.generatePlaylists(videoGen).size();
+    String _plus = ("Taille " + Integer.valueOf(_size));
+    InputOutput.<String>println(_plus);
     return CSVHelper.create(VideoGenUtils.generatePlaylists(videoGen), isDuration, isGif);
   }
   
   public static List<String> create(final List<List<MediaDescription>> playlists, final boolean isDuration, final boolean isGif) {
-    ArrayList<String> csvContent = new ArrayList<String>();
+    ArrayList<String> csvContent = CollectionLiterals.<String>newArrayList();
     String _addHeader = CSVHelper.addHeader(playlists, isDuration);
     String _plus = (_addHeader + "\n");
     csvContent.add(_plus);

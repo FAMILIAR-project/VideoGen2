@@ -8,6 +8,7 @@ import fr.istic.m2il.idm.videogentransformations.utils.VideoGenUtils;
 import java.io.File;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
 import org.xtext.example.mydsl.videoGen.MandatoryMedia;
 import org.xtext.example.mydsl.videoGen.Media;
@@ -202,5 +203,19 @@ public class VideoGenAnalysisTransformations {
   
   public static double getRealSize(final String playlistLocation) {
     return VideoGenUtils.getVideoSize(playlistLocation);
+  }
+  
+  public static int getRealDuration(final List<MediaDescription> playlist) {
+    int _xblockexpression = (int) 0;
+    {
+      List<String> list = VideoGenUtils.getMediaDescriptionsLocation(playlist);
+      for (final String l : list) {
+        InputOutput.<String>println(("loc " + l));
+      }
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus = (_outPutFoulder + "/playlists/playlist.mp4");
+      _xblockexpression = VideoGenUtils.getVideoDuration(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), CommonUtils.getOutPutFileName(_plus)));
+    }
+    return _xblockexpression;
   }
 }
