@@ -1,10 +1,10 @@
 VideoGen {
-	mandatory videoseq v0 "/home/ismael/videogen/v0.mp4"
-	mandatory videoseq v01 "/home/ismael/videogen/v01.mp4"
+	mandatory videoseq v0 "/home/jnsll/Vidéos/light.mp4"
+	mandatory videoseq v01 "/home/jnsll/Vidéos/rabbit.mp4"
 	alternatives v1 {
-		videoseq v11 "/home/ismael/videogen/v11.mp4"
-		videoseq v12 "/home/ismael/videogen/v12.mp4"
-		videoseq v13 "/home/ismael/videogen/v13.mp4"
+		videoseq v11 "/home/jnsll/Vidéos/space.mp4"
+		videoseq v12 "/home/jnsll/Vidéos/current_elec.mp4"
+		videoseq v13 "/home/jnsll/Vidéos/ocean.mp4"
 	}
-	optional videoseq v2 "/home/ismael/videogen/v2.mp4"
+	optional videoseq v2 "/home/jnsll/Vidéos/building.mp4"
 }
