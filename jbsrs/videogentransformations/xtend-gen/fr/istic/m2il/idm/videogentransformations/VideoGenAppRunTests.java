@@ -112,13 +112,7 @@ public class VideoGenAppRunTests {
         System.setProperty("videogenspecification", args[2]);
       }
       final JUnitCore jUnitCore = new JUnitCore();
-      String _get_4 = args[1];
-      String _plus_1 = ("Outpout " + _get_4);
-      System.out.println(_plus_1);
       VideoGenConfigs.setOutPutFolder(args[1]);
-      String _get_5 = args[1];
-      String _plus_2 = ("Outpout " + _get_5);
-      System.out.println(_plus_2);
       System.setProperty("output_folder", args[1]);
       VideoGenConfigs.initSubOutPutFolders();
       Request request = Request.method(VideoGenPlayTransformationsTest.class, choices.get(args[0]));

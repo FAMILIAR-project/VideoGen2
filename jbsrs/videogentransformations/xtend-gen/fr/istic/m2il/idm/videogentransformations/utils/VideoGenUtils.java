@@ -12,7 +12,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.xtext.example.mydsl.videoGen.AlternativesMedia;
 import org.xtext.example.mydsl.videoGen.BlackWhiteFilter;
 import org.xtext.example.mydsl.videoGen.Filter;
@@ -82,10 +81,10 @@ public class VideoGenUtils {
               list.add(null);
             }
             list.add(((MediaDescription) desc));
+            newPlaylists.add(list);
             for (int i = 0; (i < size); i++) {
               list.add(null);
             }
-            newPlaylists.add(list);
             size--;
             index++;
           }
@@ -97,30 +96,15 @@ public class VideoGenUtils {
   
   public static String makePlaylist(final List<String> locations, final String playlistName) {
     final ArrayList<int[]> resolutions = CollectionLiterals.<int[]>newArrayList();
-    int _size = locations.size();
-    String _plus = ("Size " + Integer.valueOf(_size));
-    InputOutput.<String>println(_plus);
     for (final String location : locations) {
-      {
-        String templocation = location;
-        if (((location != null) && 
-          (((((!location.replace(".", "@").split("@")[1].equals("jpg")) && 
-            (!location.replace(".", "@").split("@")[1].equals("png"))) && 
-            (!location.replace(".", "@").split("@")[1].equals("gif"))) && 
-            (!location.replace(".", "@").split("@")[1].equals("bpm"))) && 
-            (!location.replace(".", "@").split("@")[1].equals("tiff"))))) {
-          resolutions.add(FFMPEGHelper.getVideoResolution(location));
-          InputOutput.<String>println(("Locin " + location));
-        } else {
-          InputOutput.<String>println(("Locin " + location));
-        }
+      if (((location != null) && 
+        (((((!location.replace(".", "@").split("@")[1].equals("jpg")) && 
+          (!location.replace(".", "@").split("@")[1].equals("png"))) && 
+          (!location.replace(".", "@").split("@")[1].equals("gif"))) && 
+          (!location.replace(".", "@").split("@")[1].equals("bpm"))) && 
+          (!location.replace(".", "@").split("@")[1].equals("tiff"))))) {
+        resolutions.add(FFMPEGHelper.getVideoResolution(location));
       }
-    }
-    int _size_1 = locations.size();
-    String _plus_1 = ("Sizeeeeeeeeeee " + Integer.valueOf(_size_1));
-    InputOutput.<String>println(_plus_1);
-    for (final String location_1 : locations) {
-      InputOutput.<String>println(("Locationnnnnnnnnnnnn " + location_1));
     }
     int maxOutputWidth = 0;
     int maxOutputHeight = 0;
@@ -130,54 +114,32 @@ public class VideoGenUtils {
         boolean _greaterThan = (_get > maxOutputWidth);
         if (_greaterThan) {
           maxOutputWidth = resolution[0];
-          InputOutput.<String>println(("OUt " + Integer.valueOf(maxOutputWidth)));
         }
         int _get_1 = resolution[1];
         boolean _greaterThan_1 = (_get_1 > maxOutputHeight);
         if (_greaterThan_1) {
           maxOutputHeight = resolution[1];
-          InputOutput.<String>println(("Int " + Integer.valueOf(maxOutputHeight)));
         }
       }
     }
-    int i = 0;
-    InputOutput.<String>println(("i " + Integer.valueOf(i)));
-    int _size_2 = locations.size();
-    String _plus_2 = (" Actual size " + Integer.valueOf(_size_2));
-    InputOutput.<String>println(_plus_2);
     ArrayList<String> playlist = CollectionLiterals.<String>newArrayList();
-    int _size_3 = locations.size();
-    String _plus_3 = (" Actual size " + Integer.valueOf(_size_3));
-    InputOutput.<String>println(_plus_3);
-    for (final String location_2 : locations) {
-      {
-        InputOutput.<String>println(("Loc LOc " + location_2));
-        if ((location_2 != null)) {
-          playlist.add(
-            FFMPEGHelper.homogenizeMediaResolution(location_2, 
-              FFMPEGHelper.getVideoResolution(location_2)[0], 
-              FFMPEGHelper.getVideoResolution(location_2)[1], maxOutputWidth, maxOutputHeight));
-        }
+    for (final String location_1 : locations) {
+      if ((location_1 != null)) {
+        playlist.add(
+          FFMPEGHelper.homogenizeMediaResolution(location_1, 
+            FFMPEGHelper.getVideoResolution(location_1)[0], 
+            FFMPEGHelper.getVideoResolution(location_1)[1], maxOutputWidth, maxOutputHeight));
       }
     }
     ArrayList<String> playlistWrite = CollectionLiterals.<String>newArrayList();
     for (final String p : playlist) {
-      {
-        playlistWrite.add(((("file \'" + p) + "\'") + "\n"));
-        InputOutput.<String>println((("file \'" + p) + "\'"));
-      }
+      playlistWrite.add(((("file \'" + p) + "\'") + "\n"));
     }
-    InputOutput.<String>println(" Actual hereeeeeeeeeeeee ");
     File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
-    String _plus_4 = (_outPutFoulder + "/playlists/playlist.txt");
+    String _plus = (_outPutFoulder + "/playlists/playlist.txt");
     final ArrayList<String> _converted_playlistWrite = (ArrayList<String>)playlistWrite;
-    CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(_plus_4), ((String[])Conversions.unwrapArray(_converted_playlistWrite, String.class)));
-    int _size_4 = playlist.size();
-    String _plus_5 = ("ppsize" + Integer.valueOf(_size_4));
-    InputOutput.<String>println(_plus_5);
-    String truc = FFMPEGHelper.concatVideos(playlist, playlistName);
-    InputOutput.<String>println(("truc VideoGenutils " + truc));
-    return truc;
+    CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(_plus), ((String[])Conversions.unwrapArray(_converted_playlistWrite, String.class)));
+    return FFMPEGHelper.concatVideos(playlist, playlistName);
   }
   
   public static double getVideoSize(final MediaDescription media) {
@@ -228,7 +190,7 @@ public class VideoGenUtils {
   }
   
   public static String getGif(final List<MediaDescription> playlist, final String playlistName, final int width, final int heigth) {
-    return FFMPEGHelper.videoToGif(VideoGenUtils.makePlaylist(VideoGenUtils.getMediaDescriptionsLocation(playlist), playlistName), width, heigth);
+    return FFMPEGHelper.videoToGif(VideoGenUtils.makePlaylist(VideoGenPlayTransformations.applyFilters(playlist), playlistName), width, heigth);
   }
   
   public static VideoDescription getRandom(final List<VideoDescription> videos) {
@@ -426,11 +388,11 @@ public class VideoGenUtils {
       if ((_filter_2 instanceof FlipFilter)) {
         if ((((FlipFilter) videoDescription.getFilter()).getOrientation().equals("horizontal") || 
           ((FlipFilter) videoDescription.getFilter()).getOrientation().equals("h"))) {
-          filter = "h";
+          filter = "hflip";
         }
         if ((((FlipFilter) videoDescription.getFilter()).getOrientation().equals("vertical") || 
           ((FlipFilter) videoDescription.getFilter()).getOrientation().equals("v"))) {
-          filter = "v";
+          filter = "vflip";
         }
       }
       _xblockexpression = filter;

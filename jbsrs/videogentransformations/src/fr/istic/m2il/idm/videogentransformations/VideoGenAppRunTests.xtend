@@ -98,9 +98,7 @@ class VideoGenAppRunTests {
 			}
 			val jUnitCore = new JUnitCore()
 			
-			System.out.println("Outpout " + args.get(1))
 			VideoGenConfigs.setOutPutFolder(args.get(1))
-			System.out.println("Outpout " + args.get(1))
 			System.setProperty("output_folder", args.get(1))
 			VideoGenConfigs.initSubOutPutFolders
 			

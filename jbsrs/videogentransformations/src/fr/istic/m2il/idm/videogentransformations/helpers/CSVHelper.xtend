@@ -19,7 +19,8 @@ class CSVHelper {
 	static private def String addLine(List<MediaDescription> playlist, int index, boolean isDuration, boolean isGif){
 		var line = index + ';'
 		var size = 0.0;
-		for(mediaDescription : playlist){
+		var playlistTemp = playlist
+		for(mediaDescription : playlistTemp){
 			if(mediaDescription !== null){
 				if(mediaDescription instanceof VideoDescription){
 					if(isDuration){
@@ -29,10 +30,13 @@ class CSVHelper {
 						else{
 							if(mediaDescription.filter !== null){
 								
-								mediaDescription.location = FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(mediaDescription), mediaDescription.location)
+								FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(mediaDescription), mediaDescription.location)
+								size += VideoGenUtils.getVideoDuration(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(mediaDescription), mediaDescription.location))
 							}
-								
-							size += FFMPEGHelper.getVideoDuration(mediaDescription.location)
+							else{
+								size += VideoGenUtils.getVideoDuration(mediaDescription.location)
+							
+							}
 						}
 					}
 					else{
@@ -40,13 +44,21 @@ class CSVHelper {
 							size += (mediaDescription as VideoDescription).text.size
 						}
 						else{
-							size += VideoGenUtils.getVideoSize(mediaDescription)	
+							
+							if(mediaDescription.filter !== null){
+							
+								size += VideoGenUtils.getVideoSize(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(mediaDescription), mediaDescription.location))
+							}
+							else{
+								size += VideoGenUtils.getVideoSize(mediaDescription)
+						
+							}
 						}
 					}
 				}
 				else{
 					if(isDuration){
-						size += FFMPEGHelper.getVideoDuration(mediaDescription.location) as double
+						size += VideoGenUtils.getVideoDuration(mediaDescription.location) as double
 					}
 					else{
 						size += VideoGenUtils.getVideoSize(mediaDescription)
@@ -58,14 +70,15 @@ class CSVHelper {
 			}
 		}
 		if(isDuration){
-			return line + size + ";" + VideoGenAnalysisTransformations.getRealDuration(playlist)//FFMPEGHelper.getVideoDuration(playlist)
+			return line + size + ";" + VideoGenAnalysisTransformations.getRealDuration(playlistTemp)
 		}
 		else{
-			if(isGif)
-			return line + size + ";" + VideoGenAnalysisTransformations.getRealSize(playlist)
+			if(!isGif)
+				return line + size + ";" + VideoGenAnalysisTransformations.getRealSize(playlistTemp)
 			else
-				return line + size + ";" + VideoGenAnalysisTransformations.getRealSize(VideoGenUtils.getGif(playlist, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"), 190, 60))
+				return line + size + ";" + VideoGenAnalysisTransformations.getRealSize(VideoGenUtils.getGif(playlistTemp, CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.mp4"), 190, 60))
 		}
+		
 	}
 	
 	static private def String addHeader(List<List<MediaDescription>> playlists, boolean isDuration){
@@ -103,7 +116,6 @@ class CSVHelper {
 	}
 	
 	static def List<String> create(VideoGeneratorModel videoGen, boolean isDuration, boolean isGif){
-		println("Taille " + VideoGenUtils.generatePlaylists(videoGen).size)
 		return create(VideoGenUtils.generatePlaylists(videoGen), isDuration, isGif)
 	}
 	

@@ -222,7 +222,7 @@ public class FFMPEGHelper {
       command.add(videoLocation);
       File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
       String _plus = (_outPutFoulder + "/gifs/");
-      String _get = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(new File(videoLocation).getAbsolutePath().replace("\\", "/").split("/")))).replace(".", "@").split("@")[0];
+      String _get = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(new File(videoLocation).getAbsolutePath().replace("\\", "/").split("/")))).replace(".", "@").split("@")[0].split("_")[0];
       String _plus_1 = (_plus + _get);
       String _plus_2 = (_plus_1 + ".gif");
       final String outputFile = CommonUtils.getOutPutFileName(_plus_2);
