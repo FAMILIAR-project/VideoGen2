@@ -18,7 +18,7 @@ class VideoGenPlayTransformationsTest {
 	@Before
 	def void setUp(){
 		if(System.getProperty("videogenspecification") === null)
-			System.setProperty("videogenspecification", "samples/sample9.videogen")
+			System.setProperty("videogenspecification", "samples/sample1.videogen")
 	}
 
 	@Test 

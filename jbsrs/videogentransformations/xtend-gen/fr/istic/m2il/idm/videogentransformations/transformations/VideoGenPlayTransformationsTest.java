@@ -28,7 +28,7 @@ public class VideoGenPlayTransformationsTest {
     String _property = System.getProperty("videogenspecification");
     boolean _tripleEquals = (_property == null);
     if (_tripleEquals) {
-      System.setProperty("videogenspecification", "samples/sample9.videogen");
+      System.setProperty("videogenspecification", "samples/sample1.videogen");
     }
   }
   

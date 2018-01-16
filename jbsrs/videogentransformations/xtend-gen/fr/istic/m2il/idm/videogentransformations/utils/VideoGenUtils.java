@@ -123,7 +123,7 @@ public class VideoGenUtils {
       }
     }
     int i = 0;
-    final ArrayList<String> playlist = new ArrayList<String>();
+    ArrayList<String> playlist = new ArrayList<String>();
     for (final String location_1 : locations) {
       if ((location_1 != null)) {
         playlist.add(

@@ -108,7 +108,7 @@ class VideoGenUtils {
 			}
 		}
 		var i = 0;
-		val playlist = new ArrayList
+		var playlist = new ArrayList
 		for(location : locations){
 				if(location !== null){
 					playlist.add(FFMPEGHelper.homogenizeMediaResolution(
@@ -128,6 +128,8 @@ class VideoGenUtils {
 		}
 		CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.txt"), playlistWrite)
 		return FFMPEGHelper.concatVideos(playlist, playlistName)
+		
+		
 		
 	}
 	
