@@ -85,6 +85,7 @@ public class FFMPEGHelper {
     command.add("-2");
     command.add(outputfilename);
     ProcessHelper.execute(command);
+    InputOutput.<String>println(("FFMHelper outputfilename " + outputfilename));
     return outputfilename;
   }
   

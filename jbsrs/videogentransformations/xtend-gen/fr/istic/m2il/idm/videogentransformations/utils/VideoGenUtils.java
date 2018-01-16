@@ -162,7 +162,10 @@ public class VideoGenUtils {
     }
     ArrayList<String> playlistWrite = CollectionLiterals.<String>newArrayList();
     for (final String p : playlist) {
-      InputOutput.<String>println((("file \'" + p) + "\'"));
+      {
+        playlistWrite.add(((("file \'" + p) + "\'") + "\n"));
+        InputOutput.<String>println((("file \'" + p) + "\'"));
+      }
     }
     InputOutput.<String>println(" Actual hereeeeeeeeeeeee ");
     File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
@@ -172,7 +175,9 @@ public class VideoGenUtils {
     int _size_4 = playlist.size();
     String _plus_5 = ("ppsize" + Integer.valueOf(_size_4));
     InputOutput.<String>println(_plus_5);
-    return FFMPEGHelper.concatVideos(playlist, playlistName);
+    String truc = FFMPEGHelper.concatVideos(playlist, playlistName);
+    InputOutput.<String>println(("truc VideoGenutils " + truc));
+    return truc;
   }
   
   public static double getVideoSize(final MediaDescription media) {

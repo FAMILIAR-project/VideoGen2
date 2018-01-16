@@ -148,13 +148,15 @@ class VideoGenUtils {
 		}
 		var playlistWrite = newArrayList
 		for(p : playlist){
-			//playlistWrite.add("file '" + p + "'" + '\n')
+			playlistWrite.add("file '" + p + "'" + '\n')
 			println("file '" + p + "'" )
 		}
 		println(" Actual hereeeeeeeeeeeee ")
 		CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.txt"), playlistWrite)
 		println("ppsize" + playlist.size)
-		return FFMPEGHelper.concatVideos(playlist, playlistName)
+		var truc = FFMPEGHelper.concatVideos(playlist, playlistName)
+		println("truc VideoGenutils " + truc)
+		return truc
 		
 		
 		

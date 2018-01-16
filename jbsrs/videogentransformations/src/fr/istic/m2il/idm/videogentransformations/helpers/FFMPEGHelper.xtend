@@ -77,6 +77,7 @@ class FFMPEGHelper {
 		command.add(outputfilename)
 		
 		ProcessHelper.execute(command)
+		println("FFMHelper outputfilename " + outputfilename)
 		return outputfilename
 	}
 	
