@@ -4,7 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
 import {VideoGenService} from '../videogen/videogen.service';
-import {VideoGeneratorModel} from '../videogen/model/videogen.model';
+import {Media, VideoGeneratorModel} from '../videogen/model/videogen.model';
 import {isNullOrUndefined} from "util";
 
 @Component({
@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
     videoGenModel: VideoGeneratorModel;
     loadingString: string;
     videoLocation: string;
+    playlist: string[];
 
     constructor(
         private principal: Principal,
@@ -44,10 +45,9 @@ export class HomeComponent implements OnInit {
         console.log(this.videoGen);
         this.loadingString = "Loading Model";
         this.videoGenService.getModel(this.videoGen).subscribe((model) => {
-            console.log(model);
             this.videoGenModel = model;
             this.loadingString = null;
-            //this.videoLocation = "data/output/output_1516027553770.mp4";
+            console.log(this.videoGenModel);
         });
     }
 
@@ -73,7 +73,9 @@ export class HomeComponent implements OnInit {
                 this.account = account;
             });
         });
-        this.getFiles();
+        if(isNullOrUndefined(this.listFiles)){
+            this.getFiles();
+        }
     }
 
     isAuthenticated() {
@@ -86,5 +88,46 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    test(){
+        console.log(this.videoGenModel.medias);
+    }
+
+    checkAndUncheck(videoId: string, media: Media) {
+        if(media.type == 'av'){
+            for(let desc of media.medias){
+                if(desc.videoId === videoId){
+                    desc.selected = true;
+                }else{
+                    desc.selected = false;
+                }
+            }
+        }
+    }
+
+    generateVideo() {
+        this.playlist = [];
+        for(let media of this.videoGenModel.medias){
+            if(media.type === 'mv'){
+                this.playlist.push(media.description.location);
+            }else if(media.type === 'ov' && media.description.selected){
+                this.playlist.push(media.description.location);
+            }else if(media.type === 'av'){
+                for(let desc of media.medias){
+                    if(desc.selected){
+                        this.playlist.push(desc.location);
+                        break;
+                    }
+                }
+            }
+        }
+        console.log(this.playlist);
+        this.loadingString = "Generating Video"
+        this.videoGenService.generatePlaylist(this.playlist).subscribe((video) => {
+            console.log(video._body);
+            this.videoLocation = video._body;
+            this.loadingString = null;
+        });
     }
 }

@@ -6,9 +6,9 @@
 <!-- ########################################################################################################################## -->
 <div class="row">
 
-    <div class="col-md-4">
+    <!--<div class="col-md-4">
         <span class="hipster img-fluid rounded"></span>
-    </div>
+    </div>-->
 
 
     <div class="col-md-9">
@@ -107,9 +107,9 @@
                 <!-- Video Not Received ###################### -->
                 <!-- ######################################### -->
 
-                <div class="fa fa-3x">
+                <!--<div class="fa fa-3x">
                     Please enter your videos.
-                </div>
+                </div>-->
                 <!-- ######################################### -->
                 <!-- SearchText (Here > videos) ############## //TODO modifier le nom de ces methodes et mettre les bonnes-->
                 <!-- ######################################### -->
@@ -123,6 +123,34 @@
                     <video preload="auto" controls autoplay>
                         <source src="{{ videoLocation }}" type="video/mp4">
                     </video>
+                </div>
+                <div *ngIf="videoGenModel">
+                    <table>
+                        <tr *ngFor="let media of videoGenModel.medias">
+                            <td *ngIf="media.type == 'mv'">
+                                <img height="200" src="{{media.description.thumbnail}}" class="mandatory-thumbnail"/>
+                            </td>
+                            <td *ngIf="media.type == 'ov'">
+                                <img (click)="media.description.selected = !media.description.selected" *ngIf="media.description.selected" height="200" src="{{media.description.thumbnail}}" class="selected-thumbnail"/>
+                                <img (click)="media.description.selected = !media.description.selected" *ngIf="!media.description.selected" height="200" src="{{media.description.thumbnail}}" class="unselected-thumbnail"/>
+                            </td>
+                            <td *ngIf="media.type == 'av'">
+                                <table>
+                                    <tr>
+                                        <td *ngFor="let desc of media.medias">
+                                            <img (click)="checkAndUncheck(desc.videoId, media)" *ngIf="desc.selected" height="200"
+                                                 src="{{desc.thumbnail}}" class="selected-thumbnail">
+                                            <img (click)="checkAndUncheck(desc.videoId, media)" *ngIf="!desc.selected" height="200"
+                                                 src="{{desc.thumbnail}}" class="unselected-thumbnail">
+                                            <!--<input type="radio" name="{{media.id}}" [checked]="idx === 0" (change)="checkAndUncheck(desc.videoId, media)">-->
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <button (click)="test()">Test</button>
+                    <button (click)="generateVideo()">Generate Video</button>
                 </div>
                 <!--  <input [(ngModel)]="videoGen" (change)="getFiles()" type="text"/>
                  Press enter to search

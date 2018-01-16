@@ -1,11 +1,17 @@
 @authors "mael"
 VideoGen {
-	mandatory videoseq v0 "v0.mp4"
-	mandatory videoseq v01 "v01.mp4"
+	mandatory videoseq v0 "data/input/video/Short_videos_<5mn/aa-aaa-aaaaaa-battery-vine.mp4"
+	optional videoseq v01 "data/input/video/Short_videos_<5mn/baby-its-cold-outside-vine.mp4"
 	alternatives v1 {
-		videoseq v11 "v11.mp4"
-		videoseq v12 "v12.mp4"
-		videoseq v13 "v13.mp4"
+		videoseq v11 "data/input/video/Short_videos_<5mn/kufretmek-ilk-orta-lise-vine.mp4"
+		videoseq v12 "data/input/video/Short_videos_<5mn/mister-v-guillaume-le-thug.mp4"
+		videoseq v13 "data/input/video/Short_videos_<5mn/the-squad-yell-vine-original.mp4"
 	}
-	optional videoseq v2 "v2.mp4"
+	alternatives v2 {
+	        videoseq v23 "data/input/video/Short_videos_<5mn/the-squad-yell-vine-original.mp4"
+    		videoseq v21 "data/input/video/Short_videos_<5mn/kufretmek-ilk-orta-lise-vine.mp4"
+    		videoseq v22 "data/input/video/Short_videos_<5mn/mister-v-guillaume-le-thug.mp4"
+    	}
+	optional videoseq v3 "data/input/video/Short_videos_<5mn/captions-donald-bell-gam-on-britains-got-talent-2008.mp4"
+	mandatory videoseq v4 "data/input/video/Short_videos_<5mn/kid-filming-hit-by-rocket-vine.mp4"
 }

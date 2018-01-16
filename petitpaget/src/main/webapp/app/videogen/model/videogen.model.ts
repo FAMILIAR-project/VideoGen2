@@ -18,22 +18,26 @@ export class Media {
         public type: string,
         public description?: MediaDescription,
         public medias?: MediaDescription[],
-        public id?: number
+        public id?: string
     ){}
 }
 
 export class MediaDescription {
     constructor(
         public location: string,
+
         //Video
-        public videoid?: number,
+        public videoId?: string,
         public duration?: number,
         public probability?: number,
         public description?: string,
+        public thumbnail?: string,
+        public selected?: boolean,
         //TODO Filter + VideoText
 
         //Image
         public toptext?: string,
         public bottomtext?: string
-    ){}
+    ){
+    }
 }

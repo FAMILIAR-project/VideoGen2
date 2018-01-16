@@ -28,9 +28,4 @@ export class VideoGenService {
     generateRandomVariant(filename: string): any{
         return this.http.get(this.resourceUrl + '/random/' + filename);
     }
-
-    /*private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
-    }*/
 }

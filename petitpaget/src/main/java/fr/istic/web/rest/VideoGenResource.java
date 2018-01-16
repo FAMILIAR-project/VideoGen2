@@ -3,6 +3,7 @@ package fr.istic.web.rest;
 import fr.istic.web.rest.util.HeaderUtil;
 import fr.pagetpetit.videogentools.VideoGenHelper;
 import fr.pagetpetit.videogentools.VideoGenUtils;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.Logger;
@@ -98,43 +99,43 @@ public class VideoGenResource {
         VideoGeneratorModelWrapper wrapper = new VideoGeneratorModelWrapper();
         wrapper.information = model.getInformation();
         for(Media media : model.getMedias()){
-            MediaWrapper mediaWrapper;
             if(media instanceof MandatoryMedia){
-                mediaWrapper = new MandatoryMediaWrapper();
+                MandatoryMediaWrapper mediaWrapper = new MandatoryMediaWrapper();
                 MandatoryMedia mandatoryMedia = (MandatoryMedia) media;
-                ((MandatoryMediaWrapper) mediaWrapper).description = mandatoryMedia.getDescription();
-                String type;
+
                 if(mandatoryMedia.getDescription() instanceof VideoDescription){
-                    type = "mv";
+                    mediaWrapper.type = "mv";
+                    mediaWrapper.description = new VideoDescriptionWrapper((VideoDescription) mandatoryMedia.getDescription(), true);
                 }else{
-                    type = "mi";
+                    mediaWrapper.type = "mi";
                 }
-                mediaWrapper.type = type;
                 wrapper.medias.add(mediaWrapper);
             }else if(media instanceof OptionalMedia){
-                mediaWrapper = new OptionalMediaWrapper();
+                OptionalMediaWrapper mediaWrapper = new OptionalMediaWrapper();
                 OptionalMedia optionalMedia = (OptionalMedia) media;
-                ((OptionalMediaWrapper) mediaWrapper).description = optionalMedia.getDescription();
-                String type;
+
                 if(optionalMedia.getDescription() instanceof VideoDescription){
-                    type = "ov";
+                    mediaWrapper.type = "ov";
+                    mediaWrapper.description = new VideoDescriptionWrapper((VideoDescription) optionalMedia.getDescription(), false);
                 }else{
-                    type = "oi";
+                    mediaWrapper.type = "oi";
                 }
-                mediaWrapper.type = type;
                 wrapper.medias.add(mediaWrapper);
             }else{
-                mediaWrapper = new AlternativesMediaWrapper();
+                AlternativesMediaWrapper mediaWrapper = new AlternativesMediaWrapper();
                 AlternativesMedia alternativesMedia = (AlternativesMedia) media;
-                ((AlternativesMediaWrapper) mediaWrapper).medias = alternativesMedia.getMedias();
-                String type;
+                mediaWrapper.id = alternativesMedia.getId();
                 // Videos not mixed in with images
                 if(alternativesMedia.getMedias().get(0) instanceof VideoDescription){
-                    type = "av";
+                    mediaWrapper.type = "av";
+                    boolean selected = true;
+                    for(MediaDescription desc : alternativesMedia.getMedias()){
+                        mediaWrapper.medias.add(new VideoDescriptionWrapper((VideoDescription) desc, selected));
+                        selected = false;
+                    }
                 }else{
-                    type = "ai";
+                    mediaWrapper.type = "ai";
                 }
-                mediaWrapper.type = type;
                 wrapper.medias.add(mediaWrapper);
             }
         }
@@ -152,16 +153,51 @@ public class VideoGenResource {
     }
 
     private class MandatoryMediaWrapper extends MediaWrapper{
-        public MediaDescription description;
+        public MediaDescriptionWrapper description;
     }
 
     private class OptionalMediaWrapper extends MediaWrapper{
-        public MediaDescription description;
+        public MediaDescriptionWrapper description;
     }
 
     private class AlternativesMediaWrapper extends MediaWrapper{
-        public int id;
-        public EList<MediaDescription> medias;
+        public String id;
+        public List<MediaDescriptionWrapper> medias = new ArrayList<>();
+    }
+
+    private class MediaDescriptionWrapper{
+        public String location;
+    }
+
+    private class VideoDescriptionWrapper extends MediaDescriptionWrapper{
+        public String videoId;
+        public int duration;
+        public int probability;
+        public String description;
+        public Filter filter;
+        public VideoText videoText;
+        public String thumbnail;
+        public boolean selected;
+
+        public VideoDescriptionWrapper(VideoDescription videoDescription, boolean selected) {
+            super();
+            location = videoDescription.getLocation();
+            videoId = videoDescription.getVideoid();
+            duration = videoDescription.getDuration();
+            probability = videoDescription.getProbability();
+            description = videoDescription.getDescription();
+            filter = videoDescription.getFilter();
+            videoText = videoDescription.getText();
+            String[] file = location.replace(".mp4", ".png").split("/");
+            thumbnail = "data/output/thumbnails/" + file[file.length - 1];
+            this.selected = selected;
+        }
+    }
+
+    private class ImageDescriptionWrapper extends MediaDescriptionWrapper{
+        public String imageId;
+        public String top;
+        public String bottom;
     }
 
 }

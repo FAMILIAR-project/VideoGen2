@@ -24,3 +24,15 @@ only screen and (                min-resolution: 2dppx) {
         background-size: contain;
     }
 }
+
+.selected-thumbnail{
+    border: medium solid green;
+}
+
+.mandatory-thumbnail{
+    border: medium solid orange;
+}
+
+.unselected-thumbnail{
+    border: medium solid transparent;
+}
