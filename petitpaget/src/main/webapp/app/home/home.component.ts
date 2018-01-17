@@ -5,7 +5,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginModalService, Principal } from '../shared';
 import {VideoGenService} from '../videogen/videogen.service';
 import {Media, VideoGeneratorModel} from '../videogen/model/videogen.model';
-import {isNullOrUndefined} from "util";
+import {isNullOrUndefined} from 'util';
 
 @Component({
     selector: 'jhi-home',
@@ -33,17 +33,17 @@ export class HomeComponent implements OnInit {
     ) {
     }
 
-    getFiles(){
-        this.loadingString = "Loading files";
+    getFiles() {
+        this.loadingString = 'Loading files';
         this.videoGenService.getVideoGenFiles().subscribe((files) => {
             this.listFiles = files ;
             this.loadingString = null;
         });
     }
 
-    loadModel(){
+    loadModel() {
         console.log(this.videoGen);
-        this.loadingString = "Loading Model";
+        this.loadingString = 'Loading Model';
         this.videoGenService.getModel(this.videoGen).subscribe((model) => {
             this.videoGenModel = model;
             this.loadingString = null;
@@ -51,8 +51,8 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    generateRandomVariant(){
-        this.loadingString = "Generating Random Variant";
+    generateRandomVariant() {
+        this.loadingString = 'Generating Random Variant';
         this.videoGenService.generateRandomVariant(this.videoGen).subscribe((randomVariant) => {
             console.log(randomVariant._body);
             this.videoLocation = randomVariant._body;
@@ -73,14 +73,14 @@ export class HomeComponent implements OnInit {
                 this.account = account;
             });
         });
-        if(isNullOrUndefined(this.listFiles)){
+        if (isNullOrUndefined(this.listFiles)) {
             this.getFiles();
         }
     }
 
     isAuthenticated() {
-        var bool = this.principal.isAuthenticated();
-        if(bool && isNullOrUndefined(this.listFiles)){
+        const bool = this.principal.isAuthenticated();
+        if (bool && isNullOrUndefined(this.listFiles)) {
             this.getFiles();
         }
         return bool;
@@ -90,16 +90,16 @@ export class HomeComponent implements OnInit {
         this.modalRef = this.loginModalService.open();
     }
 
-    test(){
+    test() {
         console.log(this.videoGenModel.medias);
     }
 
     checkAndUncheck(videoId: string, media: Media) {
-        if(media.type == 'av'){
-            for(let desc of media.medias){
-                if(desc.videoId === videoId){
+        if (media.type === 'av') {
+            for (const desc of media.medias) {
+                if (desc.videoId === videoId) {
                     desc.selected = true;
-                }else{
+                }else {
                     desc.selected = false;
                 }
             }
@@ -108,14 +108,14 @@ export class HomeComponent implements OnInit {
 
     generateVideo() {
         this.playlist = [];
-        for(let media of this.videoGenModel.medias){
-            if(media.type === 'mv'){
+        for (const media of this.videoGenModel.medias) {
+            if (media.type === 'mv') {
                 this.playlist.push(media.description.location);
-            }else if(media.type === 'ov' && media.description.selected){
+            }else if (media.type === 'ov' && media.description.selected) {
                 this.playlist.push(media.description.location);
-            }else if(media.type === 'av'){
-                for(let desc of media.medias){
-                    if(desc.selected){
+            }else if (media.type === 'av') {
+                for (const desc of media.medias) {
+                    if (desc.selected) {
                         this.playlist.push(desc.location);
                         break;
                     }
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit {
             }
         }
         console.log(this.playlist);
-        this.loadingString = "Generating Video"
+        this.loadingString = 'Generating Video'
         this.videoGenService.generatePlaylist(this.playlist).subscribe((video) => {
             console.log(video._body);
             this.videoLocation = video._body;
