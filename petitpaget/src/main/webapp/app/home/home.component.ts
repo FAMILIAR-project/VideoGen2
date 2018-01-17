@@ -53,8 +53,8 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    generateRandomVariant(){
-        this.loadingString = "Generating Random Variant";
+    generateRandomVariant() {
+        this.loadingString = 'Generating Random Variant';
         this.displayVideo = false;
         this.videoGenService.generateRandomVariant(this.videoGen).subscribe((randomVariant) => {
             console.log(randomVariant._body);
@@ -66,14 +66,14 @@ export class HomeComponent implements OnInit {
 
     generateVideo() {
         this.playlist = [];
-        for(let media of this.videoGenModel.medias){
-            if(media.type === 'mv'){
+        for (const media of this.videoGenModel.medias) {
+            if (media.type === 'mv') {
                 this.playlist.push(media.description.location);
-            }else if(media.type === 'ov' && media.description.selected){
+            }else if (media.type === 'ov' && media.description.selected) {
                 this.playlist.push(media.description.location);
-            }else if(media.type === 'av'){
-                for(let desc of media.medias){
-                    if(desc.selected){
+            }else if (media.type === 'av') {
+                for (const desc of media.medias) {
+                    if (desc.selected) {
                         this.playlist.push(desc.location);
                         break;
                     }
@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit {
             }
         }
         console.log(this.playlist);
-        this.loadingString = "Generating Video";
+        this.loadingString = 'Generating Video';
         this.displayVideo = false;
         this.videoGenService.generatePlaylist(this.playlist).subscribe((video) => {
             console.log(video._body);
