@@ -5,7 +5,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginModalService, Principal } from '../shared';
 import {VideoGenService} from '../videogen/videogen.service';
 import {Media, VideoGeneratorModel} from '../videogen/model/videogen.model';
-import {isNullOrUndefined} from "util";
+import {isNullOrUndefined} from 'util';
 
 @Component({
     selector: 'jhi-home',
@@ -35,17 +35,17 @@ export class HomeComponent implements OnInit {
         this.displayVideo = false;
     }
 
-    getFiles(){
-        this.loadingString = "Loading files";
+    getFiles() {
+        this.loadingString = 'Loading files';
         this.videoGenService.getVideoGenFiles().subscribe((files) => {
             this.listFiles = files ;
             this.loadingString = null;
         });
     }
 
-    loadModel(){
+    loadModel() {
         console.log(this.videoGen);
-        this.loadingString = "Loading Model";
+        this.loadingString = 'Loading Model';
         this.videoGenService.getModel(this.videoGen).subscribe((model) => {
             this.videoGenModel = model;
             this.loadingString = null;
@@ -104,14 +104,14 @@ export class HomeComponent implements OnInit {
                 this.account = account;
             });
         });
-        if(isNullOrUndefined(this.listFiles)){
+        if (isNullOrUndefined(this.listFiles)) {
             this.getFiles();
         }
     }
 
     isAuthenticated() {
-        var bool = this.principal.isAuthenticated();
-        if(bool && isNullOrUndefined(this.listFiles)){
+        const bool = this.principal.isAuthenticated();
+        if (bool && isNullOrUndefined(this.listFiles)) {
             this.getFiles();
         }
         return bool;
@@ -121,16 +121,16 @@ export class HomeComponent implements OnInit {
         this.modalRef = this.loginModalService.open();
     }
 
-    test(){
+    test() {
         console.log(this.videoGenModel.medias);
     }
 
     checkAndUncheck(videoId: string, media: Media) {
-        if(media.type == 'av'){
-            for(let desc of media.medias){
-                if(desc.videoId === videoId){
+        if (media.type === 'av') {
+            for (const desc of media.medias) {
+                if (desc.videoId === videoId) {
                     desc.selected = true;
-                }else{
+                }else {
                     desc.selected = false;
                 }
             }

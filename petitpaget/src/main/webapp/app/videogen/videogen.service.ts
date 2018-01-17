@@ -21,11 +21,11 @@ export class VideoGenService {
             .map((res: Response) => res);
     }
 
-    getVideoGenFiles(): any{
+    getVideoGenFiles(): any {
         return this.http.get(this.resourceUrl + '/files').map((res: Response) => res.json());
     }
 
-    generateRandomVariant(filename: string): any{
+    generateRandomVariant(filename: string): any {
         return this.http.get(this.resourceUrl + '/random/' + filename);
     }
 }
