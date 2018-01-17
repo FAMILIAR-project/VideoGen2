@@ -71,7 +71,7 @@ class projet {
 		var command = "ffmpeg -f concat -safe 0 -i public/TempTextFile/"+name+".txt -y -c copy public/GeneratedVideo/"+name+".mp4"		
 			
 		var p = Runtime.runtime.exec(command)
-		p.waitFor
+		Thread.sleep(3000)
 
 		val file = new File("public/TempTextFile/"+name+".txt")
 		file.delete()

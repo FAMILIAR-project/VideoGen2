@@ -18,7 +18,7 @@ var interval = setInterval(function() {
 router.get('/generate', function(req, res, next) {
 	console.log('Generate call from client');
 
-	child = exec('/usr/bin/java -jar IDM.jar',
+	child = exec('java -jar IDM.jar',
 	  function (error, stdout, stderr){
 	    console.log('stdout: ' + stdout);
 	    console.log('stderr: ' + stderr);
