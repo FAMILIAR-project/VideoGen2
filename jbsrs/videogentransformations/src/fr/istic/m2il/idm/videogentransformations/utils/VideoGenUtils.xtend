@@ -17,10 +17,17 @@ import org.xtext.example.mydsl.videoGen.FlipFilter
 import org.xtext.example.mydsl.videoGen.BlackWhiteFilter
 import org.xtext.example.mydsl.videoGen.NegateFilter
 import fr.istic.m2il.idm.videogentransformations.transformations.VideoGenPlayTransformations
-
+/**
+ * @author Ramadan Soumaila
+ * A Utils class for videoGen Transformations's
+ */
 class VideoGenUtils {
 	
-	
+	/**
+	 * Generates all possible playlists of a videoGen Specification
+	 * @param videoGen the video Generator Model specification
+	 * @return a arrayList of all playlists
+	 */
 	static def List<List<MediaDescription>> generatePlaylists(VideoGeneratorModel videoGen){
 		
 		var playlists = new ArrayList<List<MediaDescription>>

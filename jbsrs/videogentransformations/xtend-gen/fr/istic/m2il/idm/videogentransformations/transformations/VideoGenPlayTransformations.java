@@ -20,6 +20,10 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
+/**
+ * @author Ramadan Soumaila
+ * Class for apply transformations related to played a videoGen specification
+ */
 @SuppressWarnings("all")
 public class VideoGenPlayTransformations {
   public static String generateRandomPlayList(final VideoGeneratorModel videoGen) {
@@ -236,6 +240,7 @@ public class VideoGenPlayTransformations {
       for (final MediaDescription media : mediaDescriptions) {
         if ((media instanceof VideoDescription)) {
           if ((media != null)) {
+            String location = ((VideoDescription)media).getLocation();
             Filter _filter = ((VideoDescription)media).getFilter();
             boolean _tripleNotEquals = (_filter != null);
             if (_tripleNotEquals) {

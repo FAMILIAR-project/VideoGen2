@@ -5,8 +5,17 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.ArrayList
 
+/**
+ * @author Ramadan Soumaila
+ * A helper class to execute command
+ */
 class ProcessHelper {
 
+	/**
+	 * Executes a list of command son the system
+	 * @param the list of commands to executes
+	 * 
+	 */
 	static def void execute(List<String> commands){
 		val processBuilder = new ProcessBuilder(commands);
 		processBuilder.inheritIO
@@ -15,6 +24,11 @@ class ProcessHelper {
 		process.destroy
 	}
 	
+	/**
+	 * Executes a list of command son the system
+	 * @param the list of commands to executes
+	 * @return a array of output stream
+	 */
 	static def String[] executeAndGetIOStream(List<String> commands) {
 
 		val processBuilder = new ProcessBuilder(commands)

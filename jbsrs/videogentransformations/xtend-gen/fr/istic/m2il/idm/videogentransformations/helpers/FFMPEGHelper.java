@@ -8,28 +8,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 
+/**
+ * @author Ramadan Soumaila
+ * A helper class to execute ffmeg commands
+ */
 @SuppressWarnings("all")
 public class FFMPEGHelper {
-  public static String generateThumbnail(final String videoLocation) {
+  /**
+   * Creates the thumb of a video/image
+   * @param location the location of video/image
+   * @return a string which represent the location of generated thumbs if execution is successful, or "" otherwise
+   */
+  public static String generateThumbnail(final String location) {
     String _xblockexpression = null;
     {
       final ArrayList<String> command = new ArrayList<String>();
       command.add("ffmpeg");
       command.add("-y");
       command.add("-i");
-      command.add(videoLocation);
+      command.add(location);
       command.add("-r");
       command.add("1");
       command.add("-t");
       command.add("00:00:01");
       command.add("-ss");
       double _random = Math.random();
-      int _round = Math.round(Float.parseFloat(FFMPEGHelper.getVideoDurationString(videoLocation).split(":")[2]));
+      int _round = Math.round(Float.parseFloat(FFMPEGHelper.getVideoDurationString(location).split(":")[2]));
       double _multiply = (_random * _round);
       String _plus = ("00:00:0" + Double.valueOf(_multiply));
       command.add(_plus);
@@ -45,6 +55,12 @@ public class FFMPEGHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Creates a video by concatenate several
+   * @param outputfilename the location of generated video
+   * @param files the list of videos's locations
+   * @return a string which represent the location of generated video if execution is successful, or "" otherwise
+   */
   public static String concatVideos(final List<String> files, final String outputfilename) {
     final ArrayList<String> command = new ArrayList<String>();
     String filter = "";
@@ -88,6 +104,12 @@ public class FFMPEGHelper {
     return outputfilename;
   }
   
+  /**
+   * Gets a video/image resolution
+   * @param videoFile the location of video/image
+   * @return a array of int which contains the width at first index,
+   * and height at second index if execution is successful, or null otherwise
+   */
   public static int[] getVideoResolution(final String videoFile) {
     final ArrayList<String> command = new ArrayList<String>();
     command.add("ffmpeg");
@@ -111,6 +133,15 @@ public class FFMPEGHelper {
     return ((int[])Conversions.unwrapArray(resolution, int.class));
   }
   
+  /**
+   * Changes the resolution of a video/image if the input resolution over the output resolution
+   * @param filename location of video/image
+   * @param inputWidth the input width resolution to set
+   * @param inputHeight the input height resolution to set
+   * @param outWidthWidth the output width resolution to set
+   * @param outputHeight the output width resolution to set
+   * @return a string which represent the location of generated thumbs if execution is successful, or "" otherwise
+   */
   public static String homogenizeMediaResolution(final String filename, final int inputWidth, final int inputHeight, final int outputWidth, final int outputHeight) {
     if (((inputWidth == outputWidth) && (inputHeight == outputHeight))) {
       return filename;
@@ -141,6 +172,12 @@ public class FFMPEGHelper {
     return outputFile;
   }
   
+  /**
+   * Gets a video's duration of a playlist
+   * 
+   * @param playlist a list of media description
+   * @return a int value of the playlist duration if the command is successful, or 0 otherwise
+   */
   public static int getVideoDuration(final List<MediaDescription> playlist) {
     int _xblockexpression = (int) 0;
     {
@@ -163,6 +200,12 @@ public class FFMPEGHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Gets a video's duration
+   * 
+   * @param videolocation the location of video
+   * @return a int value of the video duration if the command is successful, or 0 otherwise
+   */
   public static int getVideoDuration(final String videoLocation) {
     int _xblockexpression = (int) 0;
     {
@@ -191,6 +234,12 @@ public class FFMPEGHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Gets a video's duration of a video in string(formated)
+   * 
+   * @param videoLocation the location of video
+   * @return a formated string value of the video of duration if the command is successful, or 0 otherwise
+   */
   public static String getVideoDurationString(final String videoLocation) {
     String _xblockexpression = null;
     {
@@ -211,6 +260,12 @@ public class FFMPEGHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Gets the gif of a video
+   * 
+   * @param videoLocation the location of video
+   * @return a string value of the gif generated if the command is successful, or 0 otherwise
+   */
   public static String videoToGif(final String videoLocation, final int width, final int height) {
     String _xblockexpression = null;
     {
@@ -235,6 +290,12 @@ public class FFMPEGHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Applies a filter on a video
+   * 
+   * @param fileter the filter to apply
+   * @return a string value of the video generated with filter if the command is successful, or "" otherwise
+   */
   public static String applyFilter(final String filter, final String location) {
     String _xblockexpression = null;
     {
@@ -254,6 +315,64 @@ public class FFMPEGHelper {
       filtercommand.add(outputFile);
       ProcessHelper.execute(filtercommand);
       _xblockexpression = outputFile;
+    }
+    return _xblockexpression;
+  }
+  
+  /**
+   * Adds some text on a video
+   * @param location the video location
+   * @param content the content to write
+   * @param size the font size of the content
+   * @param color the color of the content
+   * @param position the position of content
+   * @return a string value of the output location if is successful, or "" otherwise
+   */
+  public static String addTextToVideo(final String location, final String content, final int size, final String color, final String position) {
+    String _xblockexpression = null;
+    {
+      ArrayList<String> commands = CollectionLiterals.<String>newArrayList();
+      String color_ = color;
+      if ((color_ == "")) {
+        color_ = "white";
+      }
+      int size_ = size;
+      if ((size_ == 0)) {
+        size_ = 20;
+      }
+      String position_ = position;
+      if ((position == "")) {
+        position_ = "BOTTOM";
+      }
+      String y = null;
+      if (position_ != null) {
+        switch (position_) {
+          case "TOP":
+            y = "5";
+            break;
+          case "BOTTOM":
+            y = "(h-text_h-line_h)";
+            break;
+          case "CENTER":
+            y = "(h-text_h-line_h)/2";
+            break;
+        }
+      }
+      commands.add("ffmpeg");
+      commands.add("-i");
+      commands.add(location);
+      commands.add("-strict");
+      commands.add("-2");
+      commands.add("-vf");
+      commands.add(((((((((((("drawtext=fontsize=" + Integer.valueOf(size_)) + ":fontcolor=") + color_) + ":fontfile=FreeSerif.ttf") + ":text=") + "\'") + content) + "\'") + ":x=(w-text_w)/2:y=") + y) + "\'"));
+      File _outPutFoulder = VideoGenConfigs.getOutPutFoulder();
+      String _plus = (_outPutFoulder + "/filtered/");
+      String _last = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(new File(location).getAbsolutePath().replace("\\", "/").split("/"))));
+      String _plus_1 = (_plus + _last);
+      String output = CommonUtils.getOutPutFileName(_plus_1);
+      commands.add(output);
+      ProcessHelper.execute(commands);
+      _xblockexpression = output;
     }
     return _xblockexpression;
   }
