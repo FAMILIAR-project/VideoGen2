@@ -12,4 +12,20 @@ import java.util.List;
 public class VideoGeneratorModelWrapper{
     public VideoGenInformation information;
     public List<MediaWrapper> medias = new ArrayList<>();
+
+    public VideoGenInformation getInformation() {
+        return information;
+    }
+
+    public void setInformation(VideoGenInformation information) {
+        this.information = information;
+    }
+
+    public List<MediaWrapper> getMedias() {
+        return medias;
+    }
+
+    public void setMedias(List<MediaWrapper> medias) {
+        this.medias = medias;
+    }
 }

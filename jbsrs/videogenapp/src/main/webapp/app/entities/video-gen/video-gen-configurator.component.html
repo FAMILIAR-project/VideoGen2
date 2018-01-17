@@ -7,11 +7,16 @@
   </div>
 </div>
 <div class="row justify-content-center">
-  <div class="col-md-12">
-    <div class="row">
-      <div *ngFor="let thumb of thumbs" (click)="select(thumb)" class="col-md-2">
-        <i *ngIf="thumb.selected" class="fa fa-check-square-o" aria-hidden="true"></i>
-        <img src="{{ thumb.url }}" style="width: 104.3px; height: 104.3px">
+  <span *ngFor="let media of videoGenModel.medias">
+    <span *ngIf="media.type == 'av' || media.type == 'ai'" class="row justify-content-center">
+      <div *ngFor="let alt of media.descriptionWrappers">
+        <i *ngIf="" class="fa fa-check-square-o" aria-hidden="true"></i>
+        <img src="{{ alt.thumb_url }}" style="width: 104.3px; height: 104.3px">
       </div>
+    </span>
+    <div *ngIf="media.type == 'ov' || media.type == 'oi'" class="d-inline">
+      <i *ngIf="selected" class="fa fa-check-square-o" aria-hidden="true"></i>
+      <img src="{{ media.descriptionWrapper.thumb_url }}" style="width: 104.3px; height: 104.3px">
     </div>
+  </span>
 </div>

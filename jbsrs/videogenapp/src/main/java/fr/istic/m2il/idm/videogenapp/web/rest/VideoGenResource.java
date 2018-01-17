@@ -1,6 +1,10 @@
 package fr.istic.m2il.idm.videogenapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.istic.m2il.idm.videogenapp.VideogenappApp;
 import fr.istic.m2il.idm.videogenapp.config.DefaultProfileUtil;
 import fr.istic.m2il.idm.videogenapp.domain.VideoGen;
@@ -171,12 +175,12 @@ public class VideoGenResource {
         return videoGenFolder.getName();
     }
 
-    @GetMapping("/video-gens/playlist/gif/{filename}")
+    /*@GetMapping("/video-gens/playlist/gif/{filename}")
     public VideoGeneratorModelWrapper getPlaylistGifs(@PathVariable String filename){
         filename = "data/videogen/" + filename + ".videogen";
         log.debug("getVideoGenModel : " + filename);
         return videoGenService.wrap(videogenHelper.loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(filename)));
-    }
+    }*/
 
     @PostMapping("/video-gens/playlist/configure")
     public ResponseEntity generateConfigurePlaylist(@Valid @RequestBody List<String> videos){
@@ -190,7 +194,7 @@ public class VideoGenResource {
     @GetMapping("/video-gens/playlist/random")
     public String generateRandomPlaylist() throws URISyntaxException {
 
-        VideoGenConfigs.setOutPutFoulder(new File("data/output").getPath());
+        VideoGenConfigs.setOutPutFolder(new File("data/output").getPath());
         VideoGenConfigs.setServerIP("http://localhost:8080/");
         VideoGenConfigs.setGifResolutions(190, 60);
         VideoGenConfigs.initSubOutPutFolders();
@@ -225,9 +229,9 @@ public class VideoGenResource {
 
     }
 
-    @GetMapping("/video-gens/variant/random")
-    public List<String> getRandomVariant() throws URISyntaxException {
-        VideoGenConfigs.setOutPutFoulder(new File("data/output").getPath());
+    @GetMapping("/video-gens/model/random")
+    public VideoGeneratorModelWrapper getRandomModel() throws URISyntaxException {
+        VideoGenConfigs.setOutPutFolder(new File("data/output").getPath());
         VideoGenConfigs.setServerIP("http://localhost:8080/");
         VideoGenConfigs.setGifResolutions(190, 60);
         VideoGenConfigs.initSubOutPutFolders();
@@ -266,12 +270,21 @@ public class VideoGenResource {
 
         int i = 0;
 
-        for(Media mediad: videoGeneratorModel.getMedias()){
-
-        }
+        VideoGeneratorModelWrapper videoGeneratorModelWrapper = this.videoGenService.wrap(videoGeneratorModel, thumbs);
 
 
-        return thumbs;
+        /*ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+        String videoGenString = "";
+        try {
+            videoGenString = mapper.writeValueAsString(videoGeneratorModelWrapper);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }*/
+
+
+        return videoGeneratorModelWrapper;
     }
 
 }

@@ -4,5 +4,5 @@ package fr.istic.m2il.idm.videogenapp.domain;
  * @author ismael
  */
 
-public class BlackWhiteFilter {
+public class BlackWhiteFilterWrapper extends FilterWrapper{
 }

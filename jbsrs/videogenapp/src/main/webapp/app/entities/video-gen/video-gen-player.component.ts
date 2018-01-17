@@ -9,8 +9,8 @@ import { VideoGenService } from './';
 })
 export class VideoGenPlayerComponent implements OnInit {
 
-  media : any;
-  videourl : string;
+  media: any;
+  videourl: string;
   modes = ['Aléatoire', 'Configurateur'];
   selectedMode = null;
   constructor(private videoGenService: VideoGenService) { }
@@ -19,20 +19,19 @@ export class VideoGenPlayerComponent implements OnInit {
 
     this.videourl = this.videoGenService.getVideoUrlShare();
     console.log('Video Url' + this.videourl);
+
   }
 
-  validate(){
+  validate() {
 
-    console.log("Mode " + this.selectedMode);
-    if(this.selectedMode = "Aléatoire"){
+    console.log('Mode' + this.selectedMode );
+    if (this.selectedMode === 'Aléatoire') {
       this.videoGenService.getRandomPlayList().subscribe((response) => {
-          console.log("Response get "+response)
+          console.log('Response get' + response)
           this.videoGenService.setVideoUrlShare(response);
-          //this.router.navigate(['video-gen-player']);
       });
-    }
-    else{
-      //this.router.navigate(['video-gen-configurator']);
+    } else {
+      console.log('text')
     }
   }
 }
