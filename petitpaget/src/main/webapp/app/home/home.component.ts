@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
     loadingString: string;
     videoLocation: string;
     playlist: string[];
+    displayVideo: boolean;
 
     constructor(
         private principal: Principal,
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
         private eventManager: JhiEventManager,
         private videoGenService: VideoGenService
     ) {
+        this.displayVideo = false;
     }
 
     getFiles(){
@@ -53,9 +55,38 @@ export class HomeComponent implements OnInit {
 
     generateRandomVariant(){
         this.loadingString = "Generating Random Variant";
+        this.displayVideo = false;
         this.videoGenService.generateRandomVariant(this.videoGen).subscribe((randomVariant) => {
             console.log(randomVariant._body);
             this.videoLocation = randomVariant._body;
+            this.displayVideo = true;
+            this.loadingString = null;
+        });
+    }
+
+    generateVideo() {
+        this.playlist = [];
+        for(let media of this.videoGenModel.medias){
+            if(media.type === 'mv'){
+                this.playlist.push(media.description.location);
+            }else if(media.type === 'ov' && media.description.selected){
+                this.playlist.push(media.description.location);
+            }else if(media.type === 'av'){
+                for(let desc of media.medias){
+                    if(desc.selected){
+                        this.playlist.push(desc.location);
+                        break;
+                    }
+                }
+            }
+        }
+        console.log(this.playlist);
+        this.loadingString = "Generating Video";
+        this.displayVideo = false;
+        this.videoGenService.generatePlaylist(this.playlist).subscribe((video) => {
+            console.log(video._body);
+            this.videoLocation = video._body;
+            this.displayVideo = true;
             this.loadingString = null;
         });
     }
@@ -104,30 +135,5 @@ export class HomeComponent implements OnInit {
                 }
             }
         }
-    }
-
-    generateVideo() {
-        this.playlist = [];
-        for(let media of this.videoGenModel.medias){
-            if(media.type === 'mv'){
-                this.playlist.push(media.description.location);
-            }else if(media.type === 'ov' && media.description.selected){
-                this.playlist.push(media.description.location);
-            }else if(media.type === 'av'){
-                for(let desc of media.medias){
-                    if(desc.selected){
-                        this.playlist.push(desc.location);
-                        break;
-                    }
-                }
-            }
-        }
-        console.log(this.playlist);
-        this.loadingString = "Generating Video"
-        this.videoGenService.generatePlaylist(this.playlist).subscribe((video) => {
-            console.log(video._body);
-            this.videoLocation = video._body;
-            this.loadingString = null;
-        });
     }
 }

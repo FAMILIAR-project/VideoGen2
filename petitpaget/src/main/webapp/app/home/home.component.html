@@ -119,8 +119,8 @@
                 </select>
                 <button *ngIf="videoGenModel" (click)="generateRandomVariant()">Random</button>
                 <div *ngIf="loadingString" style="color: red">{{loadingString}}</div>
-                <div *ngIf="videoLocation">
-                    <video preload="auto" controls autoplay>
+                <div>
+                    <video *ngIf="displayVideo" preload="auto" controls autoplay>
                         <source src="{{ videoLocation }}" type="video/mp4">
                     </video>
                 </div>
@@ -149,7 +149,6 @@
                             </td>
                         </tr>
                     </table>
-                    <button (click)="test()">Test</button>
                     <button (click)="generateVideo()">Generate Video</button>
                 </div>
                 <!--  <input [(ngModel)]="videoGen" (change)="getFiles()" type="text"/>
