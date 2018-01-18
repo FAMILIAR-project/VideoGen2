@@ -1,0 +1,30 @@
+@author "IL(A)? students"
+VideoGen {
+	mandatory image i1 "catday.png"
+	optional videoseq v1 "coucou.mp4"
+	mandatory image i2 "sport.png"
+	mandatory videoseq v2 "trajet1.mp4"
+	optional videoseq v3 "echauffement.mp4"
+	alternatives v4 {
+		videoseq v41 "sport1.mp4"
+		videoseq v42 "sport2.mp4"
+		videoseq v43 "sport3.mp4"
+	}
+	mandatory image i3 "home.png"
+	mandatory videoseq v5 "trajet2.mp4"
+	mandatory image i4 "housework.png"
+	alternatives v6 {
+		videoseq v61 "menage1.mp4"
+		videoseq v62 "menage2.mp4"
+		videoseq v63 "tablette.mp4"
+	}
+	mandatory image i5 "break.png"
+	alternatives v7 {
+		videoseq v71 "pause1.mp4"
+		videoseq v72 "pause2.mp4"
+		videoseq v73 "pause3.mp4"
+	}
+	mandatory image i6 "sleep.png"
+	mandatory videoseq v8 "sieste.mp4"
+	mandatory image i7 "end.png"
+}
