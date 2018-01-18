@@ -2,8 +2,6 @@ package fr.istic.idm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.common.util.URI;
@@ -18,11 +16,12 @@ import fr.istic.idm.model.Variantes;
 
 public class VideoGenCompiler {
 	private static final String TEMP_DIR_NAME = "VideoGenTemp";
-	private static final File TEMP_DIR = FileUtils.getFile(FilenameUtils.normalize(System.getProperty("user.dir") + "/" + TEMP_DIR_NAME));
-	private static final File OUTPUT_DIR = FileUtils.getFile(FilenameUtils.normalize(System.getProperty("user.dir") + "/" + "VideoGenOutput"));
+	public static File WORK_DIR;
+	public static File TEMP_DIR;
+	public static File OUTPUT_DIR;
 	
 	// TODO: Update this if linux failed to work
-	public static final String TEMP_DIR_PATH = FilenameUtils.normalize(TEMP_DIR.getAbsolutePath() + "/");
+	public static String TEMP_DIR_PATH = "";
 	
 	private static Logger log = LoggerFactory.getLogger(VideoGenCompiler.class);
 	
@@ -30,6 +29,46 @@ public class VideoGenCompiler {
 	private Variantes variantes;
 	
 	public VideoGenCompiler(VideoGeneratorModel model) {
+		if(!initializePaths(System.getProperty("user.dir"))) {
+			throw new RuntimeException();
+		}
+		
+		this.model = model;
+	}
+	
+	/**
+	 * Constructor qui permet de travailler dans un répertoire spécifique fournis en paramètre
+	 * @param basePath
+	 * @param videogenfile
+	 */
+	public VideoGenCompiler(String basePath, String videogenfile) {
+		File videoGenFile = new File(videogenfile);
+		
+		if(!videoGenFile.exists() || !videoGenFile.isFile()) {
+			log.error("Le fichier {} n'existe pas", videogenfile);
+			throw new RuntimeException();
+		}
+		
+		this.model = new VideoGenHelper().loadVideoGenerator(URI.createURI(videoGenFile.getPath()));
+		
+		if(!initializePaths(basePath)) {
+			throw new RuntimeException();
+		}
+	}
+	
+	private boolean initializePaths(String basePath) {
+		
+		WORK_DIR = FileUtils.getFile(basePath);
+		
+		if(!WORK_DIR.exists() || !WORK_DIR.isDirectory()) {
+			log.error("{} devrait être un répertoire existant", WORK_DIR.getAbsolutePath());
+			return false;
+		}
+		TEMP_DIR = FileUtils.getFile(FilenameUtils.normalize(basePath + "/" + TEMP_DIR_NAME));
+		OUTPUT_DIR = FileUtils.getFile(FilenameUtils.normalize(basePath + "/" + "VideoGenOutput"));
+		
+		TEMP_DIR_PATH = FilenameUtils.normalize(TEMP_DIR.getAbsolutePath() + "/");
+		
 		if(!TEMP_DIR.exists()) {
 			TEMP_DIR.mkdir();
 		}
@@ -46,10 +85,11 @@ public class VideoGenCompiler {
 				e.printStackTrace();
 		}
 		
-		this.model = model;
+		return true;
 	}
 	
 	public static void main(String[] args) {
+		
 		if(args.length != 1) {
 			log.error("Un argument doit être fournit à ce programme correspondant à la grammaire *.videogen qui sera compilé");	
 			return;
@@ -63,7 +103,14 @@ public class VideoGenCompiler {
 		}
 		
 		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(videoGenFile.getPath()));
-		VideoGenCompiler compiler = new VideoGenCompiler(videoGen);
+		VideoGenCompiler compiler;
+		
+		try {
+			compiler = new VideoGenCompiler(videoGen);
+		} catch(RuntimeException e) {
+			return;
+		}
+		
 		log.info("VideoGen SourceCode loaded successfully");
 		
 		try {
@@ -96,6 +143,10 @@ public class VideoGenCompiler {
 				File video = variante.compile();
 				
 				File concatenedFile = FileUtils.getFile(OUTPUT_DIR, System.identityHashCode(variante) + ".mp4");
+				if(concatenedFile.exists()) {
+					concatenedFile.delete();
+				}
+				
 				FileUtils.moveFile(video, concatenedFile);
 				
 				log.info("Result available here {}", concatenedFile.getAbsolutePath());

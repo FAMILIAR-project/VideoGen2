@@ -20,6 +20,7 @@ import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
 
 
 public class RandomMediaSelector {
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(RandomMediaSelector.class);
 	private final static Random rand = new Random();
 	

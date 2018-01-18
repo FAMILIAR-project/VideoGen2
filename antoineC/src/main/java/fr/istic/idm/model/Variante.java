@@ -19,7 +19,6 @@ import fr.istic.idm.RandomMediaSelector;
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
 import fr.istic.idm.model.mediasequence.MediaSequence;
-import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VarianteInformationsVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VideoGenCompilerVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;

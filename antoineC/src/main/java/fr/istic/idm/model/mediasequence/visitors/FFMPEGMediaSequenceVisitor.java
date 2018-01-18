@@ -95,7 +95,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 	private void workOnImageDescription(Media media, ImageDescription description) throws FileNotFoundException {
 		log.info("Image with this details: {}, {}, {}, {}", description.getImageid(), description.getLocation(), description.getTop(), description.getBottom());
 		File image = null;
-		if(!(image = FileUtils.getFile(description.getLocation())).exists()) {
+		if(!(image = FileUtils.getFile(VideoGenCompiler.WORK_DIR, description.getLocation())).exists()) {
 			throw new FileNotFoundException("The file '" + image.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
@@ -148,7 +148,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		log.info("Video with this details: {}, {}, {}, {}, {}", description.getVideoid(), description.getLocation(), description.getProbability(), description.getDuration(), description.getDescription());
 		
 		File video = null;
-		if(!(video = FileUtils.getFile(description.getLocation())).exists()) {
+		if(!(video = FileUtils.getFile(VideoGenCompiler.WORK_DIR, description.getLocation())).exists()) {
 			throw new FileNotFoundException("The file '" + video.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
