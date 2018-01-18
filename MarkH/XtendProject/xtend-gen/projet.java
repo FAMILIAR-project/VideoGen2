@@ -86,7 +86,7 @@ public class projet {
           }
         }
       }
-      String command = (((("resources/ffmpeg/bin/ffmpeg -f concat -safe 0 -i public/TempTextFile/" + name) + ".txt -y -c copy public/GeneratedVideo/") + name) + ".mp4");
+      String command = (((("resources/ffmpeg/bin/ffmpeg.exe -f concat -safe 0 -i public/TempTextFile/" + name) + ".txt -y -c copy public/GeneratedVideo/") + name) + ".mp4");
       Process p = Runtime.getRuntime().exec(command);
       p.waitFor();
       final File file = new File((("public/TempTextFile/" + name) + ".txt"));

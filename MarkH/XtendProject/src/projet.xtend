@@ -68,7 +68,8 @@ class projet {
 
 
 		//appel la commande FFMPEG pour crÃ©e la video a partir du fichier text
-		var command = "resources/ffmpeg/bin/ffmpeg -f concat -safe 0 -i public/TempTextFile/"+name+".txt -y -c copy public/GeneratedVideo/"+name+".mp4"		
+		// resources se trouve dans le dossier webapp, même dossier qu'IDM.jar
+		var command = "resources/ffmpeg/bin/ffmpeg.exe -f concat -safe 0 -i public/TempTextFile/"+name+".txt -y -c copy public/GeneratedVideo/"+name+".mp4"		
 			
 		var p = Runtime.runtime.exec(command)
 		p.waitFor()
