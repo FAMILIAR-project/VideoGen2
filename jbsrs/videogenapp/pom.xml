@@ -785,9 +785,6 @@
                                     </includes>
                                 </resource>
                                 <resource>
-                                    <directory>data/output/</directory>
-                                </resource>
-                                <resource>
                                     <directory>data/input/</directory>
                                 </resource>
                             </webResources>
