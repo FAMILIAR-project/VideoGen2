@@ -4,16 +4,16 @@ import java.util.Random
 import org.eclipse.emf.common.util.URI
 import org.junit.Test
 import org.xtext.example.mydsl.videoGen.AlternativesMedia
+import org.xtext.example.mydsl.videoGen.ImageDescription
 import org.xtext.example.mydsl.videoGen.MandatoryMedia
 import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.VideoDescription
 
 import static org.junit.Assert.*
-import org.xtext.example.mydsl.videoGen.ImageDescription
 
 class VideoGenTest1 {
-	
-	CSVFileWriter csvfile
+
+	CSVFileWriter csvfile=new CSVFileWriter
 	int poss = 0
 	int alt = 0
 	int i
@@ -24,12 +24,13 @@ class VideoGenTest1 {
 	String playmsg = ""
 	int totalvideos = 0
 	int opt = 0
-	var writer = new PrintWriter("videos/playlist.txt", "UTF-8")
+	PrintWriter writer
 	ArrayList<VideoDescription> longplaylist = new ArrayList<VideoDescription>
 	val videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("example3.videogen"))
 	long longestAltDuration = 0
 	int longestPosition
 	ArrayList<VideoDescription> videos = new ArrayList<VideoDescription>
+	String videoname;
 
 	/**
 	 * The launcher app
@@ -49,32 +50,33 @@ class VideoGenTest1 {
 			playlists.add(new ArrayList<VideoDescription>)
 
 		}
+
 		videoGen.medias.forEach [ m |
 
 			if (m instanceof MandatoryMedia) {
-				if (m instanceof VideoDescription) {
 
+				if (m.description instanceof VideoDescription) {
 					// if video
-					createGIF(m.description as VideoDescription)
 					videos.add(m.description as VideoDescription)
 					for (i = 0; i < totalvideos; i++) {
 
 						playlists.get(i).add(m.description as VideoDescription)
+					// println(m.description.location)
 					}
 					playmsg = playmsg + m.description.location + "\n"
 					longplaylist.add(m.description as VideoDescription)
 
 				} else { // if image
-					if (m instanceof ImageDescription) {
-						println("image found :" + m.top + "AND " + m.bottom)
+					if (m.description instanceof ImageDescription) {
+						println("image found :" + (m.description as ImageDescription).top + "AND " +
+							(m.description as ImageDescription).bottom)
 					}
 				}
 			}
 			if (m instanceof OptionalMedia) {
-				if (m instanceof VideoDescription) {
+				if (m.description instanceof VideoDescription) {
 
 					// if video
-					createGIF(m.description as VideoDescription)
 					videos.add(m.description as VideoDescription)
 					for (i = 0; i < totalvideos / 2; i++) {
 
@@ -84,8 +86,9 @@ class VideoGenTest1 {
 					longplaylist.add(m.description as VideoDescription)
 					playmsg = playmsg + m.description.location + "\n"
 				} else { // if image
-					if (m instanceof ImageDescription) {
-						println("image found :" + m.top + "AND " + m.bottom)
+					if (m.description instanceof ImageDescription) {
+						println("image found :" + (m.description as ImageDescription) + "AND " +
+							(m.description as ImageDescription))
 
 					}
 
@@ -95,10 +98,8 @@ class VideoGenTest1 {
 			if (m instanceof AlternativesMedia) {
 				alt = m.medias.size
 				for (j = 0; j < m.medias.size; j++) {
-					if (m instanceof VideoDescription) {
+					if (m.medias.get(j) instanceof VideoDescription) {
 						// if video
-						createGIF(m.medias.get(j) as VideoDescription)
-
 						videos.add(m.medias.get(j) as VideoDescription)
 
 						for (i = poss; i < totalvideos; i = i + alt) {
@@ -114,8 +115,9 @@ class VideoGenTest1 {
 						}
 						poss++
 					} else { // if image
-						if (m instanceof ImageDescription) {
-							println("image found :" + m.top + "AND " + m.bottom)
+						if (m.medias.get(j) instanceof ImageDescription) {
+							println("image found :" + (m.medias.get(j) as ImageDescription).top + "AND " +
+								(m.medias.get(j) as ImageDescription).bottom)
 
 						}
 
@@ -147,11 +149,12 @@ class VideoGenTest1 {
 
 		// get a random playlist from the playlists
 		playlist = playlists.get(random.nextInt(totalvideos))
-		createfffFile()
-		createCSV()
-		executeVLC()
+		println("Creating files ://////////")
+		creatingVideoFiles()
+		 createCSV()
+		// executeVLC()
 		assertEquals(totalvideos, playlists.size)
-
+	// createAllGIT()
 	}
 
 	/**
@@ -182,19 +185,35 @@ class VideoGenTest1 {
 
 	}
 
+	def creatingVideoFiles() {
+		playlists.forEach [ playlist |
+
+			createfffFile(playlist)
+			csvfile.addSize()
+
+		]
+
+	}
+
 	/**
 	 * create a playlist.txt file for ffmpeg and concatenate from this file
 	 */
-	def createfffFile() {
+	def createfffFile(ArrayList<VideoDescription> playlist) {
 		// create file
+		writer = new PrintWriter("videos/playlist.txt", "UTF-8")
 		writer.println("#bref playlist");
 		playlist.forEach [ video |
-			writer.println("file '" + video.location + "'");
+			videoname = video.location.replace("videos/", "")
+			writer.println("file '" + videoname + "'");
 
 		]
 		writer.close();
+
 		// run ffmpeg to concatenate
-		Runtime.runtime.exec("ffmpeg -f concat -safe 0 -i ./playlist.txt -c copy ./out.mp4")
+		Runtime.runtime.exec("rm bref.mp4")
+		// println("ffmpeg -f concat -safe 0 -i videos/playlist.txt -c copy bref.mp4")
+		var p=Runtime.runtime.exec("ffmpeg -f concat -safe 0 -i videos/playlist.txt -c copy bref.mp4")
+		p.waitFor
 	}
 
 	/**
@@ -219,7 +238,7 @@ class VideoGenTest1 {
 	 */
 	def createCSV() {
 		// create a CSV file
-		csvfile = new CSVFileWriter
+		
 		csvfile.writeCsvFile(videos, playlists)
 
 	}
@@ -231,6 +250,8 @@ class VideoGenTest1 {
 
 		// create a gif for the video
 		if (videodescription.videoid !== null) {
+			Runtime.runtime.exec("rm " + videodescription.videoid + ".gif")
+			println("ffmpeg -i " + videodescription.location + "  " + videodescription.videoid + ".gif")
 			var p = Runtime.runtime.exec(
 				"ffmpeg -i " + videodescription.location + "  " + videodescription.videoid + ".gif")
 			p.waitFor
@@ -238,6 +259,16 @@ class VideoGenTest1 {
 			var p = Runtime.runtime.exec("ffmpeg -i " + videodescription.location + ".gif")
 			p.waitFor
 		}
+	}
+
+	def createAllGIT() {
+		videos.forEach [ video |
+
+			createGIF(video)
+
+		]
+		println("Gifs created")
+
 	}
 
 }

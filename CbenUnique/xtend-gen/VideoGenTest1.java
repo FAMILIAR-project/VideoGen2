@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.function.Consumer;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,7 +18,7 @@ import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
 @SuppressWarnings("all")
 public class VideoGenTest1 {
-  private CSVFileWriter csvfile;
+  private CSVFileWriter csvfile = new CSVFileWriter();
   
   private int poss = 0;
   
@@ -41,16 +40,7 @@ public class VideoGenTest1 {
   
   private int opt = 0;
   
-  private PrintWriter writer = new Function0<PrintWriter>() {
-    public PrintWriter apply() {
-      try {
-        PrintWriter _printWriter = new PrintWriter("videos/playlist.txt", "UTF-8");
-        return _printWriter;
-      } catch (Throwable _e) {
-        throw Exceptions.sneakyThrow(_e);
-      }
-    }
-  }.apply();
+  private PrintWriter writer;
   
   private ArrayList<VideoDescription> longplaylist = new ArrayList<VideoDescription>();
   
@@ -61,6 +51,8 @@ public class VideoGenTest1 {
   private int longestPosition;
   
   private ArrayList<VideoDescription> videos = new ArrayList<VideoDescription>();
+  
+  private String videoname;
   
   /**
    * The launcher app
@@ -79,9 +71,8 @@ public class VideoGenTest1 {
     }
     final Consumer<Media> _function = (Media m) -> {
       if ((m instanceof MandatoryMedia)) {
-        if ((m instanceof VideoDescription)) {
-          MediaDescription _description = ((MandatoryMedia)m).getDescription();
-          this.createGIF(((VideoDescription) _description));
+        MediaDescription _description = ((MandatoryMedia)m).getDescription();
+        if ((_description instanceof VideoDescription)) {
           MediaDescription _description_1 = ((MandatoryMedia)m).getDescription();
           this.videos.add(((VideoDescription) _description_1));
           for (this.i = 0; (this.i < this.totalvideos); this.i++) {
@@ -95,39 +86,42 @@ public class VideoGenTest1 {
           MediaDescription _description_2 = ((MandatoryMedia)m).getDescription();
           this.longplaylist.add(((VideoDescription) _description_2));
         } else {
-          if ((m instanceof ImageDescription)) {
-            String _top = ((ImageDescription)m).getTop();
+          MediaDescription _description_3 = ((MandatoryMedia)m).getDescription();
+          if ((_description_3 instanceof ImageDescription)) {
+            MediaDescription _description_4 = ((MandatoryMedia)m).getDescription();
+            String _top = ((ImageDescription) _description_4).getTop();
             String _plus_2 = ("image found :" + _top);
             String _plus_3 = (_plus_2 + "AND ");
-            String _bottom = ((ImageDescription)m).getBottom();
+            MediaDescription _description_5 = ((MandatoryMedia)m).getDescription();
+            String _bottom = ((ImageDescription) _description_5).getBottom();
             String _plus_4 = (_plus_3 + _bottom);
             InputOutput.<String>println(_plus_4);
           }
         }
       }
       if ((m instanceof OptionalMedia)) {
-        if ((m instanceof VideoDescription)) {
-          MediaDescription _description_3 = ((OptionalMedia)m).getDescription();
-          this.createGIF(((VideoDescription) _description_3));
-          MediaDescription _description_4 = ((OptionalMedia)m).getDescription();
-          this.videos.add(((VideoDescription) _description_4));
+        MediaDescription _description_6 = ((OptionalMedia)m).getDescription();
+        if ((_description_6 instanceof VideoDescription)) {
+          MediaDescription _description_7 = ((OptionalMedia)m).getDescription();
+          this.videos.add(((VideoDescription) _description_7));
           for (this.i = 0; (this.i < (this.totalvideos / 2)); this.i++) {
-            MediaDescription _description_5 = ((OptionalMedia)m).getDescription();
-            this.playlists.get(this.i).add(((VideoDescription) _description_5));
+            MediaDescription _description_8 = ((OptionalMedia)m).getDescription();
+            this.playlists.get(this.i).add(((VideoDescription) _description_8));
           }
-          MediaDescription _description_5 = ((OptionalMedia)m).getDescription();
-          this.longplaylist.add(((VideoDescription) _description_5));
+          MediaDescription _description_8 = ((OptionalMedia)m).getDescription();
+          this.longplaylist.add(((VideoDescription) _description_8));
           String _location_1 = ((OptionalMedia)m).getDescription().getLocation();
           String _plus_5 = (this.playmsg + _location_1);
           String _plus_6 = (_plus_5 + "\n");
           this.playmsg = _plus_6;
         } else {
-          if ((m instanceof ImageDescription)) {
-            String _top_1 = ((ImageDescription)m).getTop();
-            String _plus_7 = ("image found :" + _top_1);
+          MediaDescription _description_9 = ((OptionalMedia)m).getDescription();
+          if ((_description_9 instanceof ImageDescription)) {
+            MediaDescription _description_10 = ((OptionalMedia)m).getDescription();
+            String _plus_7 = ("image found :" + ((ImageDescription) _description_10));
             String _plus_8 = (_plus_7 + "AND ");
-            String _bottom_1 = ((ImageDescription)m).getBottom();
-            String _plus_9 = (_plus_8 + _bottom_1);
+            MediaDescription _description_11 = ((OptionalMedia)m).getDescription();
+            String _plus_9 = (_plus_8 + ((ImageDescription) _description_11));
             InputOutput.<String>println(_plus_9);
           }
         }
@@ -135,9 +129,8 @@ public class VideoGenTest1 {
       if ((m instanceof AlternativesMedia)) {
         this.alt = ((AlternativesMedia)m).getMedias().size();
         for (this.j = 0; (this.j < ((AlternativesMedia)m).getMedias().size()); this.j++) {
-          if ((m instanceof VideoDescription)) {
-            MediaDescription _get = ((AlternativesMedia)m).getMedias().get(this.j);
-            this.createGIF(((VideoDescription) _get));
+          MediaDescription _get = ((AlternativesMedia)m).getMedias().get(this.j);
+          if ((_get instanceof VideoDescription)) {
             MediaDescription _get_1 = ((AlternativesMedia)m).getMedias().get(this.j);
             this.videos.add(((VideoDescription) _get_1));
             for (this.i = this.poss; (this.i < this.totalvideos); this.i = (this.i + this.alt)) {
@@ -158,12 +151,15 @@ public class VideoGenTest1 {
             }
             this.poss++;
           } else {
-            if ((m instanceof ImageDescription)) {
-              String _top_2 = ((ImageDescription)m).getTop();
-              String _plus_10 = ("image found :" + _top_2);
+            MediaDescription _get_2 = ((AlternativesMedia)m).getMedias().get(this.j);
+            if ((_get_2 instanceof ImageDescription)) {
+              MediaDescription _get_3 = ((AlternativesMedia)m).getMedias().get(this.j);
+              String _top_1 = ((ImageDescription) _get_3).getTop();
+              String _plus_10 = ("image found :" + _top_1);
               String _plus_11 = (_plus_10 + "AND ");
-              String _bottom_2 = ((ImageDescription)m).getBottom();
-              String _plus_12 = (_plus_11 + _bottom_2);
+              MediaDescription _get_4 = ((AlternativesMedia)m).getMedias().get(this.j);
+              String _bottom_1 = ((ImageDescription) _get_4).getBottom();
+              String _plus_12 = (_plus_11 + _bottom_1);
               InputOutput.<String>println(_plus_12);
             }
           }
@@ -191,9 +187,9 @@ public class VideoGenTest1 {
     InputOutput.<String>println("\n");
     InputOutput.<String>println("Fin*************************\n");
     this.playlist = this.playlists.get(this.random.nextInt(this.totalvideos));
-    this.createfffFile();
+    InputOutput.<String>println("Creating files ://////////");
+    this.creatingVideoFiles();
     this.createCSV();
-    this.executeVLC();
     Assert.assertEquals(this.totalvideos, this.playlists.size());
   }
   
@@ -227,23 +223,33 @@ public class VideoGenTest1 {
     return (this.opt * this.alt);
   }
   
+  public void creatingVideoFiles() {
+    final Consumer<ArrayList<VideoDescription>> _function = (ArrayList<VideoDescription> playlist) -> {
+      this.createfffFile(playlist);
+      this.csvfile.addSize();
+    };
+    this.playlists.forEach(_function);
+  }
+  
   /**
    * create a playlist.txt file for ffmpeg and concatenate from this file
    */
-  public Process createfffFile() {
+  public int createfffFile(final ArrayList<VideoDescription> playlist) {
     try {
-      Process _xblockexpression = null;
+      int _xblockexpression = (int) 0;
       {
+        PrintWriter _printWriter = new PrintWriter("videos/playlist.txt", "UTF-8");
+        this.writer = _printWriter;
         this.writer.println("#bref playlist");
         final Consumer<VideoDescription> _function = (VideoDescription video) -> {
-          String _location = video.getLocation();
-          String _plus = ("file \'" + _location);
-          String _plus_1 = (_plus + "\'");
-          this.writer.println(_plus_1);
+          this.videoname = video.getLocation().replace("videos/", "");
+          this.writer.println((("file \'" + this.videoname) + "\'"));
         };
-        this.playlist.forEach(_function);
+        playlist.forEach(_function);
         this.writer.close();
-        _xblockexpression = Runtime.getRuntime().exec("ffmpeg -f concat -safe 0 -i ./playlist.txt -c copy ./out.mp4");
+        Runtime.getRuntime().exec("rm bref.mp4");
+        Process p = Runtime.getRuntime().exec("ffmpeg -f concat -safe 0 -i videos/playlist.txt -c copy bref.mp4");
+        _xblockexpression = p.waitFor();
       }
       return _xblockexpression;
     } catch (Throwable _e) {
@@ -284,8 +290,6 @@ public class VideoGenTest1 {
    * Create a CSV file with the size and lenght information
    */
   public void createCSV() {
-    CSVFileWriter _cSVFileWriter = new CSVFileWriter();
-    this.csvfile = _cSVFileWriter;
     this.csvfile.writeCsvFile(this.videos, this.playlists);
   }
   
@@ -301,13 +305,25 @@ public class VideoGenTest1 {
         int _xblockexpression = (int) 0;
         {
           Runtime _runtime = Runtime.getRuntime();
-          String _location = videodescription.getLocation();
-          String _plus = ("ffmpeg -i " + _location);
-          String _plus_1 = (_plus + "  ");
           String _videoid_1 = videodescription.getVideoid();
-          String _plus_2 = (_plus_1 + _videoid_1);
-          String _plus_3 = (_plus_2 + ".gif");
-          Process p = _runtime.exec(_plus_3);
+          String _plus = ("rm " + _videoid_1);
+          String _plus_1 = (_plus + ".gif");
+          _runtime.exec(_plus_1);
+          String _location = videodescription.getLocation();
+          String _plus_2 = ("ffmpeg -i " + _location);
+          String _plus_3 = (_plus_2 + "  ");
+          String _videoid_2 = videodescription.getVideoid();
+          String _plus_4 = (_plus_3 + _videoid_2);
+          String _plus_5 = (_plus_4 + ".gif");
+          InputOutput.<String>println(_plus_5);
+          Runtime _runtime_1 = Runtime.getRuntime();
+          String _location_1 = videodescription.getLocation();
+          String _plus_6 = ("ffmpeg -i " + _location_1);
+          String _plus_7 = (_plus_6 + "  ");
+          String _videoid_3 = videodescription.getVideoid();
+          String _plus_8 = (_plus_7 + _videoid_3);
+          String _plus_9 = (_plus_8 + ".gif");
+          Process p = _runtime_1.exec(_plus_9);
           _xblockexpression = p.waitFor();
         }
         _xifexpression = _xblockexpression;
@@ -327,5 +343,17 @@ public class VideoGenTest1 {
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
+  }
+  
+  public String createAllGIT() {
+    String _xblockexpression = null;
+    {
+      final Consumer<VideoDescription> _function = (VideoDescription video) -> {
+        this.createGIF(video);
+      };
+      this.videos.forEach(_function);
+      _xblockexpression = InputOutput.<String>println("Gifs created");
+    }
+    return _xblockexpression;
   }
 }
