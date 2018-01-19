@@ -1,7 +1,7 @@
 
 # Goal of the project
 
-The videoGen project consists firstly in implementing a program that is based on a textual specification and source videos to generate videos that meet the specifications. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
+The videoGen project consists firstly in implementing an application based on a textual specification and source videos to generate videos that meet the specifications. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
 
 
 # Use
