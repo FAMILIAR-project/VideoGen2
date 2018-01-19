@@ -34,4 +34,5 @@ Sur trois variantes générées a partir d'un même .videogen nous constatons qu
 Par manque de temps nous n'avons pas packagé notre générateur ni de site web.
 Nous ne fournisson pas non plus de quoi participer aux concours.
 Un screencast d'execution est présent.
+L'historique des commits n'est pas représentatif de la repartition réel du travail au sein du binome
 
