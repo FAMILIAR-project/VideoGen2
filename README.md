@@ -13,3 +13,8 @@ The code is located in VideoGenApp.
 Use README.md of this Jhipster app to launch app. A backup of the database is located in VideoGenApp.
 After sign in using login "user" and password "user", you can press the button "Generer" to display a random variant.
 The file "screencast.mpg" show a demonstration. The files used are in mp4 format (The gif generation was implemented after).
+
+
+# M2 ILA
+Merzouk Abdelghani
+Brossault Guillaume
