@@ -84,6 +84,9 @@ Instructions to deploy the project
 - Concatenate videos into a variant from a specification file
 - Apply a filter to a video (via the specification file)
 - Export variants as gifs
+- Take into account the probabilities of alternative medias
+- Take into account the durations of alternative medias
+- Create a csv file with the informations of the variants
 
 ## Authors
 June Benvegnu-Sallou, Ramadan Soumaila
