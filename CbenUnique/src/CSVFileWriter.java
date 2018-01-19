@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.xtext.example.mydsl.videoGen.VideoDescription;
-
+/**
+ * Class for making the CSV file
+ * @author chak
+ *
+ */
 public class CSVFileWriter {
 
 	private final String COMMA_DELIMITER = ",";
@@ -17,7 +21,11 @@ public class CSVFileWriter {
 	private ArrayList<Long> lenghts = new ArrayList<Long>();
 
 	private String FILE_HEADER;
-
+/**
+ * 
+ * @param videos all the videos
+ * @param playlists all the playlists
+ */
 	public void writeCsvFile(ArrayList<VideoDescription> videos, ArrayList<ArrayList<VideoDescription>> playlists) {
 		File file;
 		String head = "ID,";
@@ -123,6 +131,10 @@ public class CSVFileWriter {
 		}
 
 	}
+	
+	/**
+	 * get the size of a video generated from a playlist
+	 */
 	public void addSize() {
 		File file = new File("bref.mp4");
 		if(file.exists()){

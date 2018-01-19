@@ -223,6 +223,9 @@ public class VideoGenTest1 {
     return (this.opt * this.alt);
   }
   
+  /**
+   * Create a video file for each playlist to compare
+   */
   public void creatingVideoFiles() {
     final Consumer<ArrayList<VideoDescription>> _function = (ArrayList<VideoDescription> playlist) -> {
       this.createfffFile(playlist);
@@ -345,6 +348,9 @@ public class VideoGenTest1 {
     }
   }
   
+  /**
+   * generate GIFs for all the videos
+   */
   public String createAllGIT() {
     String _xblockexpression = null;
     {

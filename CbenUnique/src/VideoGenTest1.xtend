@@ -13,7 +13,7 @@ import static org.junit.Assert.*
 
 class VideoGenTest1 {
 
-	CSVFileWriter csvfile=new CSVFileWriter
+	CSVFileWriter csvfile = new CSVFileWriter
 	int poss = 0
 	int alt = 0
 	int i
@@ -151,7 +151,7 @@ class VideoGenTest1 {
 		playlist = playlists.get(random.nextInt(totalvideos))
 		println("Creating files ://////////")
 		creatingVideoFiles()
-		 createCSV()
+		createCSV()
 		// executeVLC()
 		assertEquals(totalvideos, playlists.size)
 	// createAllGIT()
@@ -185,6 +185,10 @@ class VideoGenTest1 {
 
 	}
 
+	/**
+	 * Create a video file for each playlist to compare
+	 * 
+	 */
 	def creatingVideoFiles() {
 		playlists.forEach [ playlist |
 
@@ -212,7 +216,7 @@ class VideoGenTest1 {
 		// run ffmpeg to concatenate
 		Runtime.runtime.exec("rm bref.mp4")
 		// println("ffmpeg -f concat -safe 0 -i videos/playlist.txt -c copy bref.mp4")
-		var p=Runtime.runtime.exec("ffmpeg -f concat -safe 0 -i videos/playlist.txt -c copy bref.mp4")
+		var p = Runtime.runtime.exec("ffmpeg -f concat -safe 0 -i videos/playlist.txt -c copy bref.mp4")
 		p.waitFor
 	}
 
@@ -238,7 +242,6 @@ class VideoGenTest1 {
 	 */
 	def createCSV() {
 		// create a CSV file
-		
 		csvfile.writeCsvFile(videos, playlists)
 
 	}
@@ -260,7 +263,9 @@ class VideoGenTest1 {
 			p.waitFor
 		}
 	}
-
+/**
+ * generate GIFs for all the videos
+ */
 	def createAllGIT() {
 		videos.forEach [ video |
 
