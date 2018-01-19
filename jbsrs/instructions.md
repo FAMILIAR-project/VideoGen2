@@ -28,17 +28,32 @@ jbsrs
 ```
 videogenapp
 │   README.md
-│   Instructions.md    
+│   mvnw
+|   pom.xml
+|   ...
 │
-└───videogenapp
-│   │   file011.txt
+└───src
 │   │
-│   └───subfolder1
-│       │   file111.txt
-│       │   file112.txt
-│       │   ...
+│   └───main
+│   |   │
+|   │   └───docker
+|   │   |   │  Dockerfile
+|   │   |   │  app.yml
+|   │   |   │  mysql.yml
+|   │   |   │  sonar.yml
+|   │   |  
+|   │   └───java/fr/istic/m2il/idm/videogenapp
+|   │   |   │   Test.java
+|   │   |   
+|   │   └───resources
+|   │   |   │   ...
+|   │   |   
+|   │   └───webapp
+|   │   |   │   ...
+|   │
+│   └───test
 │   
-└───videogentransformations
+└───data/input
     │   file021.txt
     │   file022.txt
 ```
@@ -91,8 +106,18 @@ Instructions to deploy the project
 
 ## Usage
 ```
-jar -java xxx 
+jar -java xxx.jar command
+
+command :
+concatener_videos path/to/outputFolder format file1 file2 
+gerer_probabilites path/to/outputFolder path/to/videogenspecificationfile
+exporter_gifs path/to/outputFolder path/to/videogenspecificationfile witdh heigth
+tailles_variantes path/to/outPutFolder path/to/videogenspecificationfile video/gif (gif_width gif_heigth)
+durees_variantes path/to/outPutFolder path/to/videogenspecificationfile 
+appliquer_filtres path/to/videogenspecificationfile videofile filter negate/hflip/vflip/b&w
 ```
+/ : means that there is a choice to make.
+(): means that it needs to be put with only the related option.
 
 ## Authors
 June Benvegnu-Sallou, Ramadan Soumaila
