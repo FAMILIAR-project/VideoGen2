@@ -66,6 +66,56 @@
             <version>2.13.0</version>
         </dependency>
 
+		<!--xtend project -->
+		<dependency>
+			<groupId>videoGenProject</groupId>
+			<artifactId>videoGenProject</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>videoGenProject_videogen</groupId>
+			<artifactId>videoGenProject_videogen</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject_videogen.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>videoGenProject_videogen_ide</groupId>
+			<artifactId>videoGenProject_videogen_ide</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject_videogen_ide.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>videoGenProject_videogen_tests</groupId>
+			<artifactId>videoGenProject_videogen_tests</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject_videogen_tests.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>videoGenProject_videogen_tools</groupId>
+			<artifactId>videoGenProject_videogen_tools</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject_videogen_tools.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>videoGenProject_videogen_ui</groupId>
+			<artifactId>videoGenProject_videogen_ui</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject_videogen_ui.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>videoGenProject_videogen_ui_tests</groupId>
+			<artifactId>videoGenProject_videogen_ui_tests</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/videoGenProject_videogen_ui_tests.jar</systemPath>
+		</dependency>
     </dependencies>
 
 	<build>
