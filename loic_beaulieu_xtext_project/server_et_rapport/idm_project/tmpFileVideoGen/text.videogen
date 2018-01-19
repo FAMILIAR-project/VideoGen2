@@ -1,0 +1,6 @@
+VideoGen {
+   mandatory videoseq v0 "noel.mp4"
+   mandatory videoseq v01 "rue.mp4"
+   mandatory videoseq v2 "temple.mp4"
+   mandatory videoseq v3 "floue.mp4"
+}

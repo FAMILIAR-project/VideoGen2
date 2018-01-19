@@ -1,4 +1,0 @@
-file '../src/main/resources/static/video/original/noel.mp4'
-file '../src/main/resources/static/video/original/rue.mp4'
-file '../src/main/resources/static/video/original/temple.mp4'
-file '../src/main/resources/static/video/original/floue.mp4'
