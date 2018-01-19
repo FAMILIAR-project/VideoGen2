@@ -165,5 +165,8 @@ durees_variantes AbsoluteOutputFolder videogenspecificationfile
 ## Contest
 The specification file for the contest is located : ```videogenapp/data/input/videogen/contest.videogen```
 
+### Infos
+Le projet fonctionnait puis il y a eu un problème lors de l'essai avec Docker. Un problème avec le war et les chemins pour trouver les vidéos.
+
 ## Authors
 June Benvegnu-Sallou, Ramadan Soumaila
