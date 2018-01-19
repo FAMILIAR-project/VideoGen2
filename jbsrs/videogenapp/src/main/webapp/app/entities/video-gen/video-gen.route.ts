@@ -13,18 +13,18 @@ export const videoGenRoute: Routes = [
         path: 'video-gen',
         component: VideoGenComponent,
         data: {
-            //authorities: ['ROLE_USER'],
+            // authorities: ['ROLE_USER'],
             pageTitle: 'VideoGens'
         },
-        //canActivate: [UserRouteAccessService]
+        // canActivate: [UserRouteAccessService]
     }, {
         path: 'video-gen/:id',
         component: VideoGenDetailComponent,
         data: {
-            //authorities: ['ROLE_USER'],
+            // authorities: ['ROLE_USER'],
             pageTitle: 'VideoGens'
         },
-        //canActivate: [UserRouteAccessService]
+        // canActivate: [UserRouteAccessService]
     }
 ];
 
@@ -66,10 +66,10 @@ export const videoGenPlayerRoute: Routes = [
         path: 'video-gen-player',
         component: VideoGenPlayerComponent,
         data: {
-            //authorities: ['ROLE_USER'],
+            // authorities: ['ROLE_USER'],
             pageTitle: 'Player'
         },
-        //canActivate: [UserRouteAccessService]
+        // canActivate: [UserRouteAccessService]
     }
 ];
 
@@ -78,9 +78,9 @@ export const videoGenConfiguratorRoute: Routes = [
         path: 'video-gen-configurator',
         component: VideoGenConfiguratorComponent,
         data: {
-            //authorities: ['ROLE_USER'],
+            // authorities: ['ROLE_USER'],
             pageTitle: 'Configurator'
         },
-        //canActivate: [UserRouteAccessService]
+        // canActivate: [UserRouteAccessService]
     }
 ];

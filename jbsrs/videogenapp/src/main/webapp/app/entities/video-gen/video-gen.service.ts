@@ -11,8 +11,7 @@ export class VideoGenService {
 
     private resourceUrl = SERVER_API_URL + 'api/video-gens';
     private videoUrlShare: string;
-    private file = "v0.mp4";
-    private fil = "file";
+    videoGenModel: VideoGeneratorModel;
 
     constructor(private http: Http) { }
 
@@ -76,7 +75,7 @@ export class VideoGenService {
     }
 
     getModel(filename: string): Observable<VideoGeneratorModel> {
-        return this.http.get(`${this.resourceUrl}/${filename}`).map((res: Response) => res.json());
+        return this.http.get(`${this.resourceUrl}/${filename}`).map((res) => res.json());
     }
 
     generatePlaylist(videos: string[]): any {
@@ -84,27 +83,56 @@ export class VideoGenService {
             .map((res: Response) => res);
     }
 
-    getVideoGenFiles(): any{
-        return this.http.get(this.resourceUrl+ '/files').map((res: Response) => res.json());
+    getVideoGenFiles(): any {
+        return this.http.get(this.resourceUrl + '/files').map((res: Response) => res.json());
     }
 
-    getFile() : any {
-      return this.http.get(this.resourceUrl + '/video-gens/file/data/input/v0.mp4').map((res: Response)=> res.json());
+    getFile(): any {
+      return this.http.get(this.resourceUrl + '/video-gens/file/data/input/v0.mp4').map((res: Response) => res.json());
     }
 
-    getVideoUrlShare(){
+    getVideoUrlShare() {
       return this.videoUrlShare;
     }
 
-    setVideoUrlShare(videoUrl : string){
+    setVideoUrlShare(videoUrl: string) {
       this.videoUrlShare = videoUrl;
     }
 
-    getRandomPlayList(){
-      return this.http.get(this.resourceUrl + '/random').map((res: Response) => (res.text()));
+    getRandomPlayList() {
+      return this.http.get(this.resourceUrl + '/playlist/random').map((res: Response) => (res.text()));
     }
 
-    getRandomVariant(){
-      return this.http.get(this.resourceUrl + '/variant/random').map((res: Response) => (res.json()));
+    getRandomModel(): Observable<VideoGeneratorModel> {
+      return this.http.get(this.resourceUrl + '/model/random').map((res: Response) => {
+        console.log('JSONReal ' + res.text());
+
+        console.log('JSONRealJ ' + res.json());
+
+        
+
+        /*this.videoGenModel.medias.forEach((m) => {
+          console.log(m.thumbUrl)
+        });*/
+
+          return res.json();
+      });
+    }
+
+    setVideogeneratorModel(videoGenModel: VideoGeneratorModel) {
+      this.videoGenModel = videoGenModel;
+    }
+
+    getVideoGeneratorModel() {
+      return this.videoGenModel;
+    }
+
+    /**
+     * Convert a returned JSON object to VideoGen.
+     */
+    private convertVideoGenFromServer(json: any): VideoGeneratorModel {
+      console.log('JSON ' + json)
+        const entity: VideoGeneratorModel = Object.assign(new VideoGeneratorModel(), json);
+        return entity;
     }
 }

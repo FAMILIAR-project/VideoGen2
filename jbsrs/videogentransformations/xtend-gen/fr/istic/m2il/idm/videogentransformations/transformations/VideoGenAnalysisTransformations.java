@@ -17,6 +17,10 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
+/**
+ * @author Ramadan Soumaila
+ * Class for apply analysis a videoGen specification
+ */
 @SuppressWarnings("all")
 public class VideoGenAnalysisTransformations {
   public static int getMaxDuration(final VideoGeneratorModel videoGen) {

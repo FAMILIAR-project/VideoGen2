@@ -6,29 +6,37 @@ import java.io.File
 import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils
 import java.util.regex.Pattern
 import org.xtext.example.mydsl.videoGen.MediaDescription
-import org.xtext.example.mydsl.videoGen.VideoDescription
-import org.xtext.example.mydsl.videoGen.BlackWhiteFilter
-import org.xtext.example.mydsl.videoGen.NegateFilter
-import org.xtext.example.mydsl.videoGen.FlipFilter
-import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
 
+/**
+ * @author Ramadan Soumaila
+ * A helper class to execute ffmpeg commands
+ */
+import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
+/**
+ * @author Ramadan Soumaila
+ * A helper class to execute ffmeg commands
+ */
 class FFMPEGHelper {
 	
-	
-	static def String generateThumbnail(String videoLocation){
+	/**
+	 * Creates the thumb of a video/image
+	 * @param location the location of video/image 
+	 * @return a string which represent the location of generated thumbs if execution is successful, or "" otherwise
+	 */
+	static def String generateThumbnail(String location){
 		
 		val command = new ArrayList<String>
 		command.add("ffmpeg")
 		command.add("-y")
 		command.add("-i")
-		command.add(videoLocation)
+		command.add(location)
 		command.add("-r")
 		command.add("1")
 		command.add("-t") 
 		command.add("00:00:01")
 		command.add("-ss")
 		
-		command.add("00:00:0" + Math.random() * Math.round(Float.parseFloat(getVideoDurationString(videoLocation).split(":").get(2))))
+		command.add("00:00:0" + Math.random() * Math.round(Float.parseFloat(getVideoDurationString(location).split(":").get(2))))
 		command.add("-f")
 		command.add("image2")
 		var outputFile = CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/thumbs/thumb.png")
@@ -38,6 +46,12 @@ class FFMPEGHelper {
 	}
 	
 	
+	/**
+	 * Creates a video by concatenate several 
+	 * @param outputfilename the location of generated video
+	 * @param files the list of videos's locations 
+	 * @return a string which represent the location of generated video if execution is successful, or "" otherwise
+	 */
 	static def String concatVideos(List<String> files, String outputfilename){
 		val command = new ArrayList<String>
 		var filter = ""
@@ -81,6 +95,12 @@ class FFMPEGHelper {
 		return outputfilename
 	}
 	
+	/**
+	 * Gets a video/image resolution 
+	 * @param videoFile the location of video/image 
+	 * @return a array of int which contains the width at first index, 
+	 * and height at second index if execution is successful, or null otherwise
+	 */
 	static def int[] getVideoResolution(String videoFile){
 		val command = new ArrayList
 		command.add("ffmpeg")
@@ -104,6 +124,15 @@ class FFMPEGHelper {
 		return resolution
 	}
 	
+	/**
+	 * Changes the resolution of a video/image if the input resolution over the output resolution
+	 * @param filename location of video/image
+	 * @param inputWidth the input width resolution to set 
+	 * @param inputHeight the input height resolution to set 
+	 * @param outWidthWidth the output width resolution to set 
+	 * @param outputHeight the output width resolution to set 
+	 * @return a string which represent the location of generated thumbs if execution is successful, or "" otherwise
+	 */
 	static def String homogenizeMediaResolution(String filename, int inputWidth, int inputHeight, int outputWidth, int outputHeight){
 		if(inputWidth == outputWidth && inputHeight == outputHeight){
 			return filename
@@ -133,7 +162,12 @@ class FFMPEGHelper {
         return outputFile
 	}
 	
-	
+	/**
+	 * Gets a video's duration of a playlist
+	 * 
+	 * @param playlist a list of media description
+	 * @return a int value of the playlist duration if the command is successful, or 0 otherwise
+	 */
 	static def int getVideoDuration(List<MediaDescription> playlist){
 		var duration = 0
 		
@@ -149,7 +183,12 @@ class FFMPEGHelper {
 		duration
 	}
 	
-	
+	/**
+	 * Gets a video's duration 
+	 * 
+	 * @param videolocation the location of video
+	 * @return a int value of the video duration if the command is successful, or 0 otherwise
+	 */
 	static def int getVideoDuration(String videoLocation){
 		val command = new ArrayList<String>
 		command.add("ffmpeg")
@@ -171,6 +210,12 @@ class FFMPEGHelper {
 		duration
 	}
 	
+	/**
+	 * Gets a video's duration of a video in string(formated)
+	 * 
+	 * @param videoLocation the location of video
+	 * @return a formated string value of the video of duration if the command is successful, or 0 otherwise
+	 */
 	static def String getVideoDurationString(String videoLocation){
 		val command = new ArrayList<String>
 		command.add("ffmpeg")
@@ -190,6 +235,12 @@ class FFMPEGHelper {
 		duration
 	}
 	
+	/**
+	 * Gets the gif of a video 
+	 * 
+	 * @param videoLocation the location of video
+	 * @return a string value of the gif generated if the command is successful, or 0 otherwise
+	 */
 	static def String videoToGif(String videoLocation, int width, int height){
 		val command = new ArrayList<String>
 		var file = videoLocation.replace(".","@#").split("@#")
@@ -211,6 +262,12 @@ class FFMPEGHelper {
 		outputFile
 	}
 	
+	/**
+	 * Applies a filter on a video
+	 * 
+	 * @param fileter the filter to apply
+	 * @return a string value of the video generated with filter if the command is successful, or "" otherwise
+	 */
 	static def String applyFilter(String filter, String location){
 		val filtercommand = new ArrayList<String>
 					filtercommand.add("ffmpeg")
@@ -225,5 +282,52 @@ class FFMPEGHelper {
 					ProcessHelper.execute(filtercommand)
 
 					outputFile
+	}
+	
+	/**
+	 * Adds some text on a video
+	 * @param location the video location
+	 * @param content the content to write
+	 * @param size the font size of the content
+	 * @param color the color of the content
+	 * @param position the position of content
+	 * @return a string value of the output location if is successful, or "" otherwise
+	 */
+	static def String addTextToVideo(String location, String content, int size, String color, String position){
+		var commands = newArrayList
+		var color_ = color
+		if (color_ === "")
+			color_ = "white"
+		var size_ = size
+		if(size_ == 0)
+			size_ = 20
+		var position_ = position
+		if(position === "")
+			position_ = "BOTTOM"
+		var String y
+		switch(position_){
+			case "TOP":
+				y = "5"
+			case "BOTTOM":
+				y = "(h-text_h-line_h)"
+	
+			case "CENTER":
+				y = "(h-text_h-line_h)/2"
+		
+		}
+	
+		commands.add("ffmpeg")
+		commands.add("-i")
+		commands.add(location)
+		commands.add("-strict")
+        commands.add("-2")
+		commands.add("-vf")
+		commands.add("drawtext=fontsize=" + size_ + ":fontcolor=" + color_ + ":fontfile=FreeSerif.ttf" + ":text=" + "'" + content + "'" + ":x=(w-text_w)/2:y=" + y + "'")
+		var output = CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/filtered/" + new File(location).absolutePath.replace("\\", "/").split("/").last)
+		commands.add(output)
+		
+		ProcessHelper.execute(commands)
+		
+		output
 	}
 }

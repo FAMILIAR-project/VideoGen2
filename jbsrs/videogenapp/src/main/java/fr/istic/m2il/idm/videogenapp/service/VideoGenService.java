@@ -75,15 +75,21 @@ public class VideoGenService {
         videoGenRepository.delete(id);
     }
 
-    public VideoGeneratorModelWrapper wrap(VideoGeneratorModel model){
+    public VideoGeneratorModelWrapper wrap(VideoGeneratorModel model, List<String> thumbsUrls){
         VideoGeneratorModelWrapper wrapper = new VideoGeneratorModelWrapper();
         wrapper.information = model.getInformation();
+        int thumbsUrlsIndex = 0;
         for(Media media : model.getMedias()){
             MediaWrapper mediaWrapper;
             if(media instanceof MandatoryMedia){
                 mediaWrapper = new MandatoryMediaWrapper();
                 MandatoryMedia mandatoryMedia = (MandatoryMedia) media;
-                ((MandatoryMediaWrapper) mediaWrapper).description = mandatoryMedia.getDescription();
+                if(mandatoryMedia.getDescription() instanceof VideoDescription){
+                    ((MandatoryMediaWrapper) mediaWrapper).descriptionWrapper.filterWrapper = getFilter((VideoDescription) mandatoryMedia.getDescription());
+                }
+                ((MandatoryMediaWrapper) mediaWrapper).descriptionWrapper.setDescription(mandatoryMedia.getDescription());
+                ((MandatoryMediaWrapper) mediaWrapper).descriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
+                thumbsUrlsIndex++;
                 String type;
                 if(mandatoryMedia.getDescription() instanceof VideoDescription){
                     type = "mv";
@@ -95,7 +101,16 @@ public class VideoGenService {
             }else if(media instanceof OptionalMedia){
                 mediaWrapper = new OptionalMediaWrapper();
                 OptionalMedia optionalMedia = (OptionalMedia) media;
-                ((OptionalMediaWrapper) mediaWrapper).description = optionalMedia.getDescription();
+
+                if(optionalMedia.getDescription() instanceof VideoDescription){
+                    if(((VideoDescription) optionalMedia.getDescription()).getFilter() != null){
+                        ((OptionalMediaWrapper) mediaWrapper).descriptionWrapper.filterWrapper = getFilter((VideoDescription) optionalMedia.getDescription());
+                    }
+                }
+
+                ((OptionalMediaWrapper) mediaWrapper).descriptionWrapper.description = optionalMedia.getDescription();
+                ((OptionalMediaWrapper) mediaWrapper).descriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
+                thumbsUrlsIndex++;
                 String type;
                 if(optionalMedia.getDescription() instanceof VideoDescription){
                     type = "ov";
@@ -107,9 +122,21 @@ public class VideoGenService {
             }else{
                 mediaWrapper = new AlternativesMediaWrapper();
                 AlternativesMedia alternativesMedia = (AlternativesMedia) media;
-                ((AlternativesMediaWrapper) mediaWrapper).medias = alternativesMedia.getMedias();
+                for(MediaDescription alt : alternativesMedia.getMedias()){
+                    MediaDescriptionWrapper mediaDescriptionWrapper = new MediaDescriptionWrapper();
+
+                    if(alt instanceof VideoDescription){
+                        if(((VideoDescription)alt).getFilter() != null){
+                            mediaDescriptionWrapper.filterWrapper = getFilter((VideoDescription) alt);
+                        }
+                    }
+
+                    mediaDescriptionWrapper.description = alt;
+                    mediaDescriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
+                    ((AlternativesMediaWrapper)mediaWrapper).descriptionWrappers.add(mediaDescriptionWrapper);
+                    thumbsUrlsIndex++;
+                }
                 String type;
-                // Videos not mixed input with images
                 if(alternativesMedia.getMedias().get(0) instanceof VideoDescription){
                     type = "av";
                 }else{
@@ -144,5 +171,24 @@ public class VideoGenService {
         String[] files = file.getAbsolutePath().replace("\\", "/").split("/");
 
         return "data/input/videogen/" + files[files.length -1];
+    }
+
+    private FilterWrapper getFilter(VideoDescription videoDescription){
+        FilterWrapper filterWrapper = null;
+        if(videoDescription.getFilter() != null){
+            if(videoDescription.getFilter() instanceof BlackWhiteFilter){
+                filterWrapper = new BlackWhiteFilterWrapper();
+                filterWrapper.filter = videoDescription.getFilter();
+            }
+            if(videoDescription.getFilter() instanceof NegateFilter){
+                filterWrapper = new NegateFilterWrapper();
+                filterWrapper.filter = videoDescription.getFilter();
+            }
+            if(videoDescription.getFilter() instanceof FlipFilter){
+                filterWrapper = new FlipFilterWrapper();
+                filterWrapper.filter = videoDescription.getFilter();
+            }
+        }
+        return  filterWrapper;
     }
 }

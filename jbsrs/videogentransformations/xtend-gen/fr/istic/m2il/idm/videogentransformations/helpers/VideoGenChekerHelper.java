@@ -15,12 +15,30 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
+/**
+ * @author Ramadan Soumaila
+ * A helper class to check the validity of a videoGen specification
+ */
 @SuppressWarnings("all")
 public class VideoGenChekerHelper {
+  /**
+   * Checks if a optional video description's probability is valid
+   * the probability must less than or equal to 1 or 100%
+   * 
+   * @param video the video description to check
+   * @return a boolean value which is true if the probability is valid , else otherwise
+   */
   public static boolean isGoodOptionalVideoProbality(final VideoDescription video) {
     return VideoGenChekerHelper.isGoodVideoProbability(video);
   }
   
+  /**
+   * Checks if the probabilities of a alternatives medias are valid
+   * the sum of his medias's probabilities can't over 100%
+   * 
+   * @param videos the list of alternattives's video description to check
+   * @return a boolean value which is true if the sum of probabilities is valid,or else otherwise
+   */
   public static boolean isGoodAlternativesVideosProbabilties(final List<VideoDescription> videos) {
     boolean _xblockexpression = false;
     {
@@ -46,6 +64,14 @@ public class VideoGenChekerHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Checks the validity of probabilities in a videoGen specification
+   * for alternatives media the sum of probabilities must less than or equal to 100%
+   * for optional media the probability must less or equal to 1 or 100%
+   * 
+   * @param videoGen the VideoGeneratorModel to check
+   * @return a boolean value, which is true if all medias's probabilities are valid
+   */
   public static boolean isGoodMediasProbabilities(final VideoGeneratorModel videoGen) {
     boolean _xblockexpression = false;
     {
@@ -83,6 +109,16 @@ public class VideoGenChekerHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Checks if the videoGen specification is valid :
+   * All probabilities must be coherent :
+   * a optional media's probability can't over 1 or 100%
+   * the sum of alternatives media's probabilities must less than or equal 100%
+   * All medias's identifier must be unique
+   * The media's files (images or videos) specified must existed
+   * @param videoGen the videoGenerator specification to check
+   * @retun a boolean value which is true if the specification is valid, or else otherwise
+   */
   public static boolean isGoodVideoGenSpecification(final VideoGeneratorModel videoGen) {
     boolean _xblockexpression = false;
     {
@@ -111,6 +147,12 @@ public class VideoGenChekerHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Checks if a VideoDescription has a valid probability
+   * 
+   * @param video the videoDescription to check
+   * @return the boolean value, which is true if the specification is valid, or else otherwise
+   */
   public static boolean isGoodVideoProbability(final VideoDescription video) {
     boolean _xblockexpression = false;
     {
@@ -123,6 +165,12 @@ public class VideoGenChekerHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Checks the uniqueness of medias's id in a VideoGen specification.
+   * 
+   * @param videoGen the videoGenerator specification to check
+   * @return a boolean value, which is true if all medias's id are unique , or false otherwise
+   */
   public static boolean isAllMediasIdIsUnique(final VideoGeneratorModel videoGen) {
     boolean _xblockexpression = false;
     {
@@ -184,6 +232,12 @@ public class VideoGenChekerHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Checks the if videoGen medias's files existed
+   * 
+   * @param videoGen the videoGen specification to check
+   * @return a boolean value which is true if all medias's file exist, or else otherwise
+   */
   public static boolean isAllMediasFilesExist(final VideoGeneratorModel videoGen) {
     boolean _xblockexpression = false;
     {
@@ -257,6 +311,12 @@ public class VideoGenChekerHelper {
     return _xblockexpression;
   }
   
+  /**
+   * Checks if a videoGen specification is not empty
+   * 
+   * @param videoGen the videoGen specification to check
+   * @return a boolean value which is true if is not empty, or else otherwise
+   */
   public static boolean isNotEmptyVideoGen(final VideoGeneratorModel videoGen) {
     return videoGen.getMedias().isEmpty();
   }

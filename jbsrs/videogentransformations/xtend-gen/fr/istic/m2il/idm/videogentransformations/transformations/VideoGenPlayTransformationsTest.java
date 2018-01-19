@@ -338,4 +338,9 @@ public class VideoGenPlayTransformationsTest {
       Assert.assertTrue(_plus_1, _equals);
     }
   }
+  
+  @Test
+  public void addText() {
+    FFMPEGHelper.addTextToVideo("/home/ismael/videogen/v01.mp4", "Du Test", 20, "", "");
+  }
 }

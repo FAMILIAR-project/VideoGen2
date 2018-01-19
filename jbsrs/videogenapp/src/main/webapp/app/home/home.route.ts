@@ -6,7 +6,7 @@ export const HOME_ROUTE: Route = {
     path: '',
     component: HomeComponent,
     data: {
-        //authorities: [],
+        // authorities: [],
         pageTitle: 'Bienvenue sur  VideoGen !'
     }
 };

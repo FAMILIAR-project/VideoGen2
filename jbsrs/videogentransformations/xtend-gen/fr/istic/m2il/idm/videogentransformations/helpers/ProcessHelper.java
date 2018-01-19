@@ -8,8 +8,16 @@ import java.util.List;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 
+/**
+ * @author Ramadan Soumaila
+ * A helper class to execute command
+ */
 @SuppressWarnings("all")
 public class ProcessHelper {
+  /**
+   * Executes a list of command son the system
+   * @param the list of commands to executes
+   */
   public static void execute(final List<String> commands) {
     try {
       final ProcessBuilder processBuilder = new ProcessBuilder(commands);
@@ -22,6 +30,11 @@ public class ProcessHelper {
     }
   }
   
+  /**
+   * Executes a list of command son the system
+   * @param the list of commands to executes
+   * @return a array of output stream
+   */
   public static String[] executeAndGetIOStream(final List<String> commands) {
     try {
       final ProcessBuilder processBuilder = new ProcessBuilder(commands);

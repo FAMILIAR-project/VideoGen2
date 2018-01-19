@@ -264,4 +264,9 @@ class VideoGenPlayTransformationsTest {
 		}
 		
 	}
+	
+	@Test
+	def void addText(){
+		FFMPEGHelper.addTextToVideo("/home/ismael/videogen/v01.mp4", "Du Test", 20, "", "")
+	}
 }

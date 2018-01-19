@@ -2,11 +2,15 @@ package fr.istic.m2il.idm.videogentransformations.configs
 
 import java.io.File
 
+
+/**
+ * @author Ramadan Soumaila
+ * A Class to configure somes parameters 
+ */
 class VideoGenConfigs {
 	
 	static var File outPutFolder
 	static var int[] gifResolutions = newIntArrayOfSize(2)
-	static var String serverIP = "localhost:8080/"
 	
 	static def void setOutPutFolder(String outPut){
 		outPutFolder = new File(outPut)

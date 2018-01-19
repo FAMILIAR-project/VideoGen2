@@ -2,13 +2,15 @@ package fr.istic.m2il.idm.videogentransformations.configs;
 
 import java.io.File;
 
+/**
+ * @author Ramadan Soumaila
+ * A Class to configure somes parameters
+ */
 @SuppressWarnings("all")
 public class VideoGenConfigs {
   private static File outPutFolder;
   
   private static int[] gifResolutions = new int[2];
-  
-  private static String serverIP = "localhost:8080/";
   
   public static void setOutPutFolder(final String outPut) {
     File _file = new File(outPut);
@@ -34,11 +36,11 @@ public class VideoGenConfigs {
   }
   
   public static void setServerIP(final String ip) {
-    VideoGenConfigs.serverIP = ip;
+    VideoGenConfigs.setServerIP(ip);
   }
   
   public static String getServerIP() {
-    return VideoGenConfigs.serverIP;
+    return VideoGenConfigs.getServerIP();
   }
   
   public static void initSubOutPutFolders() {

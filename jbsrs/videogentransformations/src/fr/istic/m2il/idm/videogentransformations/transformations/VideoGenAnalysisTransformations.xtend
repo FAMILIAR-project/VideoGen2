@@ -13,6 +13,10 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.AlternativesMedia
 import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenChekerHelper
 
+/**
+ * @author Ramadan Soumaila
+ * Class for apply analysis a videoGen specification
+ */
 class VideoGenAnalysisTransformations {
 	
 	

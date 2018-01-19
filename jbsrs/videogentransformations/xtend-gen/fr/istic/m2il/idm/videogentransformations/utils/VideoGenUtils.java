@@ -25,8 +25,17 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
 
+/**
+ * @author Ramadan Soumaila
+ * A Utils class for videoGen Transformations's
+ */
 @SuppressWarnings("all")
 public class VideoGenUtils {
+  /**
+   * Generates all possible playlists of a videoGen Specification
+   * @param videoGen the video Generator Model specification
+   * @return a arrayList of all playlists
+   */
   public static List<List<MediaDescription>> generatePlaylists(final VideoGeneratorModel videoGen) {
     ArrayList<List<MediaDescription>> playlists = new ArrayList<List<MediaDescription>>();
     ArrayList<MediaDescription> _arrayList = new ArrayList<MediaDescription>();

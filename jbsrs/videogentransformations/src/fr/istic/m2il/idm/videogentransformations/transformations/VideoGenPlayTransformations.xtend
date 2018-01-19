@@ -15,6 +15,12 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia
 import org.xtext.example.mydsl.videoGen.VideoDescription
 import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
 
+
+
+/**
+ * @author Ramadan Soumaila
+ * Class for apply transformations related to played a videoGen specification
+ */
 class VideoGenPlayTransformations {
 	
 	static def String generateRandomPlayList(VideoGeneratorModel videoGen){
@@ -155,12 +161,14 @@ class VideoGenPlayTransformations {
 		for(media: mediaDescriptions){
 			if(media instanceof VideoDescription){
 				if(media !== null ){
+					var String location = media.location
 					if(media.filter !== null){
-					medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(media), media.location))
-				}
-				else{
-					medias.add(media.location)
-				}
+						medias.add(FFMPEGHelper.applyFilter(VideoGenUtils.getFilter(media), media.location))
+					}
+					else{
+						medias.add(media.location)
+					}
+					
 				}
 			}
 			else{
