@@ -24,12 +24,11 @@ export class VideoGenConfiguratorComponent implements OnInit {
   ngOnInit() {
 
     this.videoGenService.getRandomModel().subscribe((model: VideoGeneratorModelWrapper) => {
-      console.log('Response' + model.medias)
-      this.videoGeneratorModelWrapper = model;
+      this.videoGeneratorModelWrapper = model
    });
 
   }
-  
+
   getCustomPlaylist() {
 
     this.videoGeneratorModelWrapper.medias.forEach((m) => {
@@ -37,7 +36,7 @@ export class VideoGenConfiguratorComponent implements OnInit {
         m.descriptionWrappers.forEach((a) => {
           if (a.selected === true) {
             this.choices.push(a)
-            return true
+            // return true
           }
         })
       } else {

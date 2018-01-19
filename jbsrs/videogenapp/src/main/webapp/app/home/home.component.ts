@@ -56,14 +56,13 @@ export class HomeComponent implements OnInit {
     }
 
     validate() {
-      console.log('Selected ' + this.selectedMode)
+
+      //this.videoGenService.getGifs('').subscribe();
       if (this.selectedMode === this.modes[0]) {
-        this.videoGenService.getRandomPlayList().subscribe((response: string) => {
+        this.videoGenService.getRandomPlayList().subscribe((response) => {
             this.videoGenService.setVideoUrlShare(response)
             console.log('Response ' + response)
-            if (this.videoGenService.getVideoUrlShare !== null) {
-            //  this.router.navigate(['video-gen-player'])
-            }
+            this.router.navigate(['video-gen-player'])
         });
 
       } else {

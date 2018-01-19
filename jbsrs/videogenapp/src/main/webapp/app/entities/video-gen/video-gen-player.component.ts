@@ -26,7 +26,7 @@ export class VideoGenPlayerComponent implements OnInit {
 
     console.log('Mode' + this.selectedMode_ );
     if (this.selectedMode_ === this.modes_[0]) {
-      this.videoGenService.getRandomPlayList().subscribe((response: any) => {
+      this.videoGenService.getRandomPlayList().subscribe((response: string) => {
           this.videoGenService.setVideoUrlShare(response);
           this.router.navigate(['video-gen-player']);
       });
@@ -39,10 +39,10 @@ export class VideoGenPlayerComponent implements OnInit {
     /* let url = window.URL.createObjectURL('data/output/gifs/playlist_14.gif')
     window.open( url ) */
 
-    /* this.videoGenService.getGifs(this.videourl).subscribe((res: any) => {
+    this.videoGenService.getGifs(this.videourl).subscribe((res: any) => {
       console.log('Res ' + res.text())
-      let url = window.URL.createObjectURL(res.text());
-      window.open(url);
-    }); */
+      /* let url = window.URL.createObjectURL(res.text());
+      window.open(url); */
+    });
   }
 }

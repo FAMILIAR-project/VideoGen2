@@ -189,7 +189,7 @@ public class VideoGenService {
             videoGenFolder = new File("data/input/videogen");
         }
         else {
-            videoGenFolder = new File("WEB-INF/data/input/videogen");
+            videoGenFolder = new File("/data/input/videogen");
         }
 
 

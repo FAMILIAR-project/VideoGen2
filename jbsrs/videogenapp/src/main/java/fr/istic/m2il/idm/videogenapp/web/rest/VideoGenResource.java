@@ -32,6 +32,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -160,11 +164,10 @@ public class VideoGenResource {
     }
 
     @GetMapping("/video-gens/playlist/gifs/data/output/playlists/{playlist}")
-    public String getPlaylistGifs(@PathVariable String playlist) throws IOException {
-        String gifs = FFMPEGHelper.videoToGif("data/output/playlists/" + playlist + ".mp4", 200, 200);
-        log.debug("getPlaylistGifs : " + playlist);
-        File devToTarget = new File("target/www/data/output/gifs");
+    public ResponseEntity<Resource> getPlaylistGifs(@PathVariable String playlist) throws IOException {
 
+        File devToTarget ;
+        String gifs = "";
 
 
         String [] profiles = this.env.getActiveProfiles();
@@ -177,7 +180,15 @@ public class VideoGenResource {
             }
         }
 
-        if(isDev){
+        if(!isDev){
+            devToTarget = new File("/data/output/gifs");
+            gifs = FFMPEGHelper.videoToGif("data/output/playlists/" + playlist + ".mp4", 200, 200);
+            log.debug("getPlaylistGifs : " + playlist);
+        }
+        else{
+
+
+            devToTarget = new File("target/www/data/output/gifs");
             try {
                 FileUtils.copyFileToDirectory(new File(gifs), devToTarget);
             } catch (IOException e) {
@@ -214,7 +225,19 @@ public class VideoGenResource {
 
         /*return ResponseEntity.ok().contentLength(initialFile.length()).contentType(MediaType.parseMediaType("application/octet-stream"))
             .body());*/
-        return gifs;
+
+
+        System.out.println("\n********** Download File : ************\n");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_GIF);
+
+        File file = FileUtils.getFile(gifs);
+
+        FileSystemResource fileSystemResource = new FileSystemResource(file);
+
+        return new ResponseEntity<>(fileSystemResource, headers, HttpStatus.OK);
+
     }
 
 
@@ -257,17 +280,17 @@ public class VideoGenResource {
 
         String [] profiles = this.env.getActiveProfiles();
 
-        VideoGenConfigs.setOutPutFolder(new File("data/output").getPath());
+
         VideoGenConfigs.setServerIP("http://localhost:8080/");
         VideoGenConfigs.setGifResolutions(190, 60);
         VideoGenConfigs.initSubOutPutFolders();
 
         String specificationpath = this.videoGenService.getRandomVideoGenSpecification(this.env);
-        VideoGeneratorModel videoGeneratorModel =
-           new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
-        String playlist = VideoGenPlayTransformations.generateRandomPlayList(videoGeneratorModel);
 
-        File devToTarget = new File("target/www/data/output/playlists");
+        File devToTarget;
+
+        String playlist = "";
+
 
 
 
@@ -279,7 +302,23 @@ public class VideoGenResource {
             }
         }
 
-        if(isDev){
+        if(!isDev){
+            VideoGenConfigs.setOutPutFolder(new File("/data/output").getPath());
+            VideoGeneratorModel videoGeneratorModel =
+                new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+            playlist = VideoGenPlayTransformations.generateRandomPlayList(videoGeneratorModel);
+
+            //devToTarget = new File("/data/output/playlists");
+
+        }
+        else{
+
+            VideoGenConfigs.setOutPutFolder(new File("data/output").getPath());
+            VideoGeneratorModel videoGeneratorModel =
+                new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+            playlist = VideoGenPlayTransformations.generateRandomPlayList(videoGeneratorModel);
+
+            devToTarget = new File("target/www/data/output/playlists");
             try {
                 FileUtils.copyFileToDirectory(new File(playlist), devToTarget);
             } catch (IOException e) {
@@ -294,8 +333,7 @@ public class VideoGenResource {
     @GetMapping("/video-gens/model/random")
     //@ApiImplicitParam(name = "num", value = "?????", required = true, dataType = "Long", paramType="path")
     public String getRandomModel() throws URISyntaxException {
-        VideoGenConfigs.setOutPutFolder(new File("data/output").getPath());
-        VideoGenConfigs.setServerIP("http://localhost:8080/");
+
         VideoGenConfigs.setGifResolutions(200, 200);
         VideoGenConfigs.initSubOutPutFolders();
 
@@ -303,12 +341,11 @@ public class VideoGenResource {
 
         String specificationpath = this.videoGenService.getRandomVideoGenSpecification(this.env);
 
-        VideoGeneratorModel videoGeneratorModel =
-            new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+        VideoGeneratorModel videoGeneratorModel;
 
-        List<String> thumbs = VideoGenPlayTransformations.makeThumbnails(videoGeneratorModel);
+        List<String> thumbs;
 
-        File devToTarget = new File("target/www/data/output/thumbs");
+
 
         boolean isDev = false;
         for(String p:profiles){
@@ -318,7 +355,25 @@ public class VideoGenResource {
             }
         }
 
-        if(isDev){
+        if(!isDev){
+            VideoGenConfigs.setOutPutFolder(new File("/data/output").getPath());
+            videoGeneratorModel =
+                new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+
+            thumbs = VideoGenPlayTransformations.makeThumbnails(videoGeneratorModel);
+
+            File devToTarget = new File("/data/output/thumbs");
+        }
+        else {
+
+
+            VideoGenConfigs.setOutPutFolder(new File("data/output").getPath());
+            videoGeneratorModel =
+                new VideoGenHelper().loadVideoGenerator(org.eclipse.emf.common.util.URI.createURI(new File(specificationpath).getAbsolutePath()));
+
+            thumbs = VideoGenPlayTransformations.makeThumbnails(videoGeneratorModel);
+
+            File devToTarget = new File("target/www/data/output/thumbs");
             for(String thumb: thumbs){
                 try {
                     FileUtils.copyFileToDirectory(new File(thumb), devToTarget);

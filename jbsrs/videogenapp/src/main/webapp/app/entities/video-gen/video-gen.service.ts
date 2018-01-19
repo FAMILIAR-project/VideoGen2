@@ -101,33 +101,33 @@ export class VideoGenService {
 
     getRandomPlayList(): Observable<any> {
       return this.http.get(this.resourceUrl + '/playlist/random').map((res: Response) => {
-        console.log('URL ' + res.text())
         return res.text();
       });
     }
 
     getRandomModel(): Observable<VideoGeneratorModelWrapper> {
       return this.http.get(this.resourceUrl + '/model/random').map((res: Response) => {
-          console.log('Response ' + res.text())
           return res.json();
       });
     }
 
     getConfigurePlaylist(choices: string[]): Observable<any> {
       return this.http.post(this.resourceUrl + '/playlist/configure/', choices).map((res: Response) => {
-        console.log('Response configure ' + res.text())
         return res.text();
       });
     }
 
     getGifs(playlist: string): Observable<any> {
       return this.http.get(`${this.resourceUrl}/playlist/gifs/${playlist}`).map((res: Response) => {
-        // let fileBlob = res.blob();
-        /* let blob = new Blob([fileBlob], {
-         type: 'image/gif' // must match the Accept type
-       });*/
-        /*var url= window.URL.createObjectURL(blob);
-        window.open(url); */
+        const blob = new Blob(['http://localhost:8080'+ '/data/output/playlists/playlist_18.mp4'], {
+         type: 'application/octet-stream' // must match the Accept type
+       });
+
+       window.location.href = 'data/output/playlists/playlist_18.mp4';
+
+
+        const url = window.URL.createObjectURL(blob);
+        window.open('http://localhost:8080'+ '/data/output/playlists/playlist_18.mp4');
 
         return res
       });
