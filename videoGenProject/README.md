@@ -11,9 +11,5 @@ VideoGenWeb : La commande ./mvnw permet de lancer le site web en mode dev. Pour
 
 # Quelque technologies et outils utilisés
 
-*[Xtext / Xtend] - To implement our DSL
-*[Jhipster] – to generate the web site
-*[Bootstap/AngularJS/HTML] -  For the frontend
-*[Spring] – For the backend
 *[node.js] - evented I/O for the backend
 *[Gulp] - the streaming build systems
