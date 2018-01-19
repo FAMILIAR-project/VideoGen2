@@ -162,5 +162,8 @@ durees_variantes AbsoluteOutputFolder videogenspecificationfile
 / : means that there is a choice to make.
 (): means that it needs to be put with only the related option.
 
+## Contest
+The specification file for the contest is located : ```videogenapp/data/input/videogen/contest.videogen```
+
 ## Authors
 June Benvegnu-Sallou, Ramadan Soumaila
