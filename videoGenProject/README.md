@@ -1,7 +1,7 @@
 
 # Goal of the project
 
-The videoGen project consists firstly in implementing a program that is based on a textual specification and source videos to generate videos that meet the specifications. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
+The videoGen project consists firstly in implementing an application based on a DSL grammar to generate videos, the generated videos are the result of specification model, source videos and some filters and transformations. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
 
 
 # Use
@@ -19,6 +19,8 @@ The videoGen project consists firstly in implementing a program that is based on
 
 
 # Demo
-For the demonstration we generated 2 screencasts, one for the generator part and the other for the website generator:
-* Generator Demo : [screencastWeb.webm](screencastWeb.webm)
-* Web Generator Demo : [screencastWeb.webm](screencastGen.webm)
+For the demonstration we created 2 screencasts, one for the generator part and the other for the website generator:
+* Generator Demo : [screencastGen.mp4](screencastGen.mp4) or click pecture to view on youtube<br />
+[![Generator Demo ](http://img.youtube.com/vi/rn0mHy5gxVs/mqdefault.jpg)](https://youtu.be/rn0mHy5gxVs)
+* Web Generator Demo : [screencastWeb.mp4](screencastWeb.mp4) or click pecture to view on youtube <br />
+[![Web Generator Demo](http://img.youtube.com/vi/ohRh-R7Yq5E/mqdefault.jpg)](https://youtu.be/ohRh-R7Yq5E)
