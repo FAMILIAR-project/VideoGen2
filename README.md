@@ -16,5 +16,4 @@ The file "screencast.mpg" show a demonstration. The files used are in mp4 format
 
 
 # M2 ILA
-Merzouk Abdelghani
-Brossault Guillaume
+Merzouk Abdelghani - Brossault Guillaume
