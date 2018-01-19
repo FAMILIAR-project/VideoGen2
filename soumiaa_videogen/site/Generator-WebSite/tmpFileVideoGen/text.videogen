@@ -1,0 +1,3 @@
+VideoGen {
+   mandatory videoseq v0 "pluie.mp4"
+}
