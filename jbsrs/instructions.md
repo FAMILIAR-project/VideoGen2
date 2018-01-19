@@ -78,7 +78,9 @@ videogentransformations
 ```
 
 ## Deployment
+Instructions to deploy the project
 
 ## Features
-- Concatenate videos into a variant
-- Apply a filter to a video
+- Concatenate videos into a variant from a specification file
+- Apply a filter to a video (via the specification file)
+- Export variants as gifs
