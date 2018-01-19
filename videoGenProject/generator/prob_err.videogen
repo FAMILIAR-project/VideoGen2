@@ -1,0 +1,28 @@
+@author "Youssouf ROUDANI"
+VideoGen {
+	mandatory videoseq v1 "videos/1.mp4" {
+		text {
+			content "Bonjours!!"
+			position CENTER
+		}
+	}
+	optional videoseq v2 "videos/2.mp4" {
+		probability 110
+		filter b&w
+		text {
+			content "ahh des fleures... je cours"
+			position BOTTOM
+		}
+	}
+	alternatives v3 {
+		videoseq v31 "videos/3.mp4" {
+			probability 10
+			filter negate
+		}
+		videoseq v32 "videos/4.mp4"{
+			probability 90 
+			filter flip v
+		}
+	}
+
+}
