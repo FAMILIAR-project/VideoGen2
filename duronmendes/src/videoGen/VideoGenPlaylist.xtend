@@ -1,5 +1,0 @@
-package videoGen
-
-class VideoGenPlaylist {
-	
-}

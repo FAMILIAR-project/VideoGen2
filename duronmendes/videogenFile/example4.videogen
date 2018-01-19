@@ -1,0 +1,11 @@
+VideoGen {
+	mandatory videoseq v0 "videos/stereogram.mp4" {
+		text{
+			content "PINK"
+			position CENTER
+			color "Pink"
+			size 52
+		}
+	}
+	mandatory image i0 "videos/noel.jpg" {toptext "OBS" bottomtext "Serveur"}
+}

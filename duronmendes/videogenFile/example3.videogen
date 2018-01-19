@@ -1,0 +1,10 @@
+VideoGen {
+	mandatory videoseq v0 "videos/test.mp4" {filter flip h}
+	alternatives v1 {
+		videoseq v11 "videos/fractal.mp4" {probability 30}
+		videoseq v12 "videos/rgb.mp4" {probability 30}
+		videoseq v13 "videos/stereogram.mp4" {probability 30}
+		
+	}
+	optional videoseq v3 "videos/asdf5.mp4"{probability 90}
+}

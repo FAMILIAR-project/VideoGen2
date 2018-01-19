@@ -1,2 +1,2 @@
-file 'videos/test.mp4'
-file 'videos/rgb.mp4'
+file 'tmp/v0.mp4'
+file 'tmp/i0.mp4'

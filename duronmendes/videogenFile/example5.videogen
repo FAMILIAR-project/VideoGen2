@@ -1,0 +1,18 @@
+@author "vduron"
+VideoGen {
+	mandatory videoseq v0 "videos/stereogram.mp4" {filter b&w}
+	mandatory image i0 "videos/noel.jpg" {toptext "LOL" bottomtext "EXE"}
+	optional videoseq v1 "path.mp4" {
+		probability 99 filter flip h text{
+			content "TEXT"
+			position CENTER
+			color "Pink"
+			size 52
+		}
+	}
+	alternatives v2 {
+		videoseq v21 "videos/fractal.mp4" {probability 30}
+		videoseq v22 "videos/rgb.mp4" {probability 30}
+		videoseq v23 "videos/stereogram.mp4" {probability 30}	
+	}
+}
