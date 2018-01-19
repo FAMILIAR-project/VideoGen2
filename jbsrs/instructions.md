@@ -116,6 +116,30 @@ videogentransformations
 
 ## Deployment
 Instructions to deploy the project
+
+### Setting the DataBase informations
+
+```videogenapp/src/main/resources/config/application-dev.yml```
+- Set User and PassWord properties
+- Set database name in url property or create a database named videogenapp
+
+```videogenapp/pom.xml```
+- Set database User/PassWord properties in <username></username>,<password></password> properties (liquibase, lines 524 & 525)
+
+### Running Backend
+
+#### In videogenapp folder
+- Run ```mvn package```
+
+#### In videogenapp/target folder
+- Run ```./videogenapp-0.0.1-SNAPSHOT.war``` (on linux)
+- Run ```java -jar videogenapp-0.0.1-SNAPSHOT.war``` (on windows)
+    
+### Running Frontend
+#### In videogenapp folder
+- Run ```yarn start```
+
+
 ```
 videogenapp : All info to run the web application
 |   ...
