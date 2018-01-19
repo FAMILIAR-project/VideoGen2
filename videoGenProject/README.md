@@ -10,6 +10,9 @@ Generateur : il suffit de lancer le main de la classe (à partir d’eclipse pa
 VideoGenWeb : La commande ./mvnw permet de lancer le site web en mode dev. Pour plus de details veulliz consulter le README de videoGenWeb
 
 # Quelque technologies et outils utilisés
-
-*[node.js] - evented I/O for the backend
-*[Gulp] - the streaming build systems
+- [Xtext / Xtend] - To implement our DSL
+- [Jhipster] – to generate the web site
+- [Bootstap/AngularJS/HTML] -  For the frontend
+- [Spring] – For the backend
+- [node.js] - evented I/O for the backend
+- [Gulp] - the streaming build systems
