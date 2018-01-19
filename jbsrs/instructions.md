@@ -16,7 +16,8 @@ The Web-side of the application is contained inside the videogenapp folder where
 ```
 jbsrs
 │   README.md
-│   Instructions.md    
+│   Instructions.md
+|   videogen-transformations-1.0.0.jar
 │
 └───videogenapp
 │  
@@ -53,9 +54,18 @@ videogenapp
 |   │
 │   └───test
 │   
-└───data/input
-    │   file021.txt
-    │   file022.txt
+└───data/input : data needed for the generator to run in the browser
+    └───images
+    |
+    └───videogen
+    |
+    └───videos
+        └───alternative
+        |
+        └───mandatory
+        |
+        └───optional
+
 ```
 ### Server-side
 ```
@@ -63,34 +73,44 @@ videogentransformations
 │   pom.xml
 │   build.properties  
 │
-└───src
-│   │   sample1.videogen
-│   │   ...
+└───src/fr/istic/m2il/idm/videogentransformations : all the xtend code for the application to run
+│   │   VideoGenAppRunTests.xtend : allows to run the commands on the server-side
 │   │
-│   └───subfolder1
-│       │   file111.txt
-│       │   file112.txt
-│       │   ...
+│   └───configs
+│   |   │   VideoGenCongifs.xtend
+│   │
+│   └───helper
+│   |   │   CSVHelper.xtend
+│   |   │   FFMPEGHelper.xtend
+│   |   │   ProcessHelper.xtend
+│   |   │   VideoGenCheckerHelper.xtend
+│   |   │   VideoGenHelper.xtend
+│   │
+│   └───transformations 
+│   |   │   VideoGenAnalysisTransformations.xtend
+│   |   │   VideoGenPlayTransformations.xtend
+│   │
+│   └───utils
+│       │   CommonUtils.xtend
+│       │   VideoGenUtils.xtend
 │   
-└───samples
+└───samples : all the sample specifications
 |   │   sample1.videogen
 |   │   ...
 |
-└───output
-|   │   
-|   └───filtered
-|   |
-|   └───gifs
-|   |
-|   └───playlists
-|   |
-|   └───resizes
-|   |
-|   └───thumbs
-|
-└───empiricalStudy
-|   │   ...
-|
+└───empiricalStudy : all info about the empirical study
+    |   plot_correlation.png
+    |   result_pearson.png
+    |   script_R_empirique.R
+    |
+    └───analyses
+    |   analysis_*.csv
+    |   ...
+    └───specs
+    |   sample_*.videogen
+    |   ...
+    └───videos
+
 ```
 
 ## Deployment
@@ -106,10 +126,9 @@ Instructions to deploy the project
 
 ## Usage
 ```
-jar -java xxx.jar command
+java -jar videogen-transformations-1.0.0.jar command
 
 command :
-
 generer_playlist AbsoluteOutputFolder videogenspecificationfile
 exporter_gifs AbsoluteOutputFolder videogenspecificationfile witdh heigth
 tailles_variantes AbsoluteOutputFolder videogenspecificationfile (gif/video) ? gif_width gif_heigth
