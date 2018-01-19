@@ -10,6 +10,7 @@ public class CSVFileWriter {
 	private final String COMMA_DELIMITER = ",";
 
 	private final String NEW_LINE_SEPARATOR = "\n";
+	private ArrayList<Long> sizesreal=new ArrayList<Long>();;
 
 	// CSV file header
 	private ArrayList<Long> sizes = new ArrayList<Long>();
@@ -33,7 +34,7 @@ public class CSVFileWriter {
 			}
 
 		}
-		head += "SIZE,LENGHT";
+		head += "SIZE,REAL SIZE,LENGHT";
 		FILE_HEADER = head;
 		FileWriter fileWriter = null;
 
@@ -57,6 +58,8 @@ public class CSVFileWriter {
 					if (playlist.contains(video)) {
 						fileWriter.append("TRUE");
 						file = new File(video.getLocation());
+						//System.out.println("locatioon!!!"+video.getLocation());
+
 						size += file.length();
 						lenght += Util.getFileDuration(video.getLocation());
 
@@ -71,6 +74,14 @@ public class CSVFileWriter {
 				lenghts.add(lenght);
 				fileWriter.append(Long.toString(size));
 
+				if(sizesreal.isEmpty())
+				System.out.println("real size :!!!");
+
+				
+				fileWriter.append(COMMA_DELIMITER);
+				
+				fileWriter.append(Long.toString(sizesreal.get(i)));
+				
 				fileWriter.append(COMMA_DELIMITER);
 				
 				fileWriter.append(Long.toString(lenght));
@@ -112,7 +123,18 @@ public class CSVFileWriter {
 		}
 
 	}
+	public void addSize() {
+		File file = new File("bref.mp4");
+		if(file.exists()){
+			sizesreal.add(file.length());
+			System.out.println("File created :" + file.length());
 
+			}else{
+				System.out.println("file not found");
+			}
+
+		
+	}
 	public ArrayList<Long> getSizes() {
 		return sizes;
 	}

@@ -12,7 +12,7 @@ import static org.junit.Assert.*
 import org.xtext.example.mydsl.videoGen.ImageDescription
 
 class VideoGenTest1 {
-
+	
 	CSVFileWriter csvfile
 	int poss = 0
 	int alt = 0
