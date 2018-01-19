@@ -1,7 +1,7 @@
 # Projet IDM 2017-2018
 *Générateur de vidéos - M2 ILA*
 
-**Nathan Wanono - Mark Hervagault**
+**Nathan Wanono - Mark Hervagault - (Les TPs/Projet ont été fait en collaboration avec Quentin Dubois)**
 
 
 ## SUM UP : 
