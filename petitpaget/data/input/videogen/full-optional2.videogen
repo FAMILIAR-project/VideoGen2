@@ -1,0 +1,30 @@
+VideoGen {
+	optional videoseq v1 "data/input/the-squad-yell-vine-original.mp4"
+	optional videoseq v2 "data/input/mister-v-les-meufs-americaines-adorent-la-langue-francaise-feat-amanda-cerny.mp4"
+	optional videoseq v3 "data/input/mister-v-guillaume-le-thug.mp4"
+	optional videoseq v4 "data/input/kufretmek-ilk-orta-lise-vine.mp4"
+	optional videoseq v5 "data/input/kid-filming-hit-by-rocket-vine.mp4"
+	optional videoseq v6 "data/input/captions-donald-bell-gam-on-britains-got-talent-2008.mp4"
+	optional videoseq v7 "data/input/baby-its-cold-outside-vine.mp4"
+	optional videoseq v8 "data/input/aa-aaa-aaaaaa-battery-vine.mp4"
+	optional videoseq v9 "data/input/wave.mp4"
+	optional videoseq v10 "data/input/sheep.mp4"
+	alternatives v11 {
+	    videoseq v11a "data/input/stan.mp4" { probability 1 }
+	    videoseq v11b "data/input/jaunatan.mp4" { probability 35 }
+	}
+	optional videoseq v12 "data/input/audition.mp4"
+	optional videoseq v13 "data/input/behoof.mp4"
+	optional videoseq v14 "data/input/big_in_japan.mp4"
+	optional videoseq v15 "data/input/broken_clocks.mp4"
+	optional videoseq v16 "data/input/christian_singles.mp4"
+	optional videoseq v17 "data/input/exit_row.mp4"
+	optional videoseq v18 "data/input/oysters.mp4"
+	optional videoseq v19 "data/input/party_patriot.mp4"
+	optional videoseq v20 "data/input/perfect_man.mp4"
+	optional videoseq v21 "data/input/plot_twist_killer.mp4"
+	optional videoseq v22 "data/input/ritual.mp4"
+	optional videoseq v23 "data/input/santa_baby.mp4"
+	optional videoseq v24 "data/input/trump_washington.mp4"
+	mandatory videoseq v25 "data/input/outro.mp4"
+}

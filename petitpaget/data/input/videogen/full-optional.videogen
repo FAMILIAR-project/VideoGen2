@@ -1,0 +1,13 @@
+VideoGen {
+	optional videoseq v1 "data/input/the-squad-yell-vine-original.mp4"
+	optional videoseq v2 "data/input/mister-v-les-meufs-americaines-adorent-la-langue-francaise-feat-amanda-cerny.mp4"
+	optional videoseq v3 "data/input/mister-v-guillaume-le-thug.mp4"
+	optional videoseq v4 "data/input/kufretmek-ilk-orta-lise-vine.mp4"
+	optional videoseq v5 "data/input/kid-filming-hit-by-rocket-vine.mp4"
+	optional videoseq v6 "data/input/captions-donald-bell-gam-on-britains-got-talent-2008.mp4"
+	optional videoseq v7 "data/input/baby-its-cold-outside-vine.mp4"
+	optional videoseq v8 "data/input/aa-aaa-aaaaaa-battery-vine.mp4"
+	optional videoseq v9 "data/input/wave.mp4"
+	optional videoseq v10 "data/input/sheep.mp4"
+	optional videoseq v11 "data/input/jaunatan.mp4"
+}

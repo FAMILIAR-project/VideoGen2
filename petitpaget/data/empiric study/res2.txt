@@ -1,0 +1,2 @@
+87220973 91248099 1.0461714
+Time to generate 1 variants : 1045850ms
