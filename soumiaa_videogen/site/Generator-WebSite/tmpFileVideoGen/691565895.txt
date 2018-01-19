@@ -1,0 +1,2 @@
+file '../src/main/resources/static/video/original/pluie.mp4'
+file '../src/main/resources/static/video/original/oiseau.mp4'

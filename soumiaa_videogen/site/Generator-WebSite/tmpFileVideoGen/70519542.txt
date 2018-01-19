@@ -1,0 +1,1 @@
+file '../src/main/resources/static/video/original/oiseau1.mp4'
