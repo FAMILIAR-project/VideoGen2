@@ -4,13 +4,36 @@ Main page styles
 ========================================================================== */
 
 .hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../../content/images/hipster.png") no-repeat center top;
-    background-size: contain;
+    display: block;
+    width: 1920px;
+    height: 1080px;
+    background: url("../../content/images/background_videos.jpg") no-repeat ;
+    background-size: cover;
 }
 
+.body{
+
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-image: url("../../content/images/background_videos.jpg");
+    background-size: cover;
+}
+.divWelcome{
+    margin:auto;
+    height: auto;
+    width: 1294px;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.divIntroduction{
+    margin: auto;
+    width: 1920px;
+    height: 1080px;
+}
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
 only screen and (-webkit-min-device-pixel-ratio: 2),
