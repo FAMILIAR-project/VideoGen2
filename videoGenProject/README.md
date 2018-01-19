@@ -1,18 +1,24 @@
 
-# But du projet
+# Goal of the project
 
-Le projet videoGen consite dans un premier temps à  implementer un programme qui se base sur une specification textuele et des videos sources pour generer des videos respectant  les specifications, la deusieme partie du projet a pour but d’integrer le generateur à un site web pour a fin de donner un interface plus maniable aux utilisateurs.
+The videoGen project initially consists firstlu in implementing a program that is based on a textual specification and source videos to generate videos that meet the specifications. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
 
 
-# Utilisation
+# Use
 
-1. Generateur : il suffit de lancer le main de la classe (à partir d’eclipse par ex)  et suivre les instruction dans le README du dossier generator
-2. VideoGenWeb : La commande ./mvnw permet de lancer le site web en mode dev. Pour plus de details veulliz consulter le README de videoGenWeb
+1. Generator: just run the main class(from eclipse for example) and follow the instructions in the READEME generator folder
+2. VideoGenWeb: The ./mvnw command is used to launch the website in dev mode. For more details there is a READEME too in videoGenWeb
 
-# Quelque technologies et outils utilisés
+# Some technologies and tools used
 - [Xtext / Xtend] - To implement our DSL
-- [Jhipster] – to generate the web site
-- [Bootstap/AngularJS/HTML] -  For the frontend
-- [Spring] – For the backend
-- [node.js] - evented I/O for the backend
+- [Jhipster] - to generate the web site
+- [Bootstap / AngularJS / HTML] - For the frontend
+- [Spring] - For the backend
+- [node.js] - event I / O for the backend
 - [Gulp] - the streaming build systems
+
+
+# Demo
+For the demonstration we generated 2 screencasts, one for the generator part and the other for the website generator:
+Generator Demo : [screencastWeb.webm](screencastWeb.webm)
+Web Generator Demo : [screencastWeb.webm](screencastGen.webm)
