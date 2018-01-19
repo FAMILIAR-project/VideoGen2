@@ -116,7 +116,7 @@ videogentransformations
 
 ## Deployment
 Instructions to deploy the project
-
+```
 videogenapp : All info to run the web application
 |   ...
 └───Database configuration : set DataBase informations
@@ -135,7 +135,7 @@ videogenapp : All info to run the web application
     |  In videogenapp folder : Run yarn start
     |
     └───
-
+```
     
 ## Features
 - Concatenate videos into a variant from a specification file
