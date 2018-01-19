@@ -1,6 +1,7 @@
 # Instructions
 
 ## Technologies
+- Docker
 ### Web-side
 - JHipster
 
@@ -87,6 +88,11 @@ Instructions to deploy the project
 - Take into account the probabilities of alternative medias
 - Take into account the durations of alternative medias
 - Create a csv file with the informations of the variants
+
+## Usage
+```
+jar -java xxx 
+```
 
 ## Authors
 June Benvegnu-Sallou, Ramadan Soumaila
