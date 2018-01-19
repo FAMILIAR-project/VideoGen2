@@ -21,13 +21,35 @@ Main page styles
     background-size: cover;
 }
 .divWelcome{
+    font-weight: bold;
     margin:auto;
     height: auto;
     width: 1294px;
     color: white;
     background-color: black;
     text-align: center;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "C+BoldItal","Helvetica Neue", Arial, sans-serif;
+;
+}
+.sign_in{
+    margin:auto;
+    height: auto;
+    width: 1294px;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: xx-large;
+}
+.register_home{
+    margin:auto;
+    height: auto;
+    width: 1294px;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family: Arial,"C+BoldItal","Helvetica Neue",  sans-serif;
+    font-size: medium;
 }
 .divIntroduction{
     margin: auto;
