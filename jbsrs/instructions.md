@@ -139,27 +139,6 @@ Instructions to deploy the project
 #### In videogenapp folder
 - Run ```yarn start```
 
-
-```
-videogenapp : All info to run the web application
-|   ...
-└───Database configuration : set DataBase informations
-|   |   resources/config/application-dev.yml : set User and PassWord properties 
-|   |                                          set database name in url property or create a database named videogenapp
-|   |   pom.xml: set database User/PassWord properties in <username></username>,<password></password> properties (liquibase)
-|   └───
-└───Running Backend: All info about the Rest Backend Service
-|   |  In videogenapp folder : Run mvn package
-|   |  In videogenapp/target folder: Run ./videogenapp-0.0.1-SNAPSHOT.war (on linux)
-|   |                                     java -jar videogenapp-0.0.1-SNAPSHOT.war (on windows)
-|   |
-|   └───
-|
-└───Running Frontend : 
-    |  In videogenapp folder : Run yarn start
-    |
-    └───
-```
     
 ## Features
 - Concatenate videos into a variant from a specification file
