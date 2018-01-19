@@ -1,0 +1,13 @@
+@author "Chakib"
+VideoGen {
+	mandatory videoseq v0 "videos/Marvel1.mp4"
+	mandatory videoseq v01 "videos/Marvel3.mp4"
+	alternatives v1 {
+		videoseq v11 "videos/Marvel1.mp4"
+		videoseq v12 "videos/Marvel2.mp4"
+		videoseq v13 "videos/Marvel3.mp4"
+		videoseq v14 "videos/Marvel4.mp4"
+	}
+	optional videoseq v2 "videos/Marvel2.mp4"
+	optional videoseq v4 "videos/Marvel4.mp4"
+	}
