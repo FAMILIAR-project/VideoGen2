@@ -6,8 +6,8 @@ Le projet videoGen consite dans un premier temps à  implementer un programme qu
 
 # Utilisation
 
-. Generateur : il suffit de lancer le main de la classe (à partir d’eclipse par ex)  et suivre les instruction dans le README du dossier generator
-. VideoGenWeb : La commande ./mvnw permet de lancer le site web en mode dev. Pour plus de details veulliz consulter le README de videoGenWeb
+1. Generateur : il suffit de lancer le main de la classe (à partir d’eclipse par ex)  et suivre les instruction dans le README du dossier generator
+2. VideoGenWeb : La commande ./mvnw permet de lancer le site web en mode dev. Pour plus de details veulliz consulter le README de videoGenWeb
 
 # Quelque technologies et outils utilisés
 - [Xtext / Xtend] - To implement our DSL
