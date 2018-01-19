@@ -21,5 +21,6 @@ The videoGen project consists firstly in implementing an application based on a 
 # Demo
 For the demonstration we created 2 screencasts, one for the generator part and the other for the website generator:
 * Generator Demo : [screencastGen.webm](screencastGen.webm)
+[![Generator Demo ](http://img.youtube.com/vi/rn0mHy5gxVs/mqdefault.jpg)](https://youtu.be/rn0mHy5gxVs)
 * Web Generator Demo : [screencastWeb.webm](screencastWeb.webm)
-[![Web Generator Demo](http://img.youtube.com/vi/ohRh-R7Yq5E/maxresdefault.jpg)](https://youtu.be/ohRh-R7Yq5E)
+[![Web Generator Demo](http://img.youtube.com/vi/ohRh-R7Yq5E/mqdefault.jpg)](https://youtu.be/ohRh-R7Yq5E)
