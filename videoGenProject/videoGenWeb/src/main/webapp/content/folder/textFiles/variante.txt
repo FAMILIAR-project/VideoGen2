@@ -1,0 +1,3 @@
+# this is a comment
+file '../generatedVideos/1_text.mp4'
+file '../generatedVideos/3_neg.mp4'
