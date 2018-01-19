@@ -1,22 +1,22 @@
-@author "WANONOOOOOOOOO"
+@author "Mark HERVAGAULT"
 @version "0.0.1"
 
 VideoGen {
-	mandatory videoseq v0 "1.mp4"
+	mandatory videoseq v0 "video1.mp4"
 	alternatives v1 {
-		videoseq v11 "1.mp4"
-		videoseq v12 "1.mp4"
+		videoseq v11 "video1.mp4"
+		videoseq v12 "video1.mp4"
 	}
-	optional videoseq v2 "1.mp4"
+	optional videoseq v2 "video1.mp4"
 	alternatives v3 {
-		videoseq v31 "1.mp4"
-		videoseq v32 "2.mp4"
-		videoseq v33 "2.mp4"
-		videoseq v34 "2.mp4"
-		videoseq v35 "2.mp4"
-		videoseq v36 "2.mp4"
+		videoseq v31 "video1.mp4"
+		videoseq v32 "video2.mp4"
+		videoseq v33 "video2.mp4"
+		videoseq v34 "video2.mp4"
+		videoseq v35 "video2.mp4"
+		videoseq v36 "video2.mp4"
 	}
-	optional videoseq v4 "1.mp4"
-	optional videoseq v5 "1.mp4"
-	mandatory videoseq v6 "1.mp4"
+	optional videoseq v4 "video1.mp4"
+	optional videoseq v5 "video1.mp4"
+	mandatory videoseq v6 "video1.mp4"
 }
