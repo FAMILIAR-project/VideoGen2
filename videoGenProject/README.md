@@ -10,15 +10,15 @@ The videoGen project consists firstly in implementing a program that is based on
 2. VideoGenWeb: the ./mvnw command is used to launch the website in dev mode. For more details there is a READEME too in videoGenWeb
 
 # Some technologies and tools used
-- [Xtext / Xtend] - To implement our DSL
+- [Xtext / Xtend] - to implement our DSL
 - [Jhipster] - to generate the web site
-- [Bootstap / AngularJS / HTML] - For the frontend
-- [Spring] - For the backend
+- [Bootstap / AngularJS / HTML] - for the frontend
+- [Spring] - for the backend
 - [node.js] - event I / O for the backend
 - [Gulp] - the streaming build systems
 
 
 # Demo
 For the demonstration we generated 2 screencasts, one for the generator part and the other for the website generator:
-Generator Demo : [screencastWeb.webm](screencastWeb.webm)
-Web Generator Demo : [screencastWeb.webm](screencastGen.webm)
+* Generator Demo : [screencastWeb.webm](screencastWeb.webm)
+* Web Generator Demo : [screencastWeb.webm](screencastGen.webm)
