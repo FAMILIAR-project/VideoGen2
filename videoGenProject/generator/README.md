@@ -1,4 +1,4 @@
-# VideoGEN
+# Generator
 Our main program is the class Main.java, we have been able to implement the requested functionalities, the program itself contains some examples of commands as comments. Example:
 
 ```Java
