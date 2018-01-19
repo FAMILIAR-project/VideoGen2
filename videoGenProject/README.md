@@ -1,13 +1,13 @@
 
 # Goal of the project
 
-The videoGen project initially consists firstlu in implementing a program that is based on a textual specification and source videos to generate videos that meet the specifications. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
+The videoGen project consists firstly in implementing a program that is based on a textual specification and source videos to generate videos that meet the specifications. The second part of the project aims to integrate the generator into a website in order to provide a more user-friendly interface.
 
 
 # Use
 
 1. Generator: just run the main class(from eclipse for example) and follow the instructions in the READEME generator folder
-2. VideoGenWeb: The ./mvnw command is used to launch the website in dev mode. For more details there is a READEME too in videoGenWeb
+2. VideoGenWeb: the ./mvnw command is used to launch the website in dev mode. For more details there is a READEME too in videoGenWeb
 
 # Some technologies and tools used
 - [Xtext / Xtend] - To implement our DSL
