@@ -28,4 +28,13 @@ public class VideoGeneratorModelWrapper{
     public void setMedias(List<MediaWrapper> medias) {
         this.medias = medias;
     }
+
+    public VideoGeneratorModelWrapper(VideoGenInformation information, List<MediaWrapper> medias) {
+        this.information = information;
+        this.medias = medias;
+    }
+
+    public VideoGeneratorModelWrapper(){
+
+    }
 }

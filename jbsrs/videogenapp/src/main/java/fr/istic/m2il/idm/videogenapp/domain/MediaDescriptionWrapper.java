@@ -10,7 +10,15 @@ import org.xtext.example.mydsl.videoGen.impl.MediaDescriptionImpl;
 public class MediaDescriptionWrapper {
     public String thumb_url;
     public MediaDescription description;
-    public FilterWrapper filterWrapper;
+    public boolean selected = false;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public String getThumb_url() {
         return thumb_url;
@@ -27,4 +35,9 @@ public class MediaDescriptionWrapper {
     public void setDescription(MediaDescription description) {
         this.description = description;
     }
+
+    public MediaDescriptionWrapper() {
+
+    }
 }
+

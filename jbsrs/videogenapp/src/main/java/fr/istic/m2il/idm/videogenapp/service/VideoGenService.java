@@ -3,14 +3,18 @@ package fr.istic.m2il.idm.videogenapp.service;
 import fr.istic.m2il.idm.videogenapp.domain.*;
 import fr.istic.m2il.idm.videogenapp.repository.VideoGenRepository;
 import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenHelper;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xtext.example.mydsl.videoGen.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,11 +88,18 @@ public class VideoGenService {
             if(media instanceof MandatoryMedia){
                 mediaWrapper = new MandatoryMediaWrapper();
                 MandatoryMedia mandatoryMedia = (MandatoryMedia) media;
+
                 if(mandatoryMedia.getDescription() instanceof VideoDescription){
-                    ((MandatoryMediaWrapper) mediaWrapper).descriptionWrapper.filterWrapper = getFilter((VideoDescription) mandatoryMedia.getDescription());
+                    ((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper = new VideoDescriptionWrapper();
+                    ((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper.selected = true;
+                    ((VideoDescriptionWrapper)((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper).filterWrapper = getFilter((VideoDescription) mandatoryMedia.getDescription());
                 }
-                ((MandatoryMediaWrapper) mediaWrapper).descriptionWrapper.setDescription(mandatoryMedia.getDescription());
-                ((MandatoryMediaWrapper) mediaWrapper).descriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
+                else {
+                    ((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper = new ImageDescriptionWrapper();
+                    ((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper.selected = true;
+                }
+                ((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper.setDescription(mandatoryMedia.getDescription());
+                ((MandatoryMediaWrapper)mediaWrapper).descriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
                 thumbsUrlsIndex++;
                 String type;
                 if(mandatoryMedia.getDescription() instanceof VideoDescription){
@@ -100,16 +111,22 @@ public class VideoGenService {
                 wrapper.medias.add(mediaWrapper);
             }else if(media instanceof OptionalMedia){
                 mediaWrapper = new OptionalMediaWrapper();
+
                 OptionalMedia optionalMedia = (OptionalMedia) media;
 
                 if(optionalMedia.getDescription() instanceof VideoDescription){
+                    ((OptionalMediaWrapper)mediaWrapper).descriptionWrapper = new VideoDescriptionWrapper();
                     if(((VideoDescription) optionalMedia.getDescription()).getFilter() != null){
-                        ((OptionalMediaWrapper) mediaWrapper).descriptionWrapper.filterWrapper = getFilter((VideoDescription) optionalMedia.getDescription());
+                        ((VideoDescriptionWrapper)((OptionalMediaWrapper)mediaWrapper).descriptionWrapper).filterWrapper = getFilter((VideoDescription) optionalMedia.getDescription());
                     }
                 }
+                else {
+                    ((OptionalMediaWrapper)mediaWrapper).descriptionWrapper = new ImageDescriptionWrapper();
+                    ((OptionalMediaWrapper)mediaWrapper).descriptionWrapper.selected = true;
+                }
 
-                ((OptionalMediaWrapper) mediaWrapper).descriptionWrapper.description = optionalMedia.getDescription();
-                ((OptionalMediaWrapper) mediaWrapper).descriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
+                ((OptionalMediaWrapper)mediaWrapper).descriptionWrapper.setDescription(optionalMedia.getDescription());
+                ((OptionalMediaWrapper)mediaWrapper).descriptionWrapper.thumb_url = thumbsUrls.get(thumbsUrlsIndex);
                 thumbsUrlsIndex++;
                 String type;
                 if(optionalMedia.getDescription() instanceof VideoDescription){
@@ -120,15 +137,19 @@ public class VideoGenService {
                 mediaWrapper.type = type;
                 wrapper.medias.add(mediaWrapper);
             }else{
-                mediaWrapper = new AlternativesMediaWrapper();
+                mediaWrapper= new AlternativesMediaWrapper();
                 AlternativesMedia alternativesMedia = (AlternativesMedia) media;
                 for(MediaDescription alt : alternativesMedia.getMedias()){
-                    MediaDescriptionWrapper mediaDescriptionWrapper = new MediaDescriptionWrapper();
+                    MediaDescriptionWrapper mediaDescriptionWrapper;
 
                     if(alt instanceof VideoDescription){
+                        mediaDescriptionWrapper = new VideoDescriptionWrapper();
                         if(((VideoDescription)alt).getFilter() != null){
-                            mediaDescriptionWrapper.filterWrapper = getFilter((VideoDescription) alt);
+                            ((VideoDescriptionWrapper)mediaDescriptionWrapper).filterWrapper = getFilter((VideoDescription) alt);
                         }
+                    }
+                    else {
+                        mediaDescriptionWrapper = new ImageDescriptionWrapper();
                     }
 
                     mediaDescriptionWrapper.description = alt;
@@ -150,9 +171,28 @@ public class VideoGenService {
         return wrapper;
     }
 
-    public String getRandomVideoGenSpecification() throws URISyntaxException {
+    public String getRandomVideoGenSpecification(Environment env) throws URISyntaxException {
 
-        File videoGenFolder = new File("data/input/videogen");
+        File videoGenFolder ;
+
+        String [] profiles = env.getActiveProfiles();
+
+        boolean isDev = false;
+        for(String p:profiles){
+            if(p.equals("dev")){
+                isDev = true;
+                break;
+            }
+        }
+
+        if(isDev){
+            videoGenFolder = new File("data/input/videogen");
+        }
+        else {
+            videoGenFolder = new File("WEB-INF/data/input/videogen");
+        }
+
+
 
         String[] specifications = videoGenFolder.list(
             (dir,name)-> name.endsWith(".videogen")
@@ -162,12 +202,6 @@ public class VideoGenService {
         int randomIndex = (int) Math.random() * specifications.length ;
         File file = new File(specifications[randomIndex]);
 
-        String[] files = file.getAbsolutePath().replace("\\", "/").split("/");
-
-        return "data/input/videogen/" + files[files.length -1];
-    }
-
-    public String getRealName(File file){
         String[] files = file.getAbsolutePath().replace("\\", "/").split("/");
 
         return "data/input/videogen/" + files[files.length -1];

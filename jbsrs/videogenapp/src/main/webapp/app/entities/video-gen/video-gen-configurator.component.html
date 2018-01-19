@@ -7,16 +7,19 @@
   </div>
 </div>
 <div class="row justify-content-center">
-  <span *ngFor="let media of videoGenModel.medias">
+  <span *ngFor="let media of videoGeneratorModelWrapper.medias">
     <span *ngIf="media.type == 'av' || media.type == 'ai'" class="row justify-content-center">
       <div *ngFor="let alt of media.descriptionWrappers">
-        <i *ngIf="" class="fa fa-check-square-o" aria-hidden="true"></i>
-        <img src="{{ alt.thumb_url }}" style="width: 104.3px; height: 104.3px">
+        <i *ngIf="alt.selected" class="fa fa-check-square-o" aria-hidden="true"></i>
+        <img src="{{ alt.thumb_url }}" (click)="selectMedia(alt, media.type)" style="width: 104.3px; height: 104.3px">
       </div>
     </span>
     <div *ngIf="media.type == 'ov' || media.type == 'oi'" class="d-inline">
-      <i *ngIf="selected" class="fa fa-check-square-o" aria-hidden="true"></i>
-      <img src="{{ media.descriptionWrapper.thumb_url }}" style="width: 104.3px; height: 104.3px">
+      <i *ngIf="media.descriptionWrapper.selected" class="fa fa-check-square-o" aria-hidden="true"></i>
+      <img src="{{ media.descriptionWrapper.thumb_url }}" (click)="selectMedia(media, media.type)" style="width: 104.3px; height: 104.3px">
     </div>
   </span>
+</div>
+<div class="row justify-content-center">
+  <button (click)="getCustomPlaylist()" class="btn btn-primary mb-2">Valider</button>
 </div>

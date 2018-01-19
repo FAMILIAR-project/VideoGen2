@@ -7,7 +7,11 @@ import org.xtext.example.mydsl.videoGen.MediaDescription;
  */
 
 public class OptionalMediaWrapper extends MediaWrapper{
-    public MediaDescriptionWrapper descriptionWrapper = new MediaDescriptionWrapper();
+    public MediaDescriptionWrapper descriptionWrapper ;
+
+    public OptionalMediaWrapper(String type) {
+        super(type);
+    }
 
     public MediaDescriptionWrapper getDescriptionWrapper() {
         return descriptionWrapper;
@@ -15,5 +19,14 @@ public class OptionalMediaWrapper extends MediaWrapper{
 
     public void setDescriptionWrapper(MediaDescriptionWrapper descriptionWrapper) {
         this.descriptionWrapper = descriptionWrapper;
+    }
+
+    public OptionalMediaWrapper(String type, MediaDescriptionWrapper descriptionWrapper) {
+        super(type);
+        this.descriptionWrapper = descriptionWrapper;
+    }
+
+    public OptionalMediaWrapper() {
+        super();
     }
 }

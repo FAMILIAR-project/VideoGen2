@@ -10,7 +10,7 @@ export class VideoGen implements BaseEntity {
     }
 }
 
-export class VideoGeneratorModel {
+export class VideoGeneratorModelWrapper {
     constructor(
         public medias?: Media[],
         public information?: VideoGenInformation
@@ -34,31 +34,65 @@ export class Media {
     ) {}
 }
 
-export class MediaDescriptionWrapper{
+export abstract class MediaDescriptionWrapper {
   constructor(
     public thumb_url?: string,
-    public description?: MediaDescription
-  ){}
+    public description?: MediaDescription,
+    public selected?: boolean
+  ) {}
 }
 
 export class MediaDescription {
     constructor(
         public location?: string,
-        // Video
         public videoid?: number,
         public duration?: number,
         public probability?: number,
         public description?: string,
-        public filter?: any,
-        public FilterWrapped?: FilterWrapped,
-        // TODO Filter + VideoText
-
-        // Image
-      //  public toptext?: string,
-      //  public bottomtext?: string
+        public toptext?: string,
+        public bottomtext?: string
     ) {}
 }
 
-export class FilterWrapped{
-  constructor(){}
+export class VideoDescriptionWrapper extends MediaDescriptionWrapper {
+  constructor(
+    public thumbs_url?: string,
+    public description?: MediaDescription,
+    public selected?: boolean,
+    public filterWrapped?: FilterWrapper
+  ) {
+    super(thumbs_url, description, selected)
+  }
+}
+
+export class ImageDescriptionWrapper extends MediaDescriptionWrapper {
+  constructor(
+    public thumbs_url?: string,
+    public description?: MediaDescription,
+    public selected?: boolean
+  ) {
+    super(thumbs_url, description, selected)
+  }
+}
+
+export class FilterWrapper {
+  constructor() {}
+}
+
+export class FilterNegateWrapper extends FilterWrapper {
+  constructor() {
+    super()
+  }
+}
+
+export class BlackAndWhiteFilterWrapper extends FilterWrapper {
+  constructor() {
+    super()
+  }
+}
+
+export class FlipFilterWrapper extends FilterWrapper {
+  constructor() {
+    super()
+  }
 }

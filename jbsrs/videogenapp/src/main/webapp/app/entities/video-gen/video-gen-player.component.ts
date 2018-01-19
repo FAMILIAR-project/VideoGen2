@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Router } from '@angular/router';
+
 import { VideoGenService } from './';
 
 @Component({
@@ -11,27 +13,36 @@ export class VideoGenPlayerComponent implements OnInit {
 
   media: any;
   videourl: string;
-  modes = ['Aléatoire', 'Configurateur'];
-  selectedMode = null;
-  constructor(private videoGenService: VideoGenService) { }
+  modes_: string[] = ['Aléatoire', 'Configurateur'];
+  selectedMode_: string;
+  constructor(private videoGenService: VideoGenService, private router: Router) { }
 
   ngOnInit() {
 
     this.videourl = this.videoGenService.getVideoUrlShare();
-    console.log('Video Url' + this.videourl);
-
   }
 
   validate() {
 
-    console.log('Mode' + this.selectedMode );
-    if (this.selectedMode === 'Aléatoire') {
-      this.videoGenService.getRandomPlayList().subscribe((response) => {
-          console.log('Response get' + response)
+    console.log('Mode' + this.selectedMode_ );
+    if (this.selectedMode_ === this.modes_[0]) {
+      this.videoGenService.getRandomPlayList().subscribe((response: any) => {
           this.videoGenService.setVideoUrlShare(response);
+          this.router.navigate(['video-gen-player']);
       });
     } else {
-      console.log('text')
+      this.router.navigate(['video-gen-configurator']);
     }
+  }
+
+  getGifs() {
+    /* let url = window.URL.createObjectURL('data/output/gifs/playlist_14.gif')
+    window.open( url ) */
+
+    /* this.videoGenService.getGifs(this.videourl).subscribe((res: any) => {
+      console.log('Res ' + res.text())
+      let url = window.URL.createObjectURL(res.text());
+      window.open(url);
+    }); */
   }
 }

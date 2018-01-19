@@ -3,7 +3,7 @@ import { Http, Response, ResponseContentType, RequestOptions } from '@angular/ht
 import { Observable } from 'rxjs/Rx';
 import { SERVER_API_URL } from '../../app.constants';
 
-import { VideoGen, VideoGeneratorModel } from './video-gen.model';
+import { VideoGen, VideoGeneratorModelWrapper, MediaDescriptionWrapper } from './video-gen.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class VideoGenService {
 
     private resourceUrl = SERVER_API_URL + 'api/video-gens';
     private videoUrlShare: string;
-    videoGenModel: VideoGeneratorModel;
+    videoGeneratorModelWrapper: VideoGeneratorModelWrapper;
 
     constructor(private http: Http) { }
 
@@ -74,7 +74,7 @@ export class VideoGenService {
         return copy;
     }
 
-    getModel(filename: string): Observable<VideoGeneratorModel> {
+    getModel(filename: string): Observable<VideoGeneratorModelWrapper> {
         return this.http.get(`${this.resourceUrl}/${filename}`).map((res) => res.json());
     }
 
@@ -95,44 +95,63 @@ export class VideoGenService {
       return this.videoUrlShare;
     }
 
-    setVideoUrlShare(videoUrl: string) {
+    setVideoUrlShare(videoUrl: any) {
       this.videoUrlShare = videoUrl;
     }
 
-    getRandomPlayList() {
-      return this.http.get(this.resourceUrl + '/playlist/random').map((res: Response) => (res.text()));
+    getRandomPlayList(): Observable<any> {
+      return this.http.get(this.resourceUrl + '/playlist/random').map((res: Response) => {
+        console.log('URL ' + res.text())
+        return res.text();
+      });
     }
 
-    getRandomModel(): Observable<VideoGeneratorModel> {
+    getRandomModel(): Observable<VideoGeneratorModelWrapper> {
       return this.http.get(this.resourceUrl + '/model/random').map((res: Response) => {
-        console.log('JSONReal ' + res.text());
-
-        console.log('JSONRealJ ' + res.json());
-
-        
-
-        /*this.videoGenModel.medias.forEach((m) => {
-          console.log(m.thumbUrl)
-        });*/
-
+          console.log('Response ' + res.text())
           return res.json();
       });
     }
 
-    setVideogeneratorModel(videoGenModel: VideoGeneratorModel) {
-      this.videoGenModel = videoGenModel;
+    getConfigurePlaylist(choices: string[]): Observable<any> {
+      return this.http.post(this.resourceUrl + '/playlist/configure/', choices).map((res: Response) => {
+        console.log('Response configure ' + res.text())
+        return res.text();
+      });
+    }
+
+    getGifs(playlist: string): Observable<any> {
+      return this.http.get(`${this.resourceUrl}/playlist/gifs/${playlist}`).map((res: Response) => {
+        // let fileBlob = res.blob();
+        /* let blob = new Blob([fileBlob], {
+         type: 'image/gif' // must match the Accept type
+       });*/
+        /*var url= window.URL.createObjectURL(blob);
+        window.open(url); */
+
+        return res
+      });
+    }
+
+    setVideogeneratorModel(videoGeneratorModelWrapper: VideoGeneratorModelWrapper) {
+      this.videoGeneratorModelWrapper = videoGeneratorModelWrapper
     }
 
     getVideoGeneratorModel() {
-      return this.videoGenModel;
+      return this.videoGeneratorModelWrapper
     }
 
     /**
      * Convert a returned JSON object to VideoGen.
      */
-    private convertVideoGenFromServer(json: any): VideoGeneratorModel {
+    private convertVideoGenFromServer(json: any): VideoGeneratorModelWrapper {
       console.log('JSON ' + json)
-        const entity: VideoGeneratorModel = Object.assign(new VideoGeneratorModel(), json);
+        const entity: VideoGeneratorModelWrapper = Object.assign(new VideoGeneratorModelWrapper(), json);
         return entity;
+    }
+
+    private convertVideoGen(choices: MediaDescriptionWrapper[]): MediaDescriptionWrapper[] {
+        const copy: MediaDescriptionWrapper[] = Object.assign({}, choices);
+        return copy;
     }
 }

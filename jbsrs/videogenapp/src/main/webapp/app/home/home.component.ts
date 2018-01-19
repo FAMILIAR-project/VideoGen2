@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Http, Response, ResponseContentType, RequestOptions } from '@angular/http';
 
 import { Account, LoginModalService, Principal } from '../shared';
-import { VideoGenService, VideoGeneratorModel } from '../entities/video-gen/';
+import { VideoGenService, VideoGeneratorModelWrapper } from '../entities/video-gen/';
 
 @Component({
     selector: 'jhi-home',
@@ -21,9 +21,9 @@ export class HomeComponent implements OnInit {
     modalRef: NgbModalRef;
 
     guestname: string;
-    modes = ['Aléatoire', 'Configurateur'];
-    selectedMode = null;
-    videoGenModel: VideoGeneratorModel;
+    modes: string[] = ['Aléatoire', 'Configurateur'];
+    selectedMode: string;
+    videoGeneratorModelWrapper: VideoGeneratorModelWrapper;
     thumbs: any = [];
 
     constructor(
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-
+      this.selectedMode = 'Aléatoire'
     }
 
     registerAuthenticationSuccess() {
@@ -56,35 +56,18 @@ export class HomeComponent implements OnInit {
     }
 
     validate() {
-      this.videoGenService.getRandomModel().subscribe((model: VideoGeneratorModel) => {
-        console.log('Response' + model.medias)
-
-        model.medias.forEach((m) => {
-          if(m.type.charAt(0) == 'a') {
-            m.descriptionWrappers.forEach((a) => {
-              console.log(a.thumb_url)
-            })
-          } else {
-            console.log(m.descriptionWrapper.thumb_url)
-          }
-          });
-        // this.videoGenModel = model;
-
-        //this.videoGenService.setVideogeneratorModel(response);
-        //this.router.navigate(['video-gen-configurator']);
-     });
-      /*console.log('Mode' + this.selectedMode);
-      if (this.selectedMode = 'Aléatoire') {
-        this.videoGenService.getRandomPlayList().subscribe((response) => {
-            console.log('Response get' + response)
-            this.videoGenService.setVideoUrlShare(response);
-            this.router.navigate(['video-gen-player']);
+      console.log('Selected ' + this.selectedMode)
+      if (this.selectedMode === this.modes[0]) {
+        this.videoGenService.getRandomPlayList().subscribe((response: string) => {
+            this.videoGenService.setVideoUrlShare(response)
+            console.log('Response ' + response)
+            if (this.videoGenService.getVideoUrlShare !== null) {
+            //  this.router.navigate(['video-gen-player'])
+            }
         });
+
       } else {
-        this.videoGenService.getRandomModel().subscribe((response) => {
-          console.log('Response' + response)
-          this.router.navigate(['video-gen-configurator']);
-       });
-     }*/
+        this.router.navigate(['video-gen-configurator'])
+     }
   }
 }

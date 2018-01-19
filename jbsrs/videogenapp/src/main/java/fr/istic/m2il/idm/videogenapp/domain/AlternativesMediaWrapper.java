@@ -30,4 +30,18 @@ public class AlternativesMediaWrapper extends MediaWrapper{
     public void setDescriptionWrappers(EList<MediaDescriptionWrapper> descriptionWrappers) {
         this.descriptionWrappers = descriptionWrappers;
     }
+
+    public AlternativesMediaWrapper(String type, int id, List<MediaDescriptionWrapper> descriptionWrappers) {
+        super(type);
+        this.id = id;
+        this.descriptionWrappers = descriptionWrappers;
+    }
+
+    public AlternativesMediaWrapper(String type) {
+        super(type);
+    }
+
+    public AlternativesMediaWrapper() {
+        super();
+    }
 }

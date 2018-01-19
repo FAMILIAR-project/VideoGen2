@@ -1,5 +1,5 @@
 VideoGen {
-	mandatory videoseq v0 "data/input/videos/v01.mp4"
+	mandatory videoseq v0 "data/input/videos/v01.mp4" {filter negate }
 	mandatory image i0 "data/input/images/i0.jpg"
 	alternatives v1 {
 		videoseq v11 "data/input/videos/v12.mp4" {probability 20}
@@ -7,22 +7,5 @@ VideoGen {
 		videoseq v13 "data/input/videos/v01.mp4" {probability 50}
 	}
 	optional videoseq v2 "data/input/videos/v01.mp4"
-	mandatory videoseq v4 "data/input/videos/v01.mp4"
-    mandatory image i1 "data/input/images/i0.jpg"
-    alternatives v5 {
-    	videoseq v51 "data/input/videos/v12.mp4" {probability 20}
-    	videoseq v52 "data/input/videos/v2.mp4" {probability 20}
-    	videoseq v53 "data/input/videos/v01.mp4" {probability 50}
-    }
-    optional videoseq v6 "data/input/videos/v01.mp4"
-    mandatory videoseq v7 "data/input/videos/v01.mp4"
-    mandatory image i2 "data/input/images/i0.jpg"
-    alternatives v8 {
-        videoseq v81 "data/input/videos/v12.mp4" {probability 20}
-        videoseq v82 "data/input/videos/v2.mp4" {probability 20}
-        videoseq v83 "data/input/videos/v01.mp4" {probability 50}
-    }
-    optional videoseq v9 "data/input/videos/v01.mp4"
-    optional videoseq v10 "data/input/videos/v01.mp4"
-    mandatory videoseq v112 "data/input/videos/v01.mp4"
+
 }
