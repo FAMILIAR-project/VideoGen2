@@ -1,0 +1,18 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "The name attribute.",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180113202353",
+    "javadoc": "The Video entity.",
+    "entityTableName": "video",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}
