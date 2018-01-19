@@ -109,12 +109,12 @@ Instructions to deploy the project
 jar -java xxx.jar command
 
 command :
-concatener_videos path/to/outputFolder format file1 file2 
-gerer_probabilites path/to/outputFolder path/to/videogenspecificationfile
-exporter_gifs path/to/outputFolder path/to/videogenspecificationfile witdh heigth
-tailles_variantes path/to/outPutFolder path/to/videogenspecificationfile video/gif (gif_width gif_heigth)
-durees_variantes path/to/outPutFolder path/to/videogenspecificationfile 
-appliquer_filtres path/to/videogenspecificationfile videofile filter negate/hflip/vflip/b&w
+
+generer_playlist AbsoluteOutputFolder videogenspecificationfile
+exporter_gifs AbsoluteOutputFolder videogenspecificationfile witdh heigth
+tailles_variantes AbsoluteOutputFolder videogenspecificationfile (gif/video) ? gif_width gif_heigth
+durees_variantes AbsoluteOutputFolder videogenspecificationfile 
+
 ```
 / : means that there is a choice to make.
 (): means that it needs to be put with only the related option.
