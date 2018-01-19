@@ -1,19 +1,21 @@
 package fr.istic.m2il.idm.videogentransformations.transformations
 
-import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
-import org.xtext.example.mydsl.videoGen.MandatoryMedia
-import org.xtext.example.mydsl.videoGen.VideoDescription
-import java.util.ArrayList
-import org.xtext.example.mydsl.videoGen.OptionalMedia
-import org.xtext.example.mydsl.videoGen.AlternativesMedia
-import fr.istic.m2il.idm.videogentransformations.utils.VideoGenUtils
-import fr.istic.m2il.idm.videogentransformations.helpers.FFMPEGHelper
-import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils
-import org.xtext.example.mydsl.videoGen.ImageDescription
-import org.xtext.example.mydsl.videoGen.MediaDescription
-import java.util.List
 import fr.istic.m2il.idm.videogentransformations.configs.VideoGenConfigs
+import fr.istic.m2il.idm.videogentransformations.helpers.FFMPEGHelper
 import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenChekerHelper
+import fr.istic.m2il.idm.videogentransformations.utils.CommonUtils
+import fr.istic.m2il.idm.videogentransformations.utils.VideoGenUtils
+import java.util.ArrayList
+import java.util.List
+import org.xtext.example.mydsl.videoGen.AlternativesMedia
+import org.xtext.example.mydsl.videoGen.ImageDescription
+import org.xtext.example.mydsl.videoGen.MandatoryMedia
+import org.xtext.example.mydsl.videoGen.MediaDescription
+import org.xtext.example.mydsl.videoGen.OptionalMedia
+import org.xtext.example.mydsl.videoGen.VideoDescription
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
+
+
 
 /**
  * @author Ramadan Soumaila

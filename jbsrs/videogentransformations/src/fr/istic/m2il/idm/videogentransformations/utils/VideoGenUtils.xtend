@@ -118,6 +118,7 @@ class VideoGenUtils {
 				maxOutputHeight = resolution.get(1)
 			}
 		}
+
 		var playlist = newArrayList
 		
 		for(location: locations){
@@ -134,8 +135,9 @@ class VideoGenUtils {
 			
 		}
 		var playlistWrite = newArrayList
-		for(p: playlist){
+		for(p : playlist){
 			playlistWrite.add("file '" + p + "'" + '\n')
+
 		}
 		CommonUtils.writeFileOnDisk(CommonUtils.getOutPutFileName(VideoGenConfigs.outPutFoulder + "/playlists/playlist.txt"), playlistWrite)
 		return FFMPEGHelper.concatVideos(playlist, playlistName)

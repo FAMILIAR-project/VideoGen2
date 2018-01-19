@@ -28,7 +28,7 @@ public class VideoGenPlayTransformationsTest {
     String _property = System.getProperty("videogenspecification");
     boolean _tripleEquals = (_property == null);
     if (_tripleEquals) {
-      System.setProperty("videogenspecification", "samples/sample9.videogen");
+      System.setProperty("videogenspecification", "samples/sample1.videogen");
     }
   }
   
@@ -285,7 +285,7 @@ public class VideoGenPlayTransformationsTest {
       InputOutput.<String>println(("dur " + Boolean.valueOf(isDuration)));
       InputOutput.<String>println(("gif " + Boolean.valueOf(csv_type)));
       String _property_4 = System.getProperty("videogenspecification");
-      String _plus_2 = ("Le fichier CSV produit pour la spcécification videogen du fichier " + _property_4);
+      String _plus_2 = ("Le fichier CSV produit pour la spécification videogen du fichier " + _property_4);
       String _plus_3 = (_plus_2 + " contient autant de lignes que de nombre de variantes possibles (+ 1).");
       int _variantNumber = VideoGenUtils.getVariantNumber(videoGen);
       int _plus_4 = (_variantNumber + 1);
@@ -318,7 +318,7 @@ public class VideoGenPlayTransformationsTest {
   }
   
   @Test
-  public void checksWebPageThums() {
+  public void checksWebPageThumbs() {
     final VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI(System.getProperty("videogenspecification")));
     boolean _isGoodVideoGenSpecification = VideoGenChekerHelper.isGoodVideoGenSpecification(videoGen);
     if (_isGoodVideoGenSpecification) {
