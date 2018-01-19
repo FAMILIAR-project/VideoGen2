@@ -19,9 +19,9 @@ jbsrs
 │   Instructions.md
 |   videogen-transformations-1.0.0.jar
 │
-└───videogenapp
+└───videogenapp : the web-site of the project
 │  
-└───videogentransformations
+└───videogentransformations : the server-side of the project
 
 ```
 
@@ -99,6 +99,7 @@ videogentransformations
 |   │   ...
 |
 └───empiricalStudy : all info about the empirical study
+    |   Etude Empirique.pdf : the empirical study (material, method, results) 
     |   plot_correlation.png
     |   result_pearson.png
     |   script_R_empirique.R
