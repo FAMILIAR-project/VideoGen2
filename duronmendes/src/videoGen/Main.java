@@ -15,20 +15,18 @@ public class Main {
 
 	
 	public static void main(String[] args) throws IOException {
-		generateAll();
-		//generateOne();
+		//generateAll();
+		generateOne();
 	}
 	
 	private static void generateAll() throws IOException {
 		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("videogenFile/example4.videogen"));
 		List<Variante> variantes = evalVar(videoGen.getMedias());
-		
-
 	}
 	
 	private static void generateOne() throws IOException {
 
-		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("videogenFile/example4.videogen"));
+		VideoGeneratorModel videoGen = new VideoGenHelper().loadVideoGenerator(URI.createURI("videogenFile/example3.videogen"));
 		
 		//Le check n'est pas a jour par rapport au generator (images non gérées)
 		//if(isCorrectVideoGen(videoGen.getMedias())) {
