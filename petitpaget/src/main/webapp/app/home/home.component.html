@@ -1,387 +1,183 @@
 
-
-<!-- ########################################################################################################################### -->
-<!-- ########################################################################################################################### -->
-<!-- ########################################################################################################################## -->
 <div class="body">
-
-
-
-
-    <div class="col-md-9">
-
-        <!-- ########################################################################################################################## -->
-        <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
-        <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
-
-
-
-
-        <!-- ######################################### -->
-        <!-- L'authentification####################### -->
-        <!-- ######################################### -->
-
-        <div [ngSwitch]="isAuthenticated()" >
-
-
+            <!-- ########################################################################################################################## -->
+            <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
+            <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
             <!-- ######################################### -->
-            <!-- Si la personne ne s'est pas authentifié # -->
+            <!-- L'authentification####################### -->
             <!-- ######################################### -->
-
-
-            <!-- ######################################### -->
-            <!-- Not Authenticated ####################### -->
-            <!-- ######################################### -->
-
-            <div align="center" class="row" *ngSwitchCase="false">
-
+            <div [ngSwitch]="isAuthenticated()" >
                 <!-- ######################################### -->
-                <!-- En tete de page, insertion de l'image ### -->
-                <!-- ######################################### -->
-                <!-- <div class="col-md-3">
-                    <span class="hipster img-fluid rounded"></span>
-                </div> -->
+                <!-- Si la personne ne s'est pas authentifié # -->
                 <!-- ######################################### -->
                 <!-- ######################################### -->
+                <!-- Not Authenticated ####################### -->
                 <!-- ######################################### -->
+                <div align="center" class="row" *ngSwitchCase="false">
+                    <div class="col-md-12">
+                    <!-- ######################################### -->
+                    <!-- En tete de page, insertion de l'image ### -->
+                    <!-- ######################################### -->
+                    <!-- <div class="col-md-3">
+                        <span class="hipster img-fluid rounded"></span>
+                    </div> -->
+                    <!-- ######################################### -->
+                    <!-- ######################################### -->
+                    <!-- ######################################### -->
 
-                <!-- ######################################### -->
-                <!-- Start Page Introduction ################# -->
-                <!-- ######################################### -->
+                    <!-- ######################################### -->
+                    <!-- Start Page Introduction ################# -->
+                    <!-- ######################################### -->
+                        <div align="center">
+                            <div id="divIntroduction">
+
+                                <!-- ######################################### -->
+                                <!-- Titre#################################### -->
+                                <!-- ######################################### -->
+                                <h1 class="divWelcome"><br>WELCOME TO THE BEAUTIFUL<br><br>VIDEO GENERATOR !<br><br></h1>
+                                <!-- ######################################### -->
+                                <!-- ######################################### -->
+                                <!-- ######################################### -->
 
 
-
-                <div align="center">
-                    <div id="divIntroduction">
-
-                        <!-- ######################################### -->
-                        <!-- Titre#################################### -->
-                        <!-- ######################################### -->
-                        <h1 class="divWelcome"><br>WELCOME TO THE BEAUTIFUL<br><br>VIDEO GENERATOR !<br><br></h1>
-                        <!-- ######################################### -->
-                        <!-- ######################################### -->
-                        <!-- ######################################### -->
-
-
-                        <img height="200" src="../../content/images/bref_background.png" />
-                        <!-- ######################################### -->
-                        <!-- To Sign################################## -->
-                        <!-- ######################################### -->
-                        <div >
-                            <div class="sign_in">
-                                <a class="alert-link" (click)="login()">Sign in.
+                                <img height="200" src="../../content/images/bref_background.png" />
+                                <div class="sign_in">
+                                    <a class="alert-link" (click)="login()">Sign <u>Here</u></a><br>
+                                </div>
+                                <div class="sign_option_italic">
+                                    <span>If you want to </span>
+                                    <a class="alert-link" (click)="openLogin()">sign in</a>
+                                    <span>, you can try the default accounts: <br/>- User (login=<a class="alert-link" (click)="openLogin()">"user"</a> and password=<a class="alert-link" (click)="openLogin()">"user"</a>).</span>
+                                </div>
                             </div>
-                            <div class="register_home">
-                                    <span><br>You don't have an account yet?</span>
-                                    <a class="alert-link" routerLink="register">Register a new account</a>
-                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ######################################### -->
+                    <!-- End Page Introduction ################### -->
+                    <!-- ######################################### -->
+
+                </div>
+                <!-- ######################################### -->
+                <!-- End Not Authentificated ################# -->
+                <!-- ######################################### -->
+
+                <!-- ########################################################################################################################### -->
+
+                <!-- ######################################### -->
+                <!-- Si la personne s'est authentifié ######## -->
+                <!-- ######################################### -->
+
+                <!-- ######################################### -->
+                <!-- Authenticated ########################### -->
+                <!-- ######################################### -->
+                    <div align="center" *ngSwitchCase="true">
+                        <div class="divIntroductionUser">
+
+                            <!-- ######################################### -->
+                            <!-- Titre#################################### -->
+                            <!-- ######################################### -->
+                            <h1 class="divWelcome"><br>VIDEO GENERATOR <br><br></h1>
+                            <!-- ######################################### -->
+                            <!-- ######################################### -->
+                            <!-- ######################################### -->
+
+
+                            <img height="200" src="../../content/images/bref_background.png" />
+
+                        </div>
+                        <!-- ######################################### -->
+                        <!-- Select ################################## -->
+                        <!-- ######################################### -->
+                        <!-- ######################################### -->
+                        <!-- ######################################### -->
+                        <!-- ######################################### -->
+                        <!-- ######################################### -->
+                        <!-- Event Received ########################## -->
+                        <!-- ######################################### -->
+                        <!-- <div [ngSwitch]="eventReceived()"> -->
+
+                        <!-- ######################################### -->
+                        <!-- Select ################################## -->
+                        <!-- ######################################### -->
+                        <div class="Select_div">
+                            <select class="select_gram" [(ngModel)]="videoGen" (change)="loadModel()">
+                                <option *ngFor="let file of listFiles" [value]="file">{{file}}</option>
+                            </select>
                         </div>
                         <!-- ######################################### -->
                         <!-- ######################################### -->
                         <!-- ######################################### -->
 
 
-                    </div>
-                </div>
 
+                       <!-- <div class="loadVideos">
+                            <select [(ngModel)]="videoGen" (change)="loadModel()">
+                                <option *ngFor="let file of listFiles" [value]="file">{{file}}</option>
+                            </select>
+                            <button *ngIf="videoGenModel" (click)="generateRandomVariant()">Random</button>
+                        </div>-->
 
+                        <div class="loadingString" *ngIf="loadingString" style="color: red" (suspend)="loadingString"><br><br><br>{{loadingString}}<br><br><br></div>
 
-                <!-- ######################################### -->
-                <!-- End Page Introduction ################### -->
-                <!-- ######################################### -->
+                        <div class = "preload"></div>
+                        <div>
+                            <video *ngIf="displayVideo" preload="auto" controls autoplay>
+                                <source src="{{ videoLocation }}" type="video/mp4">
+                            </video>
+                        </div>
 
-            </div>
-            <!-- ######################################### -->
-            <!-- End Not Authentificated ################# -->
-            <!-- ######################################### -->
-
-            <!-- ########################################################################################################################### -->
-
-            <!-- ######################################### -->
-            <!-- Si la personne s'est authentifié ######## -->
-            <!-- ######################################### -->
-
-            <!-- ######################################### -->
-            <!-- Authenticated ########################### -->
-            <!-- ######################################### -->
-            <div *ngSwitchCase="true" >
-
-
-                <div align="center">
-                    <div class="divIntroduction">
-
-                        <!-- ######################################### -->
-                        <!-- Titre#################################### -->
-                        <!-- ######################################### -->
-                        <h1 class="divWelcome"><br>VIDEO GENERATOR <br><br></h1>
-                        <!-- ######################################### -->
-                        <!-- ######################################### -->
-                        <!-- ######################################### -->
-
-
-                        <img height="200" src="../../content/images/bref_background.png" />
-
-                    </div>
-                    <!-- ######################################### -->
-                    <!-- Select ################################## -->
-                    <!-- ######################################### -->
-                    <select class="select_gram" [(ngModel)]="videoGen" (change)="loadModel()">
-                        <option *ngFor="let file of listFiles" [value]="file">{{file}}</option>
-                    </select>
-                    <!-- ######################################### -->
-                    <!-- ######################################### -->
-                    <!-- ######################################### -->
-                </div>
-                <!-- ######################################### -->
-                <!-- Event Received ########################## -->
-                <!-- ######################################### -->
-                <!-- <div [ngSwitch]="eventReceived()"> -->
-
-                <!-- ######################################### -->
-                <!-- Video Not Received ###################### -->
-                <!-- ######################################### -->
-
-                <!--<div class="fa fa-3x">
-                    Please enter your videos.
-                </div>-->
-                <!-- ######################################### -->
-                <!-- SearchText (Here > videos) ############## -->
-                <!-- ######################################### -->
-                <!-- <br><br>-->
-                <select [(ngModel)]="videoGen" (change)="loadModel()">
-                    <option *ngFor="let file of listFiles" [value]="file">{{file}}</option>
-                </select>
-                <button *ngIf="videoGenModel" (click)="generateRandomVariant()">Random</button>
-                <div *ngIf="loadingString" style="color: red">{{loadingString}}</div>
-                <div>
-                    <video *ngIf="displayVideo" preload="auto" controls autoplay>
-                        <source src="{{ videoLocation }}" type="video/mp4">
-                    </video>
-                </div>
-                <div *ngIf="videoGenModel">
-                    <table>
-                        <tr *ngFor="let media of videoGenModel.medias">
-                            <td *ngIf="media.type == 'mv'">
-                                <img height="200" src="{{media.description.thumbnail}}" class="mandatory-thumbnail"/>
-                            </td>
-                            <td *ngIf="media.type == 'ov'">
-                                <img (click)="media.description.selected = !media.description.selected" *ngIf="media.description.selected" height="200" src="{{media.description.thumbnail}}" class="selected-thumbnail"/>
-                                <img (click)="media.description.selected = !media.description.selected" *ngIf="!media.description.selected" height="200" src="{{media.description.thumbnail}}" class="unselected-thumbnail"/>
-                            </td>
-                            <td *ngIf="media.type == 'av'">
+                        <div class="if_videoGenModel">
+                            <div *ngIf="videoGenModel">
+                                <button (click)="generateVideo()">Generate Video</button>
                                 <table>
-                                    <tr>
-                                        <td *ngFor="let desc of media.medias">
-                                            <img (click)="checkAndUncheck(desc.videoId, media)" *ngIf="desc.selected" height="200"
-                                                 src="{{desc.thumbnail}}" class="selected-thumbnail">
-                                            <img (click)="checkAndUncheck(desc.videoId, media)" *ngIf="!desc.selected" height="200"
-                                                 src="{{desc.thumbnail}}" class="unselected-thumbnail">
-                                            <!--<input type="radio" name="{{media.id}}" [checked]="idx === 0" (change)="checkAndUncheck(desc.videoId, media)">-->
+                                    <tr *ngFor="let media of videoGenModel.medias">
+                                        <td *ngIf="media.type == 'mv'" class="Mandatory">
+                                            <img height="200" src="{{media.description.thumbnail}}"/>
+                                        </td>
+                                        <td *ngIf="media.type == 'ov'" class="Selected">
+                                            <img (click)="media.description.selected = !media.description.selected" *ngIf="media.description.selected" height="200" src="{{media.description.thumbnail}}" />
+                                        </td>
+                                        <td *ngIf="media.type == 'ov'" class="NotSelected">
+                                            <img (click)="media.description.selected = !media.description.selected" *ngIf="!media.description.selected" height="200" src="{{media.description.thumbnail}}" />
+                                        </td>
+                                        <td *ngIf="media.type == 'av'" class="">
+                                            <table>
+                                                <tr>
+                                                    <td *ngFor="let desc of media.medias" class="Alternative">
+                                                        <img (click)="checkAndUncheck(desc.videoId, media)" *ngIf="desc.selected" height="200"
+                                                             src="{{desc.thumbnail}}" >
+                                                        <img (click)="checkAndUncheck(desc.videoId, media)" *ngIf="!desc.selected" height="200"
+                                                             src="{{desc.thumbnail}}">
+                                                        <!--<input type="radio" name="{{media.id}}" [checked]="idx === 0" (change)="checkAndUncheck(desc.videoId, media)">-->
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </td>
                                     </tr>
                                 </table>
-                            </td>
-                        </tr>
-                    </table>
-                    <button (click)="generateVideo()">Generate Video</button>
-                </div>
-                <!--  <input [(ngModel)]="videoGen" (change)="getFiles()" type="text"/>
-                 Press enter to search
-             <br><br>-->
-                <!-- ######################################### -->
-                <!-- ######################################### -->
-                <!-- ######################################### -->
-            </div>
-            <!--  <div *ngSwitchCase="false" > -->
 
-            <!-- ######################################### -->
-            <!-- TABLE ################################### -->
-            <!-- ######################################### <table  border="0" width="100%">
-                <th class="fa-2x ">Sports </th>
-                <th class="fa-2x">Current Place : {{person.currentPlace.nom}} </th>
-                <tr>
-                    <td width="50%">
-                        <ul >
-                            <li *ngFor="let mySport of sports; let i = index;">
-                                <div style="font-size: larger">
-                                    <input type="checkbox" [checked]=mySport.checked (change)="handleChange(mySport, i)" class="big-checkbox"/>
-                                        {{mySport.sport.title}}
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div align="center">
-                                <button (click)="saveAndUpdateSports()" class="btn btn-primary">
-                                    VALID
-                                </button>
+                            </div>
                         </div>
-                    </td>
-
-                    <td width="50%">
-                            <br>
-                                <div class="model-body">
-                                    <input [(ngModel)]="person.distanceMax" type="text"/>
-                                        km
-                                    <span class="fa fa-arrow-right"></span> Maximum Distance
-                                    <br><br>
-                                        <input [(ngModel)]="searchText" (change)="searchName()" type="text"/>
-                                        Press enter to search
-                                    <br><br>
-                                    <button *ngIf="placeSearch && placeSearch.length > 0" class="btn btn-primary" (click)="setAndUpdatePlace()">
-                                        Change current place  to {{placeSearch[0].nom}}
-                                    </button>
-                                </div>
-                    </td>
-                </tr>
+                        <!-- ######################################### -->
+                        <!-- ######################################### -->
+                        <!-- ######################################### -->
+                </div>
 
 
-                 ######################################### -->
-            <!-- Affichage valeurs ####################### -->
-            <!-- #########################################
-            <tr>
-
-                <td>
-            <!--    </td>
-
-             ######################################### -->
-
-
-            <!-- Boucle For Afficher valeurs ############# -->
-            <!-- #########################################
-            <td>
-               <br>
-               <ul *ngIf="placeSearch && placeSearch.length > 0">
-                  <li *ngFor="let place of placeSearch" style="font-size: 1em">
-                      {{ place.nom }}
-                  </li>
-                </ul>
-            </td>
-             ######################################### -->
-            <!-- End For ################################# -->
-            <!-- #########################################
-
-        </tr>
-         ######################################### -->
-            <!-- End Affichage ########################### -->
-            <!-- #########################################
-
-        </table>
-            ######################################### -->
-            <!-- End TAB !!  ############################# -->
+            <!-- ######################################### -->
+            <!-- End Video Not Received ################## -->
             <!-- ######################################### -->
 
 
-        </div>
-        <!-- ######################################### -->
-        <!-- End Video Not Received ################## -->
-        <!-- ######################################### -->
+
+            <!-- ########################################################################################################################### -->
 
 
+            <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
+            <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
+            <!-- ########################################################################################################################## -->
 
-        <!-- ######################################### -->
-        <!-- Video Received ########################## -->
-        <!-- #########################################
-        <div *ngSwitchCase="true" >
-
-             ######################################### -->
-        <!-- Button Back ############################# -->
-        <!-- #########################################
-        <button type="submit"
-            (click)="previous()"
-            class="btn btn-info">
-            <span class="fa fa-arrow-left"></span>&nbsp;
-            <span>
-                Back
-            </span>
-        </button>
-        ######################################### -->
-        <!-- End Button Back ######################### -->
-        <!-- ######################################### -->
-
-
-        <!-- ######################################### -->
-        <!-- Affichage des valeur event.place.name (Change Here > with something????) ############## //TODO modifier le nom de ces methodes et mettre les bonnes-->
-        <!-- #########################################
-        <hr>
-        <div class="fa fa-3x">
-
-            {{event.place.nom}}
-
-            <span class="fa fa-arrow-right"></span>
-
-            {{event.distance}} KM
-
-        </div>
-        <br>
-        <hr>
-         ######################################### -->
-        <!-- End Affichage ########################### -->
-        <!-- ######################################### -->
-
-
-
-        <!-- ######################################### -->
-        <!-- Start event.sport.title ################# //TODO que faire de cette balise ??? puet etre l'enlever jej pense qu'elle est inutile -->
-        <!-- #########################################
-        <div class="fa fa-3x">
-            Activity : {{event.sport.title}}
-        </div>
-        <br>
-        <hr>
-        ######################################### -->
-        <!-- End event.sport.title ################### -->
-        <!-- #########################################
-
-    </div>
-     ######################################### -->
-        <!-- Fin Video Received####################### -->
-        <!-- #########################################
-
-    </div>
-     ######################################### -->
-        <!-- End Event Received ###################### -->
-        <!-- #########################################
-
-    </div>
-     ######################################### -->
-        <!-- End Authentificated ##################### -->
-        <!-- ######################################### -->
-
-        <!-- ######################################### -->
-        <!-- Fin de l'authentification ############### -->
-        <!-- ######################################### -->
-
-
-        <!-- ###########################################################################################################################
-
-</div>
- ######################################### -->
-        <!-- Fin de l'authentification################ -->
-        <!-- ######################################### -->
-
-
-
-        <!-- ########################################################################################################################### -->
-
-        <!-- ######################################### -->
-        <!-- Comment suivre ce projet ? ############## -->
-        <!-- #########################################
-        <p>
-            <span>If you like Video Generator, don't forget to give us a star on</span> <a href="https://github.com/maelpetit/VideoGen2" target="_blank" rel="noopener">GitHub</a>!
-            <span>Do not forget to thank Jhipster team who without it, nothing would have been possible, just here :</span>  <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener">GitHub</a>!
-        </p>
- ######################################### -->
-        <!-- Fin du suivie. ########################## -->
-        <!-- ######################################### -->
-
-
-        <!-- ########################################################################################################################### -->
-
-
-        <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
-        <!-- #############\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/############# -->
-        <!-- ########################################################################################################################## -->
-    </div>
 </div>
 <!-- ########################################################################################################################## -->
 <!-- ########################################################################################################################## -->
