@@ -18,7 +18,7 @@ case "GENERATE_CSV_FILE": // example of input: GENERATE_CSV_FILE example2
 The Main.java class allows us to execute our generator, its main() function uses a 'Scanner(System.in)' and 'switch case' to process the different commands.
 A demo of the program is in the parent folder (videoGenProject)
 
-# Comaands
+# Commands
 
 ## Validation
 
