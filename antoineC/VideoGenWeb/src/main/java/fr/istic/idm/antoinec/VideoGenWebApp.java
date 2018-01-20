@@ -33,27 +33,6 @@ public class VideoGenWebApp {
     private static final Logger log = LoggerFactory.getLogger(VideoGenWebApp.class);
 
     private final Environment env;
-/*
-    @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver multipartResolver()
-    {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//        multipartResolver.setMaxUploadSize("30MB");
-        return new CommonsMultipartResolver();
-    }*/
-
-/*    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
-    }
-
-    @Bean
-    public MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setMaxFileSize("500MB");
-        factory.setMaxRequestSize("500MB");
-        return factory.createMultipartConfig();
-    }*/
 
     public VideoGenWebApp(Environment env) {
         this.env = env;

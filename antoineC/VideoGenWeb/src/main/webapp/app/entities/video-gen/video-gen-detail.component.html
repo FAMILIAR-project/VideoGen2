@@ -20,6 +20,9 @@
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
 
+    <button type="button" class="btn" (click)="downloadVariante()">
+        <span class="fa fa-download"></span>&nbsp;<span> Généré une variante</span>
+    </button>
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'video-gen/'+ videoGen.id + '/edit'} }]"
             replaceUrl="true"

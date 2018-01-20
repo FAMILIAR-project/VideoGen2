@@ -87,6 +87,15 @@ export class VideoGenService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
+
+    downloadVariante(videoGen: VideoGen): Observable<String> {
+        return this.http.get(`${this.resourceUrl}/${videoGen.id}/download/variante`).map((res) => {
+            console.info("Res " + res );
+            return "Result";
+        });
+    }
+
+
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         const result = [];

@@ -40,6 +40,10 @@ public class VideoGenService {
         }
     }
 
+    /**
+     * Hydrate l'objet Videogen avec les médias requis et un boolean pour chaque médias indiquant si il existe ou non sur le serveur
+     * @param videoGen
+     */
     public void hydrateWithFileHierarchy(VideoGen videoGen) {
         File directory = FileUtils.getFile(UPLOAD_DIR, FilenameUtils.normalize(videoGen.getId().toString()));
 
@@ -48,19 +52,16 @@ public class VideoGenService {
 
         try {
             videoGen.setMedias(compilerService.retrieveAllRequiredMedias(videoGen));
+            log.info("Media size: {}", videoGen.getMedias().size());
+
             FileUtils.listFiles(directory, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(new Consumer<File>() {
                 @Override
                 public void accept(File file) {
 
-                    List<Media> filtered = (List<Media>) CollectionUtils.filter(videoGen.getMedias(), new Predicate() {
-                        @Override
-                        public boolean evaluate(Object media) {
-                            return ((Media) media).getFilename().equals(file.getName());
+                    for(Media media : videoGen.getMedias()) {
+                        if(media.getFilename().equals(file.getName())) {
+                            videoGen.getMedias().get(videoGen.getMedias().indexOf(media)).setPresence(true);
                         }
-                    });
-
-                    if(filtered.size() == 1) {
-                        filtered.get(0).setPresence(true);
                     }
                 }
             });

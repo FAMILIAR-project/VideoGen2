@@ -5,11 +5,15 @@ import fr.istic.idm.antoinec.domain.VideoGen;
 
 import fr.istic.idm.antoinec.repository.VideoGenRepository;
 import fr.istic.idm.antoinec.service.videogenServices.VideoGenService;
+import fr.istic.idm.antoinec.service.videogenServices.VideogenCompilerService;
 import fr.istic.idm.antoinec.web.rest.errors.BadRequestAlertException;
+import fr.istic.idm.antoinec.web.rest.errors.InternalServerErrorException;
 import fr.istic.idm.antoinec.web.rest.util.HeaderUtil;
 import fr.istic.idm.antoinec.web.rest.util.StreamHandler;
+import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,7 +21,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -37,10 +45,14 @@ public class VideoGenResource {
 
     private final VideoGenRepository videoGenRepository;
     private final VideoGenService videoGenService;
+    private final VideogenCompilerService videogenCompilerService;
 
-    public VideoGenResource(VideoGenRepository videoGenRepository, VideoGenService videoGenService) {
+
+    public VideoGenResource(VideoGenRepository videoGenRepository, VideogenCompilerService videoGenCompilerService, VideoGenService videoGenService) {
         this.videoGenRepository = videoGenRepository;
         this.videoGenService = videoGenService;
+        this.videogenCompilerService = videoGenCompilerService;
+
     }
 
     /**
@@ -63,17 +75,17 @@ public class VideoGenResource {
         videoGenService.persistChanges(result, file, assets);
         videoGenService.hydrateWithFileHierarchy(result);
 
-        Process p = Runtime.getRuntime().exec("java -jar ../../videogen_compiler.jar INFOS " + FileUtils.getFile(VideoGenService.UPLOAD_DIR, result.getId() + "/" + result.getId() + ".videogen").getAbsolutePath(), null, FileUtils.getFile(VideoGenService.UPLOAD_DIR, result.getId().toString()));
-
-        StreamHandler info = new StreamHandler(p.getInputStream(), "INFO");
-        StreamHandler err = new StreamHandler(p.getErrorStream(), "ERROR");
-
-        Thread t1 = new Thread(info);
-        Thread t2 = new Thread(err);
-        t1.start();
-        t2.start();
-
-        p.waitFor();
+//        Process p = Runtime.getRuntime().exec("java -jar ../../videogen_compiler.jar INFOS " + FileUtils.getFile(VideoGenService.UPLOAD_DIR, result.getId() + "/" + result.getId() + ".videogen").getAbsolutePath(), null, FileUtils.getFile(VideoGenService.UPLOAD_DIR, result.getId().toString()));
+//
+//        StreamHandler info = new StreamHandler(p.getInputStream(), "INFO");
+//        StreamHandler err = new StreamHandler(p.getErrorStream(), "ERROR");
+//
+//        Thread t1 = new Thread(info);
+//        Thread t2 = new Thread(err);
+//        t1.start();
+//        t2.start();
+//
+//        p.waitFor();
 
         return ResponseEntity.created(new URI("/api/video-gens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -142,6 +154,34 @@ public class VideoGenResource {
         VideoGen videoGen = videoGenRepository.findOne(id);
         videoGenService.hydrateWithFileHierarchy(videoGen);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(videoGen));
+    }
+
+
+    /**
+     * GET  /video-gens/:id/variante : download a video variante
+     *
+     * @param id the id of the videoGen to retrieve
+     * @return void
+     */
+    @GetMapping("/video-gens/{id}/download/variante")
+    @Timed
+    public void downloadVariante(@PathVariable Long id, HttpServletResponse response) {
+        log.debug("REST request to download VideoGen : {}", id);
+
+        try {
+            File variante = videogenCompilerService.getVariante(videoGenRepository.findOne(id));
+
+            // get your file as InputStream
+            InputStream is = new FileInputStream(variante);
+            // copy it to response's OutputStream
+            IOUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException ex) {
+            throw new RuntimeException("IOError writing file to output stream");
+        } catch (InvalidVideoGenGrammarException e) {
+            throw new InternalServerErrorException("Error generating a video variante");
+        }
+
     }
 
     /**
