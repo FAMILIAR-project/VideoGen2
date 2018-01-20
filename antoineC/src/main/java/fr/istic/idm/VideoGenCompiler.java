@@ -1,7 +1,6 @@
 package fr.istic.idm;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -15,7 +14,6 @@ import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.Variante;
 import fr.istic.idm.model.Variantes;
 import fr.istic.idm.model.mediasequence.visitors.VariantesInformationsVisitor;
-import fr.istic.idm.model.mediasequence.visitors.VideoGenCompilerVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 
 public class VideoGenCompiler {
@@ -190,7 +188,7 @@ public class VideoGenCompiler {
 			
 			File video = variante.compile();
 			
-			File concatenedFile = FileUtils.getFile(OUTPUT_DIR, System.identityHashCode(variante) + ".mp4");
+			File concatenedFile = FileUtils.getFile(OUTPUT_DIR, "output.mp4");
 			if(concatenedFile.exists()) {
 				concatenedFile.delete();
 			}

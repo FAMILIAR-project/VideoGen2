@@ -1,26 +1,35 @@
-package fr.istic.idm.antoinec.service;
+package fr.istic.idm.antoinec.service.videogenServices;
 
+import fr.istic.idm.antoinec.domain.Media;
 import fr.istic.idm.antoinec.domain.VideoGen;
 import fr.istic.idm.antoinec.web.rest.errors.BadRequestAlertException;
 import fr.istic.idm.antoinec.web.rest.errors.InternalServerErrorException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
+import org.springframework.cglib.core.Predicate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 public class VideoGenService {
-    private static final File UPLOAD_DIR = FileUtils.getFile(System.getProperty("user.dir"), "VIDEOGEN_UPLOAD");
+    public static final File UPLOAD_DIR = FileUtils.getFile(System.getProperty("user.dir"), "VIDEOGEN_UPLOAD");
 
     private static Logger log = LoggerFactory.getLogger(VideoGenService.class);
+    private final VideogenCompilerService compilerService;
 
-    public VideoGenService() {
+    public VideoGenService(VideogenCompilerService compilerService) {
+        this.compilerService = compilerService;
+
         if(!UPLOAD_DIR.exists()) {
             try {
                 FileUtils.forceMkdir(UPLOAD_DIR);
@@ -29,6 +38,37 @@ public class VideoGenService {
             }
 
         }
+    }
+
+    public void hydrateWithFileHierarchy(VideoGen videoGen) {
+        File directory = FileUtils.getFile(UPLOAD_DIR, FilenameUtils.normalize(videoGen.getId().toString()));
+
+        if(!directory.exists())
+            throw new InternalServerErrorException("Impossible de récupéré les fichiers sur le serveur");
+
+        try {
+            videoGen.setMedias(compilerService.retrieveAllRequiredMedias(videoGen));
+            FileUtils.listFiles(directory, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(new Consumer<File>() {
+                @Override
+                public void accept(File file) {
+
+                    List<Media> filtered = (List<Media>) CollectionUtils.filter(videoGen.getMedias(), new Predicate() {
+                        @Override
+                        public boolean evaluate(Object media) {
+                            return ((Media) media).getFilename().equals(file.getName());
+                        }
+                    });
+
+                    if(filtered.size() == 1) {
+                        filtered.get(0).setPresence(true);
+                    }
+                }
+            });
+        } catch (FileNotFoundException e) {
+            throw new InternalServerErrorException("Impossible d'accéder à un fichier, peut-être un problème de droits");
+        }
+
+
     }
 
     public void persistChanges(VideoGen videoGen, MultipartFile videogenFile, MultipartFile[] assets) {
@@ -78,10 +118,14 @@ public class VideoGenService {
     private void update(VideoGen videoGen, File directory, MultipartFile videogenFile, MultipartFile[] assets) {
         log.info("Update File hierarchy for given Videogen entity");
         try {
-            for(MultipartFile asset : assets)
-                asset.transferTo(FileUtils.getFile(directory, asset.getOriginalFilename()));
+            for(MultipartFile asset : assets) {
+                File dest = FileUtils.getFile(directory, asset.getOriginalFilename());
+                if(dest.exists())
+                    FileUtils.forceDelete(dest);
+                asset.transferTo(dest);
+            }
         } catch (IOException e) {
-            throw new BadRequestAlertException("Impossible d'enregistré la grammaire", VideoGen.class.getName(), "ERROR");
+            throw new BadRequestAlertException(e.getMessage(), VideoGen.class.getName(), "ERROR");
         }
 
         return;

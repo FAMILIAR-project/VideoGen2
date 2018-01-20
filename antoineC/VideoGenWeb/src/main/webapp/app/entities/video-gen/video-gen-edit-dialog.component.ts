@@ -1,26 +1,24 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef, ComponentRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
 import { VideoGen } from './video-gen.model';
 import { VideoGenPopupService } from './video-gen-popup.service';
 import { VideoGenService } from './video-gen.service';
-import { User, UserService } from '../../shared';
-import { ResponseWrapper } from '../../shared';
+import {Observable} from "rxjs/Observable";
+import {User} from "../../shared/user/user.model";
+import {ResponseWrapper} from "../../shared/model/response-wrapper.model";
 import {Principal} from "../../shared/auth/principal.service";
-import {AccountService} from "../../shared/auth/account.service";
-import {forEach} from "@angular/router/src/utils/collection";
+import {UserService} from "../../shared/user/user.service";
 import {JhiAlertErrorComponent} from "../../shared/alert/alert-error.component";
 
 @Component({
-    selector: 'jhi-video-gen-dialog',
-    templateUrl: './video-gen-dialog.component.html'
+    selector: 'jhi-video-gen-edit-dialog',
+    templateUrl: './video-gen-edit-dialog.component.html'
 })
-export class VideoGenDialogComponent implements OnInit {
+export class VideoGenEditDialogComponent {
 
     videoGen: VideoGen;
     isSaving: boolean;
@@ -79,7 +77,7 @@ export class VideoGenDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.videoGen.id !== undefined) {
             this.subscribeToSaveResponse(
-                    this.videoGenService.update(this.videoGen, this.fileField.nativeElement.files, this.assetsField.nativeElement.files));
+                this.videoGenService.update(this.videoGen, this.fileField.nativeElement.files, this.assetsField.nativeElement.files));
         } else {
             this.subscribeToSaveResponse(
                 this.videoGenService.create(this.videoGen, this.fileField.nativeElement.files, this.assetsField.nativeElement.files));
@@ -111,10 +109,10 @@ export class VideoGenDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-video-gen-popup',
+    selector: 'jhi-video-gen-edit-popup',
     template: ''
 })
-export class VideoGenPopupComponent implements OnInit, OnDestroy {
+export class VideoGenEditPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
@@ -125,12 +123,8 @@ export class VideoGenPopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                // Do Nothing here
-            } else {
-                this.videoGenPopupService
-                    .open(VideoGenDialogComponent as Component);
-            }
+            this.videoGenPopupService
+                .open(VideoGenEditDialogComponent as Component, params['id']);
         });
     }
 

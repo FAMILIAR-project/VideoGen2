@@ -4,8 +4,6 @@ import fr.istic.idm.model.Variante;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
 import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
-import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

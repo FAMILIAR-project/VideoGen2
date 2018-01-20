@@ -12,6 +12,8 @@ import {
     VideoGenPopupComponent,
     VideoGenDeletePopupComponent,
     VideoGenDeleteDialogComponent,
+    VideoGenEditPopupComponent,
+    VideoGenEditDialogComponent,
     videoGenRoute,
     videoGenPopupRoute,
 } from './';
@@ -34,6 +36,8 @@ const ENTITY_STATES = [
         VideoGenDeleteDialogComponent,
         VideoGenPopupComponent,
         VideoGenDeletePopupComponent,
+        VideoGenEditDialogComponent,
+        VideoGenEditPopupComponent,
     ],
     entryComponents: [
         VideoGenComponent,
@@ -41,6 +45,7 @@ const ENTITY_STATES = [
         VideoGenPopupComponent,
         VideoGenDeleteDialogComponent,
         VideoGenDeletePopupComponent,
+        VideoGenEditDialogComponent,
     ],
     providers: [
         VideoGenService,

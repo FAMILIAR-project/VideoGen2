@@ -5,6 +5,7 @@ import { VideoGenComponent } from './video-gen.component';
 import { VideoGenDetailComponent } from './video-gen-detail.component';
 import { VideoGenPopupComponent } from './video-gen-dialog.component';
 import { VideoGenDeletePopupComponent } from './video-gen-delete-dialog.component';
+import {VideoGenEditPopupComponent} from "./video-gen-edit-dialog.component";
 
 export const videoGenRoute: Routes = [
     {
@@ -39,7 +40,7 @@ export const videoGenPopupRoute: Routes = [
     },
     {
         path: 'video-gen/:id/edit',
-        component: VideoGenPopupComponent,
+        component: VideoGenEditPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'VideoGens'

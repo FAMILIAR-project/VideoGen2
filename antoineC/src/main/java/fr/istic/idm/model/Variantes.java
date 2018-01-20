@@ -19,7 +19,6 @@ import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
 import fr.istic.idm.model.mediasequence.MediaSequence;
 import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
 import fr.istic.idm.model.mediasequence.visitors.MediaFilenameMediaSequenceVisitor;
-import fr.istic.idm.model.mediasequence.visitors.MediaSequenceVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VarianteVisitor;
 import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 

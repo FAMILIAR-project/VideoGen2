@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,20 +29,13 @@ public class VideoGen implements Serializable {
     @Column(name = "name")
     private String name;
 
+
     /**
-     * Encodage en base 64 du fichier .videogen (utilisé lors de la création de l'entité)
+     * Liste des Médias requis par le fichier videogen
      */
     @Transient
     @JsonProperty
-    private String file;
-
-
-    /**
-     * Encodage en base 64 des fichiers images et vidéos (utilisé lors de la création de l'entité)
-     */
-    @Transient
-    @JsonProperty
-    private List<String> medias;
+    private List<Media> medias;
 
     @ManyToOne
     private User owner;
@@ -64,19 +58,26 @@ public class VideoGen implements Serializable {
         return this;
     }
 
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public List<String> getMedias() {
+    public List<Media> getMedias() {
         return medias;
     }
 
-    public void setMedias(List<String> medias) {
+
+    public void addMedia(Media media) {
+        if(this.medias == null)
+            this.medias = new ArrayList<>();
+        this.medias.add(media);
+
+    }
+
+    public void removeMedia(Media media) {
+        if(this.medias == null)
+            this.medias = new ArrayList<>();
+        this.medias.remove(media);
+
+    }
+
+    public void setMedias(List<Media> medias) {
         this.medias = medias;
     }
 
