@@ -119,15 +119,12 @@ export class VideoGenService {
 
     getGifs(playlist: string): Observable<any> {
       return this.http.get(`${this.resourceUrl}/playlist/gifs/${playlist}`).map((res: Response) => {
-        const blob = new Blob(['http://localhost:8080'+ '/data/output/playlists/playlist_18.mp4'], {
+        const blob = new Blob([res.blob()], {
          type: 'application/octet-stream' // must match the Accept type
        });
 
-       window.location.href = 'data/output/playlists/playlist_18.mp4';
-
-
         const url = window.URL.createObjectURL(blob);
-        window.open('http://localhost:8080'+ '/data/output/playlists/playlist_18.mp4');
+        window.open(url);
 
         return res
       });

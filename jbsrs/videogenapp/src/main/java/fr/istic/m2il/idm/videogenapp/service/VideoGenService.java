@@ -3,19 +3,23 @@ package fr.istic.m2il.idm.videogenapp.service;
 import fr.istic.m2il.idm.videogenapp.domain.*;
 import fr.istic.m2il.idm.videogenapp.repository.VideoGenRepository;
 import fr.istic.m2il.idm.videogentransformations.helpers.VideoGenHelper;
-import org.apache.commons.io.FileUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xtext.example.mydsl.videoGen.*;
 
+
 import java.io.File;
-import java.io.IOException;
+
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Random;
 
 /**
  * Service Implementation for managing VideoGen.
@@ -28,9 +32,11 @@ public class VideoGenService {
 
     private final VideoGenRepository videoGenRepository;
     private VideoGenHelper videogenHelper;
+    private final ResourceLoader resourceLoader;
 
-    public VideoGenService(VideoGenRepository videoGenRepository) {
+    public VideoGenService(VideoGenRepository videoGenRepository, ResourceLoader resourceLoader) {
         this.videoGenRepository = videoGenRepository;
+        this.resourceLoader = resourceLoader;
         this.videogenHelper = new VideoGenHelper();
     }
 
@@ -171,35 +177,16 @@ public class VideoGenService {
         return wrapper;
     }
 
-    public String getRandomVideoGenSpecification(Environment env) throws URISyntaxException {
+    public String getRandomVideoGenSpecification() throws URISyntaxException {
 
-        File videoGenFolder ;
-
-        String [] profiles = env.getActiveProfiles();
-
-        boolean isDev = false;
-        for(String p:profiles){
-            if(p.equals("dev")){
-                isDev = true;
-                break;
-            }
-        }
-
-        if(isDev){
-            videoGenFolder = new File("data/input/videogen");
-        }
-        else {
-            videoGenFolder = new File("/data/input/videogen");
-        }
-
-
+        File videoGenFolder = new File("data/input/videogen");
 
         String[] specifications = videoGenFolder.list(
             (dir,name)-> name.endsWith(".videogen")
         );
 
 
-        int randomIndex = (int) Math.random() * specifications.length ;
+        int randomIndex = new Random().nextInt(specifications.length) ;
         File file = new File(specifications[randomIndex]);
 
         String[] files = file.getAbsolutePath().replace("\\", "/").split("/");
@@ -225,4 +212,5 @@ public class VideoGenService {
         }
         return  filterWrapper;
     }
+
 }

@@ -94,6 +94,8 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         File root;
         String prefixPath = resolvePathPrefix();
         root = new File(prefixPath + "target/www/");
+        System.err.println("ROOOOOOOOOOOOOOOT " + root.getAbsolutePath());
+        log.debug("Roooooot", root.getPath());
         if (root.exists() && root.isDirectory()) {
             container.setDocumentRoot(root);
         }
