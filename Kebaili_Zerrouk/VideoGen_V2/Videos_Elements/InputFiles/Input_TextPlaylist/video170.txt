@@ -1,0 +1,8 @@
+file '../InputVideos/mand1.mp4'
+file '../InputVideos/intro2.mp4'
+file '../InputVideos/alt8.mp4'
+file '../InputVideos/end.mp4'
+file '../InputVideos/alt3.mp4'
+file '../InputVideos/alt9.mp4'
+file '../InputVideos/alt6.mp4'
+file '../InputVideos/end2.mp4'

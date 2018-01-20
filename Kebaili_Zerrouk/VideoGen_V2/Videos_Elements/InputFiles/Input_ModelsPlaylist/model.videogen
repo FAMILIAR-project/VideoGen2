@@ -1,0 +1,46 @@
+@author "Alternant Student"
+@version "0.0.1"
+
+VideoGen {
+		
+	mandatory videoseq v31 "../InputVideos/mand1.mp4"
+	alternatives v3 {
+		
+		videoseq v2 "../InputVideos/alt1.mp4"
+		videoseq v32 "../InputVideos/intro2.mp4"	
+	}	 		
+
+	alternatives v3 {
+		videoseq v31 "../InputVideos/alt7.mp4"
+		videoseq v32 "../InputVideos/alt8.mp4"
+		
+	}
+
+	
+	mandatory videoseq v2 "../InputVideos/end.mp4"
+
+	alternatives v3 {
+		videoseq v31 "../InputVideos/alt2.mp4"
+		videoseq v32 "../InputVideos/alt3.mp4"
+		videoseq v34 "../InputVideos/alt4.mp4"	
+	}
+	
+	optional videoseq v4 "../InputVideos/alt9.mp4"
+
+	alternatives v3 {
+		videoseq v31 "../InputVideos/alt5.mp4"
+		videoseq v32 "../InputVideos/alt6.mp4"
+		
+	}
+	
+	
+	optional videoseq v3 "../InputVideos/end2.mp4"	
+	
+		
+	}
+
+	}	
+
+
+
+
