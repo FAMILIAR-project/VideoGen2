@@ -1,12 +1,12 @@
 # Instructions
 
 ## Technologies
+- Docker
 ### Web-side
 - JHipster
 
 ### Server-side
 - Java / Xtend
-- MySQL
 
 ### Tests
 - JUnit 4 
@@ -117,15 +117,7 @@ videogentransformations
 ## Deployment
 Instructions to deploy the project
 
-### Creating the database
-```
-> mysql -u root -p
-mysql> CREATE DATABASE videogenapp;
-mysql> CREATE USER 'videogenappadmin'@'localhost' IDENTIFIED BY 'videogenappadmin';
-mysql> GRANT ALL ON videogenapp.* TO 'videogenappadmin'@'localhost';
-mysql> exit
-```
-### Setting the DataBase informations (Only if database infos are different than those indicated in the Creation of database section)
+### Setting the DataBase informations
 
 ```videogenapp/src/main/resources/config/application-dev.yml```
 - Set User and PassWord properties
@@ -136,16 +128,12 @@ mysql> exit
 
 ### Running Application : 
 ## FrontEnd : In videogenapp folder
-```
-npm install
-rm yarn.lock
-rm yarn-error.log
-yarn install
-yarn start
-```
+- Run ```npm install```
+- Run ```yarn start```
+- Cancel with 'Ctrl + C'
 
 ## Backend: In videogenapp folder
-- Run ```mvn install:install-file -Dfile=../videogen-transformations-1.0.0.jar -DgroupId=fr.istic.m2il.idm -DartifactId=videogen -Dversion=1.0.0 -Dpackaging=jar```
+- Run mvn install:install-file -Dfile=../videogen-transformations-1.0.0.jar -DgroupId=fr.istic.m2il.idm -DartifactId=videogen -Dversion=1.0.0 -Dpackaging=jar
 - Run ```mvn spring-boot:run```
 
 
