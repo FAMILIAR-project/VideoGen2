@@ -1,53 +1,89 @@
 package fr.istic.idm.antoinec.service;
 
 import fr.istic.idm.antoinec.domain.VideoGen;
+import fr.istic.idm.antoinec.web.rest.errors.BadRequestAlertException;
+import fr.istic.idm.antoinec.web.rest.errors.InternalServerErrorException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 @Service
 public class VideoGenService {
+    private static final File UPLOAD_DIR = FileUtils.getFile(System.getProperty("user.dir"), "VIDEOGEN_UPLOAD");
+
     private static Logger log = LoggerFactory.getLogger(VideoGenService.class);
 
+    public VideoGenService() {
+        if(!UPLOAD_DIR.exists()) {
+            try {
+                FileUtils.forceMkdir(UPLOAD_DIR);
+            } catch (IOException e) {
+                throw new InternalServerErrorException("The server doesn't have sufficient right to create directory " + UPLOAD_DIR.getAbsolutePath());
+            }
 
-    @Autowired
-    private FileUploader uploader;
+        }
+    }
 
-    /**
-     * Crée l'arborescence de fichiers requise à une entité Videogen
-     * @param videoGen
-     * @return
-     */
-    public boolean createNewVideogenFileStructure(VideoGen videoGen) {
-        if(videoGen.getFile() == null) {
-            log.error("Aucun fichier videogen reçu");
-            return false;
+    public void persistChanges(VideoGen videoGen, MultipartFile videogenFile, MultipartFile[] assets) {
+        File directory = FileUtils.getFile(UPLOAD_DIR, FilenameUtils.normalize(videoGen.getId().toString()));
+
+        if(!directory.exists()) {
+            create(videoGen, directory, videogenFile, assets);
+        } else {
+            update(videoGen, directory, videogenFile, assets);
+        }
+    }
+
+    private void create(VideoGen videoGen, File directory, MultipartFile videogenFile, MultipartFile[] assets) {
+        log.info("Create File hierarchy for new Videogen entity");
+        try {
+            FileUtils.forceMkdir(directory);
+        } catch (IOException e) {
+            throw new InternalServerErrorException("The server doesn't have sufficient right to create directory " + directory.getAbsolutePath());
         }
 
-        String name = videoGen.getName();
+        try {
+            videogenFile.transferTo(FileUtils.getFile(directory, FilenameUtils.normalize(videoGen.getId().toString() + ".videogen")));
 
-        File directory = FileUtils.getFile(System.getProperty("user.dir"), FilenameUtils.normalize(videoGen.getId() + '-' + name));
-
-        if(!directory.mkdir()) {
-            log.error("Impossible de créer le dossier " + directory.getPath());
-            return false;
+            for(MultipartFile asset : assets) {
+                log.info("Transfer file: {} {} {}", asset.getOriginalFilename(), asset.getName(), asset.getSize());
+                asset.transferTo(FileUtils.getFile(directory, FilenameUtils.normalize(asset.getOriginalFilename())));
+            }
+        } catch (IOException e) {
+            throw new BadRequestAlertException("Impossible d'enregistré la grammaire", VideoGen.class.getName(), "ERROR");
         }
 
-        if(!uploader.upload(videoGen.getFile(), FileUtils.getFile(directory, FilenameUtils.normalize(name)))) {
-            return false;
-        }
+        return;
+    }
 
-        // TODO: Here Change structure of File
-        for(String media : videoGen.getMedias()) {
-            if(!uploader.upload(videoGen.getFile(), FileUtils.getFile(directory, FilenameUtils.normalize(name)))) {
-                return false;
+    public void delete(Long id) {
+        log.info("Delete File hierarchy for videogen id");
+        File directory = FileUtils.getFile(UPLOAD_DIR, id.toString());
+
+        if(directory.exists()) {
+            try {
+                FileUtils.forceDelete(directory);
+            } catch (IOException e) {
+                throw new InternalServerErrorException("Impossible de supprimer les fichiers lié à l'entité VideoGen en cours de suppression");
             }
         }
-        return true;
+    }
+    private void update(VideoGen videoGen, File directory, MultipartFile videogenFile, MultipartFile[] assets) {
+        log.info("Update File hierarchy for given Videogen entity");
+        try {
+            for(MultipartFile asset : assets)
+                asset.transferTo(FileUtils.getFile(directory, asset.getOriginalFilename()));
+        } catch (IOException e) {
+            throw new BadRequestAlertException("Impossible d'enregistré la grammaire", VideoGen.class.getName(), "ERROR");
+        }
+
+        return;
     }
 }

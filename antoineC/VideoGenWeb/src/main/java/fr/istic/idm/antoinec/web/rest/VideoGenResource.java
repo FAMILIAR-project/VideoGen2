@@ -4,31 +4,22 @@ import com.codahale.metrics.annotation.Timed;
 import fr.istic.idm.antoinec.domain.VideoGen;
 
 import fr.istic.idm.antoinec.repository.VideoGenRepository;
-import fr.istic.idm.antoinec.service.FileUploader;
+import fr.istic.idm.antoinec.service.VideoGenService;
 import fr.istic.idm.antoinec.web.rest.errors.BadRequestAlertException;
 import fr.istic.idm.antoinec.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
-import sun.misc.BASE64Decoder;
 
-import javax.imageio.ImageIO;
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -46,12 +37,11 @@ public class VideoGenResource {
     private static final String ENTITY_NAME = "videoGen";
 
     private final VideoGenRepository videoGenRepository;
+    private final VideoGenService videoGenService;
 
-    @Autowired
-    private FileUploader uploader;
-
-    public VideoGenResource(VideoGenRepository videoGenRepository) {
+    public VideoGenResource(VideoGenRepository videoGenRepository, VideoGenService videoGenService) {
         this.videoGenRepository = videoGenRepository;
+        this.videoGenService = videoGenService;
     }
 
     /**
@@ -66,17 +56,13 @@ public class VideoGenResource {
     @RequestMapping(method = RequestMethod.POST, value = "/video-gens", headers = {"content-type=multipart/mixed", "content-type=multipart/form-data"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Timed
     public ResponseEntity<VideoGen> createVideoGen(@RequestPart("videogen") final VideoGen videoGen, @RequestPart("file") final MultipartFile file, @RequestPart("assets") final MultipartFile[] assets) throws URISyntaxException {
-        log.debug("REST request to save VideoGen : {}", videoGen);
+        log.debug("REST request to create VideoGen : {}, Videogen size: {}, Assets: {}", videoGen, file.getSize(), assets.length);
         if (videoGen.getId() != null) {
             throw new BadRequestAlertException("A new videoGen cannot already have an ID", ENTITY_NAME, "idexists");
         }
         VideoGen result = videoGenRepository.save(videoGen);
+        videoGenService.persistChanges(result, file, assets);
 
-
-//        if(videoGen.getFile() != null) {
-//            File videogenFile = FileUtils.getFile(FilenameUtils.normalize(videoGen.getName()) + ".videogen");
-//
-//        }
         return ResponseEntity.created(new URI("/api/video-gens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -96,11 +82,14 @@ public class VideoGenResource {
     @RequestMapping(method = RequestMethod.PUT, value = "/video-gens", headers = {"content-type=multipart/mixed", "content-type=multipart/form-data"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Timed
     public ResponseEntity<VideoGen> updateVideoGen(@RequestPart("videogen") final VideoGen videoGen, @RequestPart("file") final MultipartFile file, @RequestPart("assets") final MultipartFile[] assets) throws URISyntaxException {
-        log.debug("REST request to update VideoGen : {}", videoGen);
+        log.debug("REST request to update VideoGen : {}, Videogen size: {}, Assets: {}", videoGen, file.getSize(), assets.length);
         if (videoGen.getId() == null) {
             return createVideoGen(videoGen, file, assets);
         }
         VideoGen result = videoGenRepository.save(videoGen);
+
+        videoGenService.persistChanges(result, file, assets);
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, videoGen.getId().toString()))
             .body(result);
@@ -142,8 +131,9 @@ public class VideoGenResource {
     @Timed
     public ResponseEntity<Void> deleteVideoGen(@PathVariable Long id) {
         log.debug("REST request to delete VideoGen : {}", id);
+
+        videoGenService.delete(id);
         videoGenRepository.delete(id);
-        // TODO: Delete also disk content
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

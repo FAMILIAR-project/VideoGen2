@@ -709,6 +709,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
+                                    <directoryy>VIDEOGEN_UPLOAD/</directoryy>
                                     <directory>target/www/</directory>
                                 </fileset>
                             </filesets>

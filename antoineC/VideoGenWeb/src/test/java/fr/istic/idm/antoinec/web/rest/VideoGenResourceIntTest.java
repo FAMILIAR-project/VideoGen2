@@ -4,6 +4,7 @@ import fr.istic.idm.antoinec.VideoGenWebApp;
 
 import fr.istic.idm.antoinec.domain.VideoGen;
 import fr.istic.idm.antoinec.repository.VideoGenRepository;
+import fr.istic.idm.antoinec.service.VideoGenService;
 import fr.istic.idm.antoinec.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,6 +46,9 @@ public class VideoGenResourceIntTest {
     private VideoGenRepository videoGenRepository;
 
     @Autowired
+    private VideoGenService videoGenService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -63,7 +67,7 @@ public class VideoGenResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VideoGenResource videoGenResource = new VideoGenResource(videoGenRepository);
+        final VideoGenResource videoGenResource = new VideoGenResource(videoGenRepository, videoGenService);
         this.restVideoGenMockMvc = MockMvcBuilders.standaloneSetup(videoGenResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

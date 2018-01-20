@@ -61,7 +61,7 @@ export class VideoGenService {
         videogenFormData.append("file", file[0]);
 
         for(let asset of assets) {
-            videogenFormData.append("assets[]", asset);
+            videogenFormData.append("assets", asset);
         }
 
         return this.http.put(this.resourceUrl, videogenFormData).map((res: Response) => {
