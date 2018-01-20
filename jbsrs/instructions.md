@@ -19,6 +19,8 @@ jbsrs
 │   Instructions.md
 |   videogen-transformations-1.0.0.jar
 │
+└───contest : the variant and specification file for the contest
+|
 └───videogenapp : the web-site of the project
 │  
 └───videogentransformations : the server-side of the project
@@ -140,16 +142,16 @@ mysql> exit
 ```
 npm install
 rm yarn.lock
-rm yarn-error.log
 yarn install
 yarn start
 ```
 When the loading has finished, cancel with ```Ctrl + C```
+If a http://localhost:9000/#/ page opens in the browser, close it.
 
 ## Backend: In videogenapp folder
 - Run ```mvn install:install-file -Dfile=../videogen-transformations-1.0.0.jar -DgroupId=fr.istic.m2il.idm -DartifactId=videogen -Dversion=1.0.0 -Dpackaging=jar```
 - Run ```mvn spring-boot:run```
-
+Open a http://localhost:8080/ in your browser. We will see the home page of the generator.
 
     
 ## Features
@@ -178,7 +180,7 @@ durees_variantes AbsoluteOutputFolder videogenspecificationfile
 The specification file for the contest is located : ```videogenapp/data/input/videogen/contest.videogen```
 
 ### Infos
-Le projet fonctionnait puis il y a eu un problème lors de l'essai avec Docker. Un problème avec le war et les chemins pour trouver les vidéos.
+
 
 ## Authors
 June Benvegnu-Sallou, Ramadan Soumaila
