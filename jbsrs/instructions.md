@@ -126,19 +126,8 @@ Instructions to deploy the project
 ```videogenapp/pom.xml```
 - Set database User/PassWord properties in <username></username>,<password></password> properties (liquibase, lines 524 & 525)
 
-### Running Backend
-
-#### In videogenapp folder
-- Run ```mvn package```
-
-#### In videogenapp/target folder
-- Run ```./videogenapp-0.0.1-SNAPSHOT.war``` (on linux)
-- Run ```java -jar videogenapp-0.0.1-SNAPSHOT.war``` (on windows)
-    
-### Running Frontend
-#### In videogenapp folder
-- Run ```yarn start```
-
+### Running Application : In videogenapp folder
+- Run ```mvn spring-boot:run```
     
 ## Features
 - Concatenate videos into a variant from a specification file
