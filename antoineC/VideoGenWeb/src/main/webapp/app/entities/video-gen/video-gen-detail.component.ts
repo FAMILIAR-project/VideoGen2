@@ -36,10 +36,12 @@ export class VideoGenDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    downloadVariante() {
-        this.videoGenService.downloadVariante(this.videoGen).subscribe((success) => {
+    downloadVarianteInfos() {
+        this.videoGenService.downloadVarianteInfos(this.videoGen);
+    }
 
-        });
+    downloadVariante() {
+        this.videoGenService.downloadVariante(this.videoGen);
     }
 
     previousState() {

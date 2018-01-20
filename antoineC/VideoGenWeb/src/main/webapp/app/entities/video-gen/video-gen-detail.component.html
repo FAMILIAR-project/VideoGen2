@@ -21,7 +21,10 @@
     </button>
 
     <button type="button" class="btn" (click)="downloadVariante()">
-        <span class="fa fa-download"></span>&nbsp;<span> Généré une variante</span>
+        <span class="fa fa-download"></span>&nbsp;<span> Générer une variante</span>
+    </button>
+    <button type="button" class="btn" (click)="downloadVarianteInfos()">
+        <span class="fa fa-download"></span>&nbsp;<span> Générer la liste des variantes</span>
     </button>
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'video-gen/'+ videoGen.id + '/edit'} }]"

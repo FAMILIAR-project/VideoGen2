@@ -102,7 +102,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		StringBuilder commandBuilder = new StringBuilder("ffmpeg -i " + image.getPath() + " -vf ");
 		
-		String drawTextTemplate = "\"drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x='(w-text_w)/2':y='${y}':text='${text}'" + '"';
+		String drawTextTemplate = "drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x=(w-text_w)/2:y=${y}:text=${text}";
 		StringBuilder filtersBuilder = new StringBuilder();
 		
 		
@@ -112,7 +112,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "h-text_h",
-					"${text}", description.getBottom().replace(" ", "\\ ")
+					"${text}", description.getBottom().replace(" ", "")
 			));
 		}
 		
@@ -122,7 +122,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "0",
-					"${text}", description.getTop().replace(" ", "\\ ")
+					"${text}", description.getTop().replace(" ", "")
 			));
 		}
 		
@@ -136,8 +136,8 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		File videoOutput = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
 		videoParts.add(videoOutput);
 		
-//		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"trunc(iw/2)*2:trunc(ih/2)*2\" -t 3 -y " + videoOutput.getAbsolutePath();
-		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"" + varianteInformations.getMinWidth() + ":-2\" -t 3 -y " + videoOutput.getAbsolutePath();
+//		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=trunc(iw/2)*2:trunc(ih/2)*2 -t 3 -y " + videoOutput.getAbsolutePath();
+		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=" + varianteInformations.getMinWidth() + ":-2  -t 3 -acodec aac -strict -2 -threads 12 -y " + videoOutput.getAbsolutePath();
 		
 		
 		if(!new FFMPEGCommand(command).execute()) {
@@ -156,7 +156,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		File output = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
 		this.videoParts.add(output);
-		String command = "ffmpeg -i " + video.getAbsolutePath() + " -vf scale=\"" + varianteInformations.getMinWidth() + ":-2\" " + output.getAbsolutePath() + " -y -hide_banner";
+		String command = "ffmpeg -i " + video.getAbsolutePath() + " -vf scale=" + varianteInformations.getMinWidth() + ":-2 -acodec aac -strict -2 -threads 12 " + output.getAbsolutePath() + " -y -hide_banner";
 		
 		
 		if(!new FFMPEGCommand(command).execute()) {

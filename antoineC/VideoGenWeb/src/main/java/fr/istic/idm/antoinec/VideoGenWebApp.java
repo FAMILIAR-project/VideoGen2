@@ -2,24 +2,19 @@ package fr.istic.idm.antoinec;
 
 import fr.istic.idm.antoinec.config.ApplicationProperties;
 import fr.istic.idm.antoinec.config.DefaultProfileUtil;
-
 import io.github.jhipster.config.JHipsterConstants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.*;
+import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.MultipartConfigElement;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -37,7 +32,7 @@ public class VideoGenWebApp {
     public VideoGenWebApp(Environment env) {
         this.env = env;
     }
-//    private HibernateAnnotationIntrospector introspector;
+
     /**
      * Initializes VideoGenWeb.
      * <p>

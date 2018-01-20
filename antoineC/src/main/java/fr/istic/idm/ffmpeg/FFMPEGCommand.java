@@ -20,7 +20,7 @@ public class FFMPEGCommand {
 	}
 	
 	public boolean execute() {
-		log.debug("Executing command {}", this.command);
+		log.info("Executing command {}", this.command);
 		Process process;
 		try {
 			process = Runtime.getRuntime().exec(this.command);

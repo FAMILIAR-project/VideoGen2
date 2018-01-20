@@ -124,8 +124,9 @@ public class VarianteInformationsVisitor extends MediaSequenceVisitor {
 	
 	private void getWidth(File file, MediaDescription description) {
 		FFMPEGCommand command = new FFMPEGCommand("ffprobe -v error -show_entries stream=width -of default=noprint_wrappers=1:nokey=1 " + file.getAbsolutePath());
+		String w = command.getResult();
 		
-		int width = Integer.parseInt(command.getResult());
+		int width = Integer.parseInt(w);
 		
 		this.widths.put(description, width);
 		

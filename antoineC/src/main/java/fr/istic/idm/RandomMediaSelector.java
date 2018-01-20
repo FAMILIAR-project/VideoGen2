@@ -13,6 +13,7 @@ import org.xtext.example.mydsl.videoGen.MediaDescription;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 
+
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MediaSequence;

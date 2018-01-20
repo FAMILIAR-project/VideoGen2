@@ -128,7 +128,9 @@ public class VideoGenCompiler {
 			try {
 				compiler.compile();
 			} catch(RuntimeException e) {
-				log.error(e.getMessage());
+				log.error("RuntimeException: {}", e.getMessage());
+				
+				e.printStackTrace();
 			}
 		} else if (args[0].equalsIgnoreCase("INFOS")) {
 			compiler.extractInformations();

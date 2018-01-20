@@ -88,11 +88,13 @@ export class VideoGenService {
     }
 
 
-    downloadVariante(videoGen: VideoGen): Observable<String> {
-        return this.http.get(`${this.resourceUrl}/${videoGen.id}/download/variante`).map((res) => {
-            console.info("Res " + res );
-            return "Result";
-        });
+    downloadVarianteInfos(videoGen: VideoGen): void {
+        window.location.href = `${this.resourceUrl}/${videoGen.id}/download/infos`;
+        // return this.http.get(`${this.resourceUrl}/${videoGen.id}/download/infos`);
+    }
+
+    downloadVariante(videoGen: VideoGen): void {
+        window.location.href = `${this.resourceUrl}/${videoGen.id}/download/variante`;
     }
 
 

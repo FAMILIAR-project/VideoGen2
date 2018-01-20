@@ -37,7 +37,7 @@ public class StreamHandler implements Runnable {
 			
 			while ( (line = reader.readLine()) != null) {
 				content += line;
-				log.debug("[FFMPEG][{}] {}", type, line);
+				log.info("[FFMPEG][{}] {}", type, line);
 			}
 			
 		} catch (IOException e) {

@@ -2,17 +2,13 @@ package fr.istic.idm.antoinec.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import fr.istic.idm.antoinec.domain.VideoGen;
-
 import fr.istic.idm.antoinec.repository.VideoGenRepository;
 import fr.istic.idm.antoinec.service.videogenServices.VideoGenService;
 import fr.istic.idm.antoinec.service.videogenServices.VideogenCompilerService;
 import fr.istic.idm.antoinec.web.rest.errors.BadRequestAlertException;
-import fr.istic.idm.antoinec.web.rest.errors.InternalServerErrorException;
 import fr.istic.idm.antoinec.web.rest.util.HeaderUtil;
-import fr.istic.idm.antoinec.web.rest.util.StreamHandler;
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -158,29 +153,60 @@ public class VideoGenResource {
 
 
     /**
-     * GET  /video-gens/:id/variante : download a video variante
+     * GET  /video-gens/:id/download/infos : download a csv file
+     *
+     * @param id the id of the videoGen to retrieve
+     * @return void
+     */
+    @GetMapping("/video-gens/{id}/download/infos")
+    @Timed
+    public void downloadVarianteInfos(@PathVariable Long id, HttpServletResponse response) throws InvalidVideoGenGrammarException, IOException {
+
+        File infos = videogenCompilerService.getVarianteInfos(videoGenRepository.findOne(id));
+//
+//        InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(variante));
+
+        FileInputStream stream = new FileInputStream(infos);
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment; filename=" + infos.getName());
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+//
+//        return ResponseEntity.ok()
+//            .contentLength(variante.length())
+//            .contentType(MediaType.parseMediaType("application/octet-stream"))
+//            .body(inputStreamResource);
+
+    }
+
+
+    /**
+     * GET  /video-gens/:id/fownload/variante : download a video variante
      *
      * @param id the id of the videoGen to retrieve
      * @return void
      */
     @GetMapping("/video-gens/{id}/download/variante")
     @Timed
-    public void downloadVariante(@PathVariable Long id, HttpServletResponse response) {
+    public void downloadVariante(@PathVariable Long id, HttpServletResponse response) throws InvalidVideoGenGrammarException, IOException {
         log.debug("REST request to download VideoGen : {}", id);
 
-        try {
-            File variante = videogenCompilerService.getVariante(videoGenRepository.findOne(id));
+        File variante = videogenCompilerService.getVariante(videoGenRepository.findOne(id));
+//
+//        InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(variante));
 
-            // get your file as InputStream
-            InputStream is = new FileInputStream(variante);
-            // copy it to response's OutputStream
-            IOUtils.copy(is, response.getOutputStream());
-            response.flushBuffer();
-        } catch (IOException ex) {
-            throw new RuntimeException("IOError writing file to output stream");
-        } catch (InvalidVideoGenGrammarException e) {
-            throw new InternalServerErrorException("Error generating a video variante");
-        }
+        FileInputStream stream = new FileInputStream(variante);
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment; filename=output.mp4");
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+//
+//        return ResponseEntity.ok()
+//            .contentLength(variante.length())
+//            .contentType(MediaType.parseMediaType("application/octet-stream"))
+//            .body(inputStreamResource);
 
     }
 
