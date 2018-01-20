@@ -14,11 +14,19 @@ public class VisitorFactory {
 		return new VarianteInformationsVisitor();
 	}
 	
+	public static VariantesInformationsVisitor createVariantesInformationsVisitor() {
+		return new VariantesInformationsVisitor();
+	}
+	
 	/**
 	 * Create and return an instance of FFMPEGMediaSequenceVisitor
 	 * @return FFMPEGMediaSequenceVisitor
 	 */
 	public static FFMPEGMediaSequenceVisitor createFFMPEGMediaSequenceVisitor(VarianteInformationsVisitor visitor) {
 		return new FFMPEGMediaSequenceVisitor(visitor);
+	}
+	
+	public static MediaFilenameMediaSequenceVisitor createMediaFilenameMediaSequenceVisitor() {
+		return new MediaFilenameMediaSequenceVisitor();
 	}
 }

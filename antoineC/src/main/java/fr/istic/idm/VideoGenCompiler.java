@@ -1,6 +1,7 @@
 package fr.istic.idm;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -13,6 +14,9 @@ import fr.istic.idm.exception.InvalidVarianteGeneration;
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.Variante;
 import fr.istic.idm.model.Variantes;
+import fr.istic.idm.model.mediasequence.visitors.VariantesInformationsVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VideoGenCompilerVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 
 public class VideoGenCompiler {
 	private static final String TEMP_DIR_NAME = "VideoGenTemp";
@@ -28,6 +32,16 @@ public class VideoGenCompiler {
 	private VideoGeneratorModel model;
 	private Variantes variantes;
 	
+	
+	
+	public VideoGeneratorModel getModel() {
+		return model;
+	}
+
+	public Variantes getVariantes() {
+		return variantes;
+	}
+
 	public VideoGenCompiler(VideoGeneratorModel model) {
 		if(!initializePaths(System.getProperty("user.dir"))) {
 			throw new RuntimeException();
@@ -42,7 +56,7 @@ public class VideoGenCompiler {
 	 * @param videogenfile
 	 */
 	public VideoGenCompiler(String basePath, String videogenfile) {
-		File videoGenFile = new File(videogenfile);
+		File videoGenFile = FileUtils.getFile(basePath, videogenfile);
 		
 		if(!videoGenFile.exists() || !videoGenFile.isFile()) {
 			log.error("Le fichier {} n'existe pas", videogenfile);
@@ -90,12 +104,12 @@ public class VideoGenCompiler {
 	
 	public static void main(String[] args) {
 		
-		if(args.length != 1) {
-			log.error("Un argument doit être fournit à ce programme correspondant à la grammaire *.videogen qui sera compilé");	
+		if(args.length != 2) {
+			log.error("Usage 'java -jar VideogenCompiler.jar <COMPILE|INFOS>' <videogen filepath>");
 			return;
 		}
 		
-		File videoGenFile = new File(args[0]);
+		File videoGenFile = new File(args[1]);
 		
 		if(!videoGenFile.exists() || !videoGenFile.isFile()) {
 			log.error("Le fichier {} n'existe pas", args[0]);
@@ -110,54 +124,88 @@ public class VideoGenCompiler {
 		} catch(RuntimeException e) {
 			return;
 		}
-		
 		log.info("VideoGen SourceCode loaded successfully");
 		
-		try {
-			compiler.compile();
-		} catch(RuntimeException e) {
-			log.error(e.getMessage());
+		if(args[0].equalsIgnoreCase("COMPILE")) {
+			try {
+				compiler.compile();
+			} catch(RuntimeException e) {
+				log.error(e.getMessage());
+			}
+		} else if (args[0].equalsIgnoreCase("INFOS")) {
+			compiler.extractInformations();
+			
 		}
+	}
+	
+	public void generateVariantes() {
+		variantes = new Variantes();
+		variantes.generate(this.model.getMedias());
+	}
+	
+	public Variante generateVariante() throws InvalidVideoGenGrammarException {
+		return Variante.generate(this.model.getMedias());
+	}
+	
+	private void extractInformations() {
+		try {
+			if(variantes == null)
+				generateVariantes();
+			
+			VariantesInformationsVisitor visitor = VisitorFactory.createVariantesInformationsVisitor();
+			
+			this.variantes.visitAll(visitor);
+			
+			log.info("Informations file generated at {}", visitor.build().getAbsolutePath());
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled()) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 	}
 	
 	private void compile() {
 		long startTime, endTime, duration;
-		
-		
-		startTime = System.currentTimeMillis();
-		variantes = new Variantes();
-		variantes.generate(this.model.getMedias());
-		endTime = System.currentTimeMillis();
-		
-		duration = (endTime - startTime);
-		log.info("Generate {} variantes in {} ms", variantes.size(), duration);
-		
-		
-			try {
-				Variante variante = Variante.generate(this.model.getMedias());
-				log.info("Generated Variante: {}", variante);
-				
+	    
+	    
+		try {
+			startTime = System.currentTimeMillis(); 
+			if(variantes == null)
+				generateVariantes();
+			
+			endTime = System.currentTimeMillis(); 
+		     
+		    duration = (endTime - startTime); 
+		    log.info("Generate {} all differents variantes metadatas in {} ms", variantes.size(), duration); 
+		    
+			Variante variante = generateVariante();
+			log.info("Generated Variante: {}", variante);
+			
 				if(!variantes.contains(variante))
 					throw new InvalidVarianteGeneration("Try to generate a variant that doesn't exist");
-				
-				File video = variante.compile();
-				
-				File concatenedFile = FileUtils.getFile(OUTPUT_DIR, System.identityHashCode(variante) + ".mp4");
-				if(concatenedFile.exists()) {
-					concatenedFile.delete();
-				}
-				
-				FileUtils.moveFile(video, concatenedFile);
-				
-				log.info("Result available here {}", concatenedFile.getAbsolutePath());
-			} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration | IOException e) {
-				log.error(e.getMessage());
-				
-				if(log.isDebugEnabled()) {
-					e.printStackTrace();
-				}
-//				throw new RuntimeException("The compiler cannot compile the grammar: " + e.getMessage());
+			
+			File video = variante.compile();
+			
+			File concatenedFile = FileUtils.getFile(OUTPUT_DIR, System.identityHashCode(variante) + ".mp4");
+			if(concatenedFile.exists()) {
+				concatenedFile.delete();
 			}
+			
+			FileUtils.moveFile(video, concatenedFile);
+			
+			log.info("Result available here {}", concatenedFile.getAbsolutePath());
+		} catch (InvalidVideoGenGrammarException | InvalidVarianteGeneration | IOException e) {
+			log.error(e.getMessage());
+			
+			if(log.isDebugEnabled()) {
+				e.printStackTrace();
+			}
+//				throw new RuntimeException("The compiler cannot compile the grammar: " + e.getMessage());
+		}
 			
 		
 	}
