@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import fr.istic.idm.VideoGenCompiler;
 import fr.istic.idm.model.Variante;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
@@ -56,7 +57,7 @@ public class VariantesInformationsVisitor extends VarianteVisitor {
 
 	@Override
 	public File build() throws IOException {
-		File variantes = FileUtils.getFile("variantes.csv");
+		File variantes = FileUtils.getFile(VideoGenCompiler.WORK_DIR, "variantes.csv");
 		
 		variantes.createNewFile();
 		

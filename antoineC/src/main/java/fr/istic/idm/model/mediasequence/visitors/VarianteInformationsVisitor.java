@@ -11,6 +11,7 @@ import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 
+import fr.istic.idm.VideoGenCompiler;
 import fr.istic.idm.ffmpeg.FFMPEGCommand;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
@@ -70,7 +71,7 @@ public class VarianteInformationsVisitor extends MediaSequenceVisitor {
 	private void workOnMediaDescription(Media media, MediaDescription description) throws FileNotFoundException {
 		
 		File file = null;
-		if(!(file = FileUtils.getFile(description.getLocation())).exists()) {
+		if(!(file = FileUtils.getFile(VideoGenCompiler.WORK_DIR, description.getLocation())).exists()) {
 			throw new FileNotFoundException("The file '" + file.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
