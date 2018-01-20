@@ -34,3 +34,5 @@ antoineC/VideoGenTemp/
 *.mkv
 
 antoineC/VideoGenWeb/VIDEOGEN_UPLOAD/
+
+antoineC/VideoGenWeb/\.mvn/wrapper/maven-wrapper\.jar
