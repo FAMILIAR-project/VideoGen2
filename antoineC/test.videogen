@@ -1,0 +1,21 @@
+@author "Antoine Charpentier"
+@version "0.5.0"
+@creation "14/11/17"
+
+
+VideoGen {
+	mandatory image "chat1.jpg" {
+		toptext ""
+		bottomtext "Bonjour"	
+	}
+	
+	alternatives videoseq {
+		videoseq "welcome.mp4"
+		videoseq "who.mp4"
+	}
+	
+	optional image "chat2.jpg" {
+		toptext ""
+		bottomtext "Au revoir"	
+	}
+}

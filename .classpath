@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="antoineC/src"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ide/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ide/xtend-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.tests/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.tests/xtend-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ui.tests/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ui/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ui/xtend-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen/xtend-gen"/>
+	<classpathentry kind="src" path="VideoGenTools/src"/>
+	<classpathentry kind="src" path="VideoGenTools/xtend-gen"/>
+	<classpathentry kind="lib" path="antoineC/lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="antoineC/lib/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="org.xtext.example.videogen/.antlr-generator-3.2.0-patch.jar"/>
+	<classpathentry kind="output" path="VideoGenTools/bin"/>
+</classpath>
