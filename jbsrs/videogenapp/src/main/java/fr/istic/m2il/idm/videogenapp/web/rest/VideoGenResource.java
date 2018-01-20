@@ -153,7 +153,7 @@ public class VideoGenResource {
     public ResponseEntity<Resource> getPlaylistGifs(@PathVariable String playlist) throws IOException {
 
         VideoGenConfigs.setOutPutFolder(new File("target/www/data/output").getAbsolutePath());
-        VideoGenConfigs.setServerIP("http://localhost:8080/");
+        //VideoGenConfigs.setServerIP("http://localhost:8080/");
         VideoGenConfigs.setGifResolutions(200, 200);
         VideoGenConfigs.initSubOutPutFolders();
         String gifs = FFMPEGHelper.videoToGif("target/www/data/output/playlists/" + playlist + ".mp4", 200, 200);
@@ -181,7 +181,7 @@ public class VideoGenResource {
     public String generateConfigurePlaylist(@Valid @RequestBody String[] mediaDescriptionWrappers){
 
         VideoGenConfigs.setOutPutFolder(new File("target/www/data/output").getAbsolutePath());
-        VideoGenConfigs.setServerIP("http://localhost:8080/");
+        //VideoGenConfigs.setServerIP("http://localhost:8080/");
         VideoGenConfigs.setGifResolutions(190, 60);
         VideoGenConfigs.initSubOutPutFolders();
         List<String> medias = new ArrayList<>();
@@ -201,7 +201,7 @@ public class VideoGenResource {
     public String generateRandomPlaylist() throws URISyntaxException {
 
         VideoGenConfigs.setOutPutFolder(new File("target/www/data/output").getAbsolutePath());
-        VideoGenConfigs.setServerIP("http://localhost:8080/");
+        //VideoGenConfigs.setServerIP("http://localhost:8080/");
         VideoGenConfigs.setGifResolutions(190, 60);
         VideoGenConfigs.initSubOutPutFolders();
 
