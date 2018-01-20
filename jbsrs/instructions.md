@@ -130,7 +130,7 @@ Instructions to deploy the project
 ## FrontEnd : In videogenapp folder
 - Run ```npm install```
 - Run ```yarn start```
-- Cancel with 'Ctrl + C'
+- Cancel with ```Ctrl + C```
 
 ## Backend: In videogenapp folder
 - Run mvn install:install-file -Dfile=../videogen-transformations-1.0.0.jar -DgroupId=fr.istic.m2il.idm -DartifactId=videogen -Dversion=1.0.0 -Dpackaging=jar
