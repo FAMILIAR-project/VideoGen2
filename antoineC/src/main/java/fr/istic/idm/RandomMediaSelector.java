@@ -13,6 +13,7 @@ import org.xtext.example.mydsl.videoGen.MediaDescription;
 import org.xtext.example.mydsl.videoGen.OptionalMedia;
 import org.xtext.example.mydsl.videoGen.VideoDescription;
 
+
 import fr.istic.idm.exception.InvalidVideoGenGrammarException;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MediaSequence;
@@ -20,6 +21,7 @@ import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
 
 
 public class RandomMediaSelector {
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(RandomMediaSelector.class);
 	private final static Random rand = new Random();
 	

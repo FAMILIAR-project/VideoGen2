@@ -1,0 +1,36 @@
+
+<div *ngIf="videoGen">
+    <h2><span>Video Gen</span> {{videoGen.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{videoGen.name}}</span>
+        </dd>
+        <dt><span>Owner</span></dt>
+        <dd>
+            {{videoGen.owner?.id}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" class="btn" (click)="downloadVariante()">
+        <span class="fa fa-download"></span>&nbsp;<span> Générer une variante</span>
+    </button>
+    <button type="button" class="btn" (click)="downloadVarianteInfos()">
+        <span class="fa fa-download"></span>&nbsp;<span> Générer la liste des variantes</span>
+    </button>
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'video-gen/'+ videoGen.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

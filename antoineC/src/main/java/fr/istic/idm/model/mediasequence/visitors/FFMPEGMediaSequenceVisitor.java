@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
@@ -95,33 +96,33 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 	private void workOnImageDescription(Media media, ImageDescription description) throws FileNotFoundException {
 		log.info("Image with this details: {}, {}, {}, {}", description.getImageid(), description.getLocation(), description.getTop(), description.getBottom());
 		File image = null;
-		if(!(image = FileUtils.getFile(description.getLocation())).exists()) {
+		if(!(image = FileUtils.getFile(VideoGenCompiler.WORK_DIR, description.getLocation())).exists()) {
 			throw new FileNotFoundException("The file '" + image.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
 		StringBuilder commandBuilder = new StringBuilder("ffmpeg -i " + image.getPath() + " -vf ");
 		
-		String drawTextTemplate = "drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x=\"(w-text_w)/2\":y=\"${y}\":text=\"${text}\"";
+		String drawTextTemplate = "drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x=(w-text_w)/2:y=${y}:text=${text}";
 		StringBuilder filtersBuilder = new StringBuilder();
 		
 		
 		if(description.getBottom() != null && description.getBottom() != "") {
 			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
-					"${fontfile}", "src/main/resources/arial.ttf",
+					"${fontfile}", FilenameUtils.normalize(FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath()),
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "h-text_h",
-					"${text}", description.getBottom()
+					"${text}", description.getBottom().replace(" ", "")
 			));
 		}
 		
 		if(description.getTop() != null && description.getTop() != "") {
 			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
-					"${fontfile}", "src/main/resources/arial.ttf",
+					"${fontfile}", FilenameUtils.normalize(FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath()),
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "0",
-					"${text}", description.getTop()
+					"${text}", description.getTop().replace(" ", "")
 			));
 		}
 		
@@ -135,8 +136,8 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		File videoOutput = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
 		videoParts.add(videoOutput);
 		
-//		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"trunc(iw/2)*2:trunc(ih/2)*2\" -t 3 -y " + videoOutput.getAbsolutePath();
-		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=\"" + varianteInformations.getMinWidth() + ":-2\" -t 3 -y " + videoOutput.getAbsolutePath();
+//		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=trunc(iw/2)*2:trunc(ih/2)*2 -t 3 -y " + videoOutput.getAbsolutePath();
+		String command = "ffmpeg -loop 1 -i " + output.getAbsolutePath() + " -f lavfi -i anullsrc=r=48000:cl=stereo -vf scale=" + varianteInformations.getMinWidth() + ":-2  -t 3 -acodec aac -strict -2 -threads 12 -y " + videoOutput.getAbsolutePath();
 		
 		
 		if(!new FFMPEGCommand(command).execute()) {
@@ -148,27 +149,20 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		log.info("Video with this details: {}, {}, {}, {}, {}", description.getVideoid(), description.getLocation(), description.getProbability(), description.getDuration(), description.getDescription());
 		
 		File video = null;
-		if(!(video = FileUtils.getFile(description.getLocation())).exists()) {
+		if(!(video = FileUtils.getFile(VideoGenCompiler.WORK_DIR, description.getLocation())).exists()) {
 			throw new FileNotFoundException("The file '" + video.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
 		
 		File output = new File(VideoGenCompiler.TEMP_DIR_PATH + UUID.randomUUID() + ".mp4");
 		this.videoParts.add(output);
-		String command = "ffmpeg -i " + video.getAbsolutePath() + " -vf scale=\"" + varianteInformations.getMinWidth() + ":-2\" " + output.getAbsolutePath() + " -y -hide_banner";
+		String command = "ffmpeg -i " + video.getAbsolutePath() + " -vf scale=" + varianteInformations.getMinWidth() + ":-2 -acodec aac -strict -2 -threads 12 " + output.getAbsolutePath() + " -y -hide_banner";
 		
 		
 		if(!new FFMPEGCommand(command).execute()) {
 			throw new RuntimeException("Cannot transcode '" + video.getAbsolutePath() + "' into mp4");
 		}
-		
-//		description.getVideoid() nullable, 
-//		description.getLocation() always defined, 
-//		description.getProbability() zero, 
-//		description.getDuration() 0, 
-//		description.getDescription() nullable
-		// ffmpeg -i who.mp4 -i welcome.mp4 -filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" -map "[outv]" -map "[outa]" output.mkv
-		// ffmpeg -i who.mp4 -i welcome.mp4 -filter_complex "scale=640x640;[0]setdar=16/9[a];[1]setdar=16/9[b]; [a][b]concat=n=2:v=1:a=1" output.mp4
+
 	}
 
 	/**

@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xtext.example.mydsl.videoGen.ImageDescription;
 import org.xtext.example.mydsl.videoGen.Media;
 import org.xtext.example.mydsl.videoGen.MediaDescription;
 
+import fr.istic.idm.VideoGenCompiler;
 import fr.istic.idm.ffmpeg.FFMPEGCommand;
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
@@ -31,10 +31,14 @@ public class VarianteInformationsVisitor extends MediaSequenceVisitor {
 	private Map<MediaDescription, Integer> widths;
 	private Map<MediaDescription, Integer> heights;
 	private int minWidth, maxWidth, minHeight, maxHeight;
+	private long aggregatedSize;
+	private Double aggregatedDuration;
 	
 	public VarianteInformationsVisitor() {
 		this.widths = new HashMap<>();
 		this.heights = new HashMap<>();
+		this.aggregatedDuration = 0.00;
+		this.aggregatedSize = 0;
 		
 		//On met des valeurs absurdement trop grandes pour calculer plus facilement la largeur et hauteur minimum
 		this.minHeight = 9999999;
@@ -67,13 +71,20 @@ public class VarianteInformationsVisitor extends MediaSequenceVisitor {
 	private void workOnMediaDescription(Media media, MediaDescription description) throws FileNotFoundException {
 		
 		File file = null;
-		if(!(file = FileUtils.getFile(description.getLocation())).exists()) {
+		if(!(file = FileUtils.getFile(VideoGenCompiler.WORK_DIR, description.getLocation())).exists()) {
 			throw new FileNotFoundException("The file '" + file.getAbsolutePath() + "' is nowhere to be found");
 		}
 		
 		//Ask FFMPEG for informations about files
 		getWidth(file, description);
 		getHeight(file, description);
+		getSize(file, description);
+		
+		if(description instanceof ImageDescription) {
+			this.aggregatedDuration += 3;
+		} else {
+			getDuration(file, description);
+		}
 	}
 	
 	private void getHeight(File file, MediaDescription description) {
@@ -92,10 +103,30 @@ public class VarianteInformationsVisitor extends MediaSequenceVisitor {
 		log.info("Height of {} : {}", file.getName(), height);
 	}
 	
+	private void getDuration(File file, MediaDescription description) {
+		FFMPEGCommand command = new FFMPEGCommand("ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + file.getAbsolutePath());
+		
+		double duration = Double.parseDouble(command.getResult());
+		this.aggregatedDuration += duration;
+		
+		log.info("Duration of {} : {}", file.getName(), duration);
+	}
+	
+	private void getSize(File file, MediaDescription description) {
+		FFMPEGCommand command = new FFMPEGCommand("ffprobe -v error -show_entries format=size -of default=noprint_wrappers=1:nokey=1 " + file.getAbsolutePath());
+		
+		int size = Integer.parseInt(command.getResult());
+		this.aggregatedSize += size;
+		
+		log.info("Size of {} : {}", file.getName(), size);
+	}
+	
+	
 	private void getWidth(File file, MediaDescription description) {
 		FFMPEGCommand command = new FFMPEGCommand("ffprobe -v error -show_entries stream=width -of default=noprint_wrappers=1:nokey=1 " + file.getAbsolutePath());
+		String w = command.getResult();
 		
-		int width = Integer.parseInt(command.getResult());
+		int width = Integer.parseInt(w);
 		
 		this.widths.put(description, width);
 		
@@ -165,6 +196,17 @@ public class VarianteInformationsVisitor extends MediaSequenceVisitor {
 
 	public void setMaxHeight(int maxHeight) {
 		this.maxHeight = maxHeight;
+	}
+
+
+	public long getSize() {
+		// TODO: compute size
+		return this.aggregatedSize;
+	}
+	
+	public Double getDuration() {
+		// TODO: compute duration
+		return this.aggregatedDuration;
 	}
 
 	

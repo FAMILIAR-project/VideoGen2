@@ -1,7 +1,9 @@
 package fr.istic.idm.model;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +16,11 @@ import org.xtext.example.mydsl.videoGen.OptionalMedia;
 
 import fr.istic.idm.model.mediasequence.AlternativeMediaSequence;
 import fr.istic.idm.model.mediasequence.MandatoryMediaSequence;
+import fr.istic.idm.model.mediasequence.MediaSequence;
 import fr.istic.idm.model.mediasequence.OptionalMediaSequence;
+import fr.istic.idm.model.mediasequence.visitors.MediaFilenameMediaSequenceVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VarianteVisitor;
+import fr.istic.idm.model.mediasequence.visitors.VisitorFactory;
 
 /**
  * @author Antoine Charpentier
@@ -115,6 +121,31 @@ public class Variantes {
 
 	public boolean contains(Variante variante) {
 		return this.variantes.contains(variante);
+	}
+	
+	public Iterator<Variante> iterator() {
+		return this.variantes.iterator();
+	}
+	
+	public void visitAll(VarianteVisitor visitor) throws FileNotFoundException {
+		for(Iterator<Variante> iterator = this.iterator(); iterator.hasNext();) {
+		    Variante variante = iterator.next();
+		
+		    visitor.startVisiting(variante);
+		    for(MediaSequence sequence : variante.get()) {
+		        sequence.accept(visitor);
+		    }
+		    
+		    visitor.endVisiting(variante);
+		}
+	}
+	
+	public List<String> getAllMediaFilenames() throws FileNotFoundException {
+		MediaFilenameMediaSequenceVisitor visitor = VisitorFactory.createMediaFilenameMediaSequenceVisitor();
+	    
+		visitAll(visitor);
+		
+	    return visitor.getFilenames();
 	}
 	
 	public int size() {

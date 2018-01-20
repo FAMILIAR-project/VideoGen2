@@ -12,5 +12,10 @@ VideoGen {
 	
 	mandatory videoseq "welcome.mp4"
 	
-	mandatory videoseq "who.mp4"
+	alternatives videoseq {
+		videoseq "welcome.mp4"
+		videoseq "who.mp4"
+	}
+	
+	optional videoseq "who.mp4"
 }
