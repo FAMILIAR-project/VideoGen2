@@ -101,7 +101,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		StringBuilder commandBuilder = new StringBuilder("ffmpeg -i " + image.getPath() + " -vf ");
 		
-		String drawTextTemplate = "drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x=\"(w-text_w)/2\":y=\"${y}\":text=\"${text}\"";
+		String drawTextTemplate = "\"drawtext=fontfile=${fontfile}:fontcolor=${fontcolor}:fontsize=${fontsize}:x='(w-text_w)/2':y='${y}':text='${text}'" + '"';
 		StringBuilder filtersBuilder = new StringBuilder();
 		
 		
