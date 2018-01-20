@@ -4,18 +4,18 @@
 
 
 VideoGen {
-	mandatory image "avatar.jpg" {
-		toptext "Top Text"
-		bottomtext "Test Video"	
+	mandatory image "chat1.jpg" {
+		toptext ""
+		bottomtext "Bonjour"	
 	}
-	
-	
-	mandatory videoseq "welcome.mp4"
 	
 	alternatives videoseq {
 		videoseq "welcome.mp4"
 		videoseq "who.mp4"
 	}
 	
-	optional videoseq "who.mp4"
+	optional image "chat2.jpg" {
+		toptext ""
+		bottomtext "Au revoir"	
+	}
 }
