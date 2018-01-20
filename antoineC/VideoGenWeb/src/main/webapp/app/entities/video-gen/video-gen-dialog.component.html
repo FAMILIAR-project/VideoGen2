@@ -1,0 +1,48 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myVideoGenLabel">Create or edit a Video Gen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert></jhi-alert>
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!videoGen.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="videoGen.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="videoGen.name" required/>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_file">Fichier source Videogen</label>
+            <input name="file" id="field_file" type="file" placeholder=".videogen" accept=".videogen" (change)="onFileChange($event)" #fileField>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_assets">Fichiers Média</label>
+            <input name="assets" id="field_assets" type="file" size="20000000" placeholder="Image et Vidéos" [(ngModel)]="videoGen.medias" (change)="onFileChange($event)" multiple #assetsField>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_owner">Owner</label>
+            <select class="form-control" id="field_owner" name="owner" [(ngModel)]="videoGen.owner" disabled>
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === videoGen.owner?.id ? videoGen.owner : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving || busy != 0" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

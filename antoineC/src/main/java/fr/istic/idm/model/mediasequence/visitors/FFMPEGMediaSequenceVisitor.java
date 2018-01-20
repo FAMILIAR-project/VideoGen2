@@ -161,14 +161,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		if(!new FFMPEGCommand(command).execute()) {
 			throw new RuntimeException("Cannot transcode '" + video.getAbsolutePath() + "' into mp4");
 		}
-		
-//		description.getVideoid() nullable, 
-//		description.getLocation() always defined, 
-//		description.getProbability() zero, 
-//		description.getDuration() 0, 
-//		description.getDescription() nullable
-		// ffmpeg -i who.mp4 -i welcome.mp4 -filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" -map "[outv]" -map "[outa]" output.mkv
-		// ffmpeg -i who.mp4 -i welcome.mp4 -filter_complex "scale=640x640;[0]setdar=16/9[a];[1]setdar=16/9[b]; [a][b]concat=n=2:v=1:a=1" output.mp4
+
 	}
 
 	/**
