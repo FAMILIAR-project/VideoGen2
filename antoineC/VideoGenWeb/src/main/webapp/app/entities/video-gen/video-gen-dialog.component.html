@@ -6,8 +6,7 @@
                 (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
-        <jhi-alert></jhi-alert>
-        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert-error #error></jhi-alert-error>
         <div class="form-group" [hidden]="!videoGen.id">
             <label for="id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
@@ -21,12 +20,12 @@
 
         <div class="form-group">
             <label class="form-control-label" for="field_file">Fichier source Videogen</label>
-            <input name="file" id="field_file" type="file" placeholder=".videogen" accept=".videogen" (change)="onFileChange($event)" #fileField>
+            <input name="file" id="field_file" type="file" placeholder=".videogen" accept=".videogen" #fileField>
         </div>
 
         <div class="form-group">
             <label class="form-control-label" for="field_assets">Fichiers Média</label>
-            <input name="assets" id="field_assets" type="file" size="20000000" placeholder="Image et Vidéos" [(ngModel)]="videoGen.medias" (change)="onFileChange($event)" multiple #assetsField>
+            <input name="assets" id="field_assets" type="file" size="20000000" placeholder="Image et Vidéos" [(ngModel)]="videoGen.medias" multiple #assetsField>
         </div>
 
         <div class="form-group">
@@ -41,7 +40,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving || busy != 0" class="btn btn-primary">
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span>Save</span>
         </button>
     </div>

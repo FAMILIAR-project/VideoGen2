@@ -23,7 +23,6 @@ import {
     PageRibbonComponent,
     ErrorComponent
 } from './layouts';
-import {VideoGenWebEditorModule} from "./editor/editor.module";
 
 @NgModule({
     imports: [
@@ -32,7 +31,6 @@ import {VideoGenWebEditorModule} from "./editor/editor.module";
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
         VideoGenWebSharedModule,
         VideoGenWebHomeModule,
-        VideoGenWebEditorModule,
         VideoGenWebAdminModule,
         VideoGenWebAccountModule,
         VideoGenWebEntityModule,

@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef, ComponentRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
@@ -14,6 +14,7 @@ import { ResponseWrapper } from '../../shared';
 import {Principal} from "../../shared/auth/principal.service";
 import {AccountService} from "../../shared/auth/account.service";
 import {forEach} from "@angular/router/src/utils/collection";
+import {JhiAlertErrorComponent} from "../../shared/alert/alert-error.component";
 
 @Component({
     selector: 'jhi-video-gen-dialog',
@@ -23,8 +24,8 @@ export class VideoGenDialogComponent implements OnInit {
 
     videoGen: VideoGen;
     isSaving: boolean;
-    busy: number;
 
+    @ViewChild('error') error: JhiAlertErrorComponent;
     @ViewChild('fileField') fileField: ElementRef;
     @ViewChild('assetsField') assetsField: ElementRef;
 
@@ -32,7 +33,6 @@ export class VideoGenDialogComponent implements OnInit {
 
     constructor(
         private principal: Principal,
-        private account: AccountService,
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private videoGenService: VideoGenService,
@@ -42,7 +42,6 @@ export class VideoGenDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.busy = 0;
         this.isSaving = false;
 
         this.userService.query()
@@ -52,26 +51,6 @@ export class VideoGenDialogComponent implements OnInit {
                     this.videoGen.owner = this.users.filter(user => user.id == account.id)[0];
                 });
             }, (res: ResponseWrapper) => this.onError(res.json));
-    }
-
-    onFileChange(event) {
-        if(event.target.files && event.target.files.length > 0) {
-            for (let file of event.target.files) {
-                console.info(file);
-                if(file.size > 20000000) {
-                    this.jhiAlertService.error("Fichier " + file.name + " tros gros, limite de 20Mo par fichier", null, null);
-                    continue;
-                }
-
-                let formData = new FormData();
-                formData.set("file", file, file.name);
-
-                this.videoGenService.updateVideoGenFile(formData).subscribe((success) => {
-                    console.info(success);
-                });
-
-            }
-        }
     }
 
     copyAccount(account) {
@@ -92,13 +71,18 @@ export class VideoGenDialogComponent implements OnInit {
     }
 
     save() {
+        if(this.fileField.nativeElement.files.length == 0 || this.assetsField.nativeElement.files == 0) {
+            this.error.addErrorAlert("Un fichier videogen ou un fichier média sont manquants !!!");
+            return;
+        }
+
         this.isSaving = true;
         if (this.videoGen.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.videoGenService.update(this.videoGen));
+                    this.videoGenService.update(this.videoGen, this.fileField.nativeElement.files, this.assetsField.nativeElement.files));
         } else {
             this.subscribeToSaveResponse(
-                this.videoGenService.create(this.videoGen));
+                this.videoGenService.create(this.videoGen, this.fileField.nativeElement.files, this.assetsField.nativeElement.files));
         }
     }
 

@@ -13,29 +13,58 @@ export class VideoGenService {
 
     constructor(private http: Http) { }
 
-    create(videoGen: VideoGen): Observable<VideoGen> {
+    /**
+     * Create Videogen entity with an http request of type multipart/mixed
+     * @param {VideoGen} videoGen
+     * @param {File} file
+     * @param {File[]} assets
+     * @returns {Observable<VideoGen>}
+     */
+    create(videoGen: VideoGen, file: File, assets: File[]): Observable<VideoGen> {
+
         const copy = this.convert(videoGen);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
+
+        let videogenFormData = new FormData();
+
+        videogenFormData.append("videogen", new Blob([JSON.stringify(copy)], {
+            type: "application/json"
+        }));
+        videogenFormData.append("file", file[0]);
+
+        for(let asset of assets) {
+            videogenFormData.append("assets[]", asset);
+        }
+
+        return this.http.post(this.resourceUrl, videogenFormData).map((res: Response) => {
             const jsonResponse = res.json();
             return this.convertItemFromServer(jsonResponse);
         });
     }
 
-    updateVideoGenFile(formData: FormData): Observable<void> {
+    /**
+     * Update Videogen entity with an http request of type multipart/mixed
+     * @param {VideoGen} videoGen
+     * @param {File} file
+     * @param {File[]} assets
+     * @returns {Observable<VideoGen>}
+     */
+    update(videoGen: VideoGen, file: File, assets: File[]): Observable<VideoGen> {
 
-        formData.set("Other", "Another String");
-        console.info("Update VideoGen File: ", formData);
-
-        return this.http.post(this.resourceUrl + "/upload", formData).map((res: Response) => {
-            return res.json();
-        });
-
-
-    }
-
-    update(videoGen: VideoGen): Observable<VideoGen> {
         const copy = this.convert(videoGen);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
+
+        let videogenFormData = new FormData();
+
+        videogenFormData.append("videogen", new Blob([JSON.stringify(copy)], {
+            type: "application/json"
+        }));
+
+        videogenFormData.append("file", file[0]);
+
+        for(let asset of assets) {
+            videogenFormData.append("assets[]", asset);
+        }
+
+        return this.http.put(this.resourceUrl, videogenFormData).map((res: Response) => {
             const jsonResponse = res.json();
             return this.convertItemFromServer(jsonResponse);
         });

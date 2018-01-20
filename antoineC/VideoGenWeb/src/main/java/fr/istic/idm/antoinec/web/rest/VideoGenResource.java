@@ -58,71 +58,47 @@ public class VideoGenResource {
      * POST  /video-gens : Create a new videoGen.
      *
      * @param videoGen the videoGen to create
+     * @param file the videogen source code File to store into server
+     * @param assets the videogen medias Files to store into server
      * @return the ResponseEntity with status 201 (Created) and with body the new videoGen, or with status 400 (Bad Request) if the videoGen has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/video-gens")
+    @RequestMapping(method = RequestMethod.POST, value = "/video-gens", headers = {"content-type=multipart/mixed", "content-type=multipart/form-data"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Timed
-    public ResponseEntity<VideoGen> createVideoGen(@RequestBody VideoGen videoGen) throws URISyntaxException {
+    public ResponseEntity<VideoGen> createVideoGen(@RequestPart("videogen") final VideoGen videoGen, @RequestPart("file") final MultipartFile file, @RequestPart("assets") final MultipartFile[] assets) throws URISyntaxException {
         log.debug("REST request to save VideoGen : {}", videoGen);
-        log.debug("REST request to save VideoGen file: {}", videoGen.getFile() != null ?  videoGen.getFile().substring(0, videoGen.getFile().length()> 20 ? 20 : videoGen.getFile().length()) : "NULL");
-
         if (videoGen.getId() != null) {
             throw new BadRequestAlertException("A new videoGen cannot already have an ID", ENTITY_NAME, "idexists");
         }
         VideoGen result = videoGenRepository.save(videoGen);
 
 
-        if(videoGen.getFile() != null) {
-            File videogenFile = FileUtils.getFile(FilenameUtils.normalize(videoGen.getName()) + ".videogen");
-
-        }
+//        if(videoGen.getFile() != null) {
+//            File videogenFile = FileUtils.getFile(FilenameUtils.normalize(videoGen.getName()) + ".videogen");
+//
+//        }
         return ResponseEntity.created(new URI("/api/video-gens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
-
-   /* @Bean
-    public MultipartConfigElement multipartConfigElement() {
-        return new MultipartConfigElement("");
-    }
-
-    @Bean
-    public MultipartResolver multipartResolver() {
-        org.springframework.web.multipart.commons.CommonsMultipartResolver multipartResolver = new org.springframework.web.multipart.commons.CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(1000000);
-        return multipartResolver;
-    }*/
-
-    @RequestMapping(method = RequestMethod.POST, value = "/video-gens/upload", headers = {"content-type=multipart/mixed", "content-type=multipart/form-data"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @Timed
-    public ResponseEntity<String> uploadFile(@RequestPart("file") final MultipartFile[] files) throws ServletException, IOException {
-        if(files == null)
-            return ResponseEntity.badRequest().body("Error");
-
-        String result = "";
-        for(MultipartFile file : files) {
-            result += file.getOriginalFilename() + "  ";
-        }
-
-        return ResponseEntity.ok("OK (" + result + ")");
     }
 
     /**
      * PUT  /video-gens : Updates an existing videoGen.
      *
      * @param videoGen the videoGen to update
+     * @param file the videogen source code File to store into server
+     * @param assets the videogen medias Files to store into server
      * @return the ResponseEntity with status 200 (OK) and with body the updated videoGen,
      * or with status 400 (Bad Request) if the videoGen is not valid,
      * or with status 500 (Internal Server Error) if the videoGen couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/video-gens")
+    @RequestMapping(method = RequestMethod.PUT, value = "/video-gens", headers = {"content-type=multipart/mixed", "content-type=multipart/form-data"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Timed
-    public ResponseEntity<VideoGen> updateVideoGen(@RequestBody VideoGen videoGen) throws URISyntaxException {
+    public ResponseEntity<VideoGen> updateVideoGen(@RequestPart("videogen") final VideoGen videoGen, @RequestPart("file") final MultipartFile file, @RequestPart("assets") final MultipartFile[] assets) throws URISyntaxException {
         log.debug("REST request to update VideoGen : {}", videoGen);
         if (videoGen.getId() == null) {
-            return createVideoGen(videoGen);
+            return createVideoGen(videoGen, file, assets);
         }
         VideoGen result = videoGenRepository.save(videoGen);
         return ResponseEntity.ok()
@@ -167,6 +143,7 @@ public class VideoGenResource {
     public ResponseEntity<Void> deleteVideoGen(@PathVariable Long id) {
         log.debug("REST request to delete VideoGen : {}", id);
         videoGenRepository.delete(id);
+        // TODO: Delete also disk content
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
