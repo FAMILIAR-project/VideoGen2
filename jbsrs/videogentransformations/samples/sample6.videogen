@@ -1,0 +1,14 @@
+VideoGen {
+	alternatives v1 {
+	    videoseq v11 "/home/ismael/videogen/v0.mp4"
+	    videoseq v12 "/home/ismael/videogen/v1.mp4"
+	}
+	alternatives i1 {
+	    videoseq i11 "/home/ismael/videogen/i1.png"
+	    videoseq i12 "/home/ismael/videogen/i2.png"
+	}
+	alternatives v2 {
+	    videoseq v21 "/home/ismael/videogen/v3.mp4"
+	    videoseq v22 "/home/ismael/videogen/v2.mp4"
+	} 
+}
