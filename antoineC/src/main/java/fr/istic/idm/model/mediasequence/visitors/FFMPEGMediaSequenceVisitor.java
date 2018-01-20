@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xtext.example.mydsl.videoGen.ImageDescription;
@@ -107,21 +108,21 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		if(description.getBottom() != null && description.getBottom() != "") {
 			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
-					"${fontfile}", FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath(),
+					"${fontfile}", FilenameUtils.normalize(FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath()),
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "h-text_h",
-					"${text}", description.getBottom()
+					"${text}", description.getBottom().replace(" ", "\\ ")
 			));
 		}
 		
 		if(description.getTop() != null && description.getTop() != "") {
 			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
-					"${fontfile}", FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath(),
+					"${fontfile}", FilenameUtils.normalize(FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath()),
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "0",
-					"${text}", description.getTop()
+					"${text}", description.getTop().replace(" ", "\\ ")
 			));
 		}
 		
