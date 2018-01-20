@@ -107,7 +107,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		if(description.getBottom() != null && description.getBottom() != "") {
 			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
-					"${fontfile}", "src/main/resources/arial.ttf",
+					"${fontfile}", FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath(),
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "h-text_h",
@@ -117,7 +117,7 @@ public class FFMPEGMediaSequenceVisitor extends VideoGenCompilerVisitor {
 		
 		if(description.getTop() != null && description.getTop() != "") {
 			addFFMPEGFilter(filtersBuilder, drawTextTemplate, ImmutableMap.of(
-					"${fontfile}", "src/main/resources/arial.ttf",
+					"${fontfile}", FileUtils.getFile("src/main/resources/arial.ttf").getAbsolutePath(),
 					"${fontcolor}", "white",
 					"${fontsize}", "72",
 					"${y}", "0",
