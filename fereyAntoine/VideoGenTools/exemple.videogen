@@ -1,0 +1,5 @@
+VideoGen {
+	mandatory videoseq v0 "~/Video/TEST/exemple1.mp4" 
+	mandatory videoseq v01 "~/Video/TEST/exemple2.mp4" 
+	
+}

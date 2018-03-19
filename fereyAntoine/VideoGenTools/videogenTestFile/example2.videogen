@@ -1,0 +1,11 @@
+@author "IL(A)? students"
+VideoGen {
+	
+	mandatory videoseq v1 "~/Video/TEST/exemple3.mp4" { duration 2 filter negate text { content "sfsd" position TOP color "RED" size 104 } }
+	optional videoseq v2 "~/Video/TEST/exemple1.mp4" { probability 95}
+	alternatives v3 {
+		videoseq v31 "~/Video/TEST/exemple1.mp4" { duration 2 probability 49 filter b&w }
+		videoseq v32 "~/Video/TEST/exemple3.mp4" { probability 51}
+	}
+	mandatory videoseq v4 "~/Video/TEST/exemple3.mp4"
+}

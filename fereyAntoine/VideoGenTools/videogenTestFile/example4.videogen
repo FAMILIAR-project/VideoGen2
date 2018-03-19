@@ -1,0 +1,9 @@
+@author "IL(A)? students"
+VideoGen {
+	mandatory videoseq v1 "~/Video/TEST/exemple2.mp4" { duration 3 }
+	mandatory videoseq v2 "~/Video/TEST/exemple2.mp4" { duration 3 filter b&w }
+	mandatory videoseq v3 "~/Video/TEST/exemple2.mp4" { duration 3 filter flip h }
+	mandatory videoseq v4 "~/Video/TEST/exemple2.mp4" { duration 3 filter flip v }
+	mandatory videoseq v5 "~/Video/TEST/exemple2.mp4" { duration 3 filter negate }
+
+}

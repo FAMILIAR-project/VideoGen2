@@ -1,0 +1,5 @@
+@author "IL(A)? students"
+VideoGen {
+	mandatory videoseq v3 "~/Video/TEST/exemple2.mp4" { duration 3 filter flip horizontal text { content "RED" position BOTTOM color "RED" size 104 }}
+	mandatory videoseq v4 "~/Video/TEST/exemple2.mp4" { duration 5 filter flip vertical text { content "BLACK" position CENTER color "BLACK" size 54 } }
+}
