@@ -1,0 +1,5 @@
+VideoGen {
+	mandatory videoseq v1 "rue.mp4"
+	mandatory videoseq v0 "noel.mp4"
+
+}
