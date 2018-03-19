@@ -1,3 +1,4 @@
 VideoGenTools/xtend-gen/*
 org.xtext.example.videogen.ide/bin/*
 org.xtext.example.videogen.ui/bin/*
+org.xtext.example.videogen/bin/
