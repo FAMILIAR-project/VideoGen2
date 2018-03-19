@@ -1,0 +1,61 @@
+@author "WANONOOOOOOOOO"
+@version "0.0.1"
+VideoGen {
+	alternatives v0 {
+		videoseq v01 "video1.mp4"
+		videoseq v02 "video2.mp4"
+		videoseq v03 "video3.mp4"
+		videoseq v04 "video4.mp4"
+		videoseq v05 "video5.mp4"
+		videoseq v06 "video6.mp4"
+		videoseq v07 "video7.mp4"
+		videoseq v08 "video8.mp4"
+	}	
+	mandatory videoseq v1 "video2.mp4"
+	alternatives v2 {
+		videoseq v21 "video1.mp4"
+		videoseq v22 "video2.mp4"
+		videoseq v23 "video3.mp4"
+		videoseq v24 "video4.mp4"
+		videoseq v25 "video5.mp4"
+		videoseq v26 "video6.mp4"
+		videoseq v27 "video7.mp4"
+		videoseq v28 "video8.mp4"
+	}	
+	optional videoseq v3 "video1.mp4"
+	optional videoseq v4 "video2.mp4"
+			
+	mandatory videoseq v5 "video8.mp4"
+	alternatives v6 {
+		videoseq v61 "video1.mp4"
+		videoseq v62 "video2.mp4"
+		videoseq v63 "video3.mp4"
+		videoseq v64 "video4.mp4"
+		videoseq v65 "video5.mp4"
+		videoseq v66 "video6.mp4"
+		videoseq v67 "video7.mp4"
+		videoseq v68 "video8.mp4"
+	}	
+	
+	mandatory videoseq v7 "video6.mp4"
+	alternatives v8 {
+		videoseq v81 "video1.mp4"
+		videoseq v82 "video2.mp4"
+		videoseq v83 "video3.mp4"
+		videoseq v84 "video4.mp4"
+		videoseq v85 "video5.mp4"
+		videoseq v86 "video6.mp4"
+		videoseq v87 "video7.mp4"
+		videoseq v88 "video8.mp4"
+	}
+		alternatives v9 {
+		videoseq v91 "video1.mp4"
+		videoseq v92 "video2.mp4"
+		videoseq v93 "video3.mp4"
+		videoseq v94 "video4.mp4"
+		videoseq v95 "video5.mp4"
+		videoseq v96 "video6.mp4"
+		videoseq v97 "video7.mp4"
+		videoseq v98 "video8.mp4"
+	}
+}
