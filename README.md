@@ -1,2 +1,2 @@
 # VideoGen2
-Yet another variant of a configurable generator of generator of video variants
+Les réponses aux différentes questions des tps sont regoupées dans le fichier VideoGenTestJava1.java du repertoire src.
