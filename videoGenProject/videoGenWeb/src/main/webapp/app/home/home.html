@@ -1,0 +1,32 @@
+
+
+<div ng-cloak >
+    <div class="row">
+        <div class="col-md-6" style ="">
+        <h4> Voici le model utilisé pour la generation aleatoire</h4>
+            <span class="hipster img-responsive img-rounded"></span>
+        </div>
+        <div class="col-md-6">
+            <h1 >Bienvenue sur notre generateur de videos!</h1>
+          <div style="text-align:right">
+           			<button  ng-click="random()"> Generation aleatoire</button> 			
+          </div>
+ 			 <div ng-hide="!randomDone">
+ 				<h3>Generation terminée</h3>
+ 				 <div>Video generée :   <a href={{videoPath}}>{{videogenName}}.mp4</a></div> 
+ 				 
+		<video width="320" height="240" preload="none" controls>
+		<source id="myVideo" src={{videoPath}} type="video/mp4">
+			Your browser does not support the video tag.
+		</video>
+		
+ 				 <div style="text-align:center; width:30%">
+ 				 <button ng-disabled="gifExported" ng-click="export()">Export au format Gif</button>
+ 				 <div >
+     			  <img src="{{gifLink}}" id="gif" />
+ 				 </div>
+ 			</div>
+
+        </div>
+    </div>
+</div>

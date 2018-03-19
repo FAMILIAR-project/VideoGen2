@@ -1,0 +1,4 @@
+# this is a comment
+file '../generatedVideos/1_text.avi'
+file '../generatedVideos/2_text_bw.avi'
+file '../generatedVideos/4_vflip.avi'
