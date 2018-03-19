@@ -1,0 +1,6 @@
+@author "author"
+@creation "13/11/17"
+
+VideoGen {
+	mandatory videoseq v0 "v0.mp4"
+}
