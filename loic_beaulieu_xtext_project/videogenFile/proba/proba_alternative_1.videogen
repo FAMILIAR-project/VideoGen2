@@ -1,0 +1,6 @@
+VideoGen {
+	alternatives {
+		videoseq "video/v11.mp4" {probability 50}
+		videoseq "video/v0.mp4" {probability 50}
+	}
+}

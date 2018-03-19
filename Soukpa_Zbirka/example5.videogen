@@ -1,0 +1,11 @@
+VideoGen {
+	alternatives v1 {
+		videoseq v8 "v0.mp4"
+		videoseq v9 "v0.mp4"
+	}
+	alternatives v2 {
+		videoseq v11 "v11.mp4"
+		videoseq v12 "v12.mp4"
+		videoseq v13 "v13.mp4"
+	}
+}

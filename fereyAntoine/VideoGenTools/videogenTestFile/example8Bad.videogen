@@ -1,0 +1,21 @@
+@author "IL(A)? students"
+VideoGen {
+	
+	mandatory videoseq v1 "~/Video/TEST/exemple3.mp4" { duration 2 filter negate text { content "sfsd" position TOP color "BLUE" size 104 } }
+	optional videoseq v2 "~/Video/TEST/exemple1.mp4" { probability 95}
+	alternatives v3 {
+		videoseq v31 "~/Video/TEST/exemple1.mp4" { duration 2 probability 50 filter b&w }
+		videoseq v32 "~/Video/TEST/exemple3.mp4" { probability 51}
+	}
+	mandatory videoseq v4 "~/Video/TEST/exemple3.mp4" { probability 1000}
+	optional videoseq v12 "~/Video/TEST/exemple3.mp4" { probability 100}
+	alternatives v41 {
+		videoseq v311 "~/Video/TEST/exemple1.mp4" { duration 2 probability 100 filter b&w }
+		videoseq v312 "~/Video/TEST/exemple3.mp4" { probability 0 filter flip horizontal}
+	}
+	
+	alternatives v412 {
+		videoseq v3112 "~/Video/TEST/exemple1.mp4" { duration 2 probability 100 filter b&w }
+		videoseq v3122 "~/Video/TEST/exemple3.mp4" {  filter flip horizontal}
+	}
+}

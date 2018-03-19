@@ -1,0 +1,14 @@
+@author "Mark HERVAGAULT"
+@version "0.0.1"
+VideoGen {
+	alternatives v3 {
+		videoseq v31 "video3.mp4"
+		videoseq v32 "video4.mp4"
+		videoseq v33 "video2.mp4"
+		videoseq v34 "video1.mp4"
+	}
+	optional videoseq v2 "video2.mp4"
+	mandatory videoseq v1 "video1.mp4"
+
+
+}

@@ -1,0 +1,10 @@
+VideoGen {
+	mandatory videoseq v0 "~/Video/TEST/exemple1.mp4" { filter b&w  }
+	mandatory videoseq v01 "~/Video/TEST/exemple2.mp4" { filter b&w  }
+	alternatives v1 {
+		videoseq v11 "~/Video/TEST/exemple3.mp4" { filter b&w  }
+		videoseq v12 "~/Video/TEST/exemple4.mp4" { filter b&w  }
+		videoseq v13 "~/Video/TEST/exemple3.mp4" { filter b&w  }
+	}
+	optional videoseq v2 "~/Video/TEST/exemple2.mp4" { filter b&w  }
+}

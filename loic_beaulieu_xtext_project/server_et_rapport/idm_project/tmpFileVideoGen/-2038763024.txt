@@ -1,0 +1,2 @@
+file '../src/main/resources/static/video/original/noel.mp4'
+file '../src/main/resources/static/video/original/rue.mp4'

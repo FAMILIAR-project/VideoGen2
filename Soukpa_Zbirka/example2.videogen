@@ -1,0 +1,11 @@
+@author "IL(A)? students"
+VideoGen {
+	
+	mandatory videoseq v1 "v11.mp4"
+	optional videoseq v2 "v2.mp4"
+	alternatives v3 {
+		videoseq v31 "v12.mp4"
+		videoseq v32 "v13.mp4"
+	}
+	mandatory videoseq v4 "v299.mp4"
+}

@@ -1,0 +1,96 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{Sweave}
+
+%opening
+\title{VideoGen2, étude empirique des sorties de l'outil}
+\author{Jordan Maheu, Kévin Le Bon}
+
+\begin{document}
+
+\maketitle
+
+\section{Estimation de la taille des fichiers}
+
+Afin de pouvoir prédire la taille du fichier de sortie de notre générateur de vidéo,
+nous avons conduit une étude statistique mettant en corrélation la somme des tailles
+des fichiers en entrée et la taille du fichier produit.
+
+Nous avions l'intuition que \verb|ffmpeg| supprimerait des en-têtes et autres
+méta-données des fichiers d'entrée, réduisant ainsi significativement la taille du
+fichier de sortie. Nous avons donc utilisé notre outil pour générer toutes les
+variations possible un fichier \verb|VideoGen| et créé un fichier \verb|CSV|
+répertoriant, entre autres, la somme des tailles des fichiers d'entrée (les vidéos
+composant la vidéo finale) et la taille du fichier de sortie (la vidéo générée).
+Il est apparu que ces deux tailles étaient en réalité très proches (figure
+\ref{compsize}) et que sommer les tailles des fichiers d'entrée se trouve être une
+très bonne estimation de la taille du fichier en sortie.
+
+Nous avons par ailleurs effectué les mêmes mesures mais avec une sortie au format
+\verb|MKV| au lieu de \verb|MP4| (figure \ref{mkvcomp}) afin d'être certains que
+nos résultats ne soient pas lié uniquement au format \verb|MP4|. Il ressort de cette
+étude que le format utilisé n'invalide pas notre précédente hypothèse.
+
+\begin{figure}[ht]
+<< compareSizes, echo=FALSE, fig=TRUE >>=
+library(ggplot2)
+
+data <- read.csv(file="playlist_mp4.csv", header=TRUE, sep=";")[,c("size", "realsize")]
+p <- ggplot(data=data, aes(x=size, y=realsize))
+p <- p + geom_line(size=1)
+print(p)
+@
+\label{compsize}
+\caption{Comparaison entre la taille estimée et la taille réelle}
+\end{figure}
+
+\begin{figure}[hb]
+<< compareSizesMKV, echo=FALSE, fig=TRUE >>=
+library(ggplot2)
+
+data <- read.csv(file="playlist_mkv.csv", header=TRUE, sep=";")[,c("size", "realsize")]
+p <- ggplot(data=data, aes(x=size, y=realsize))
+p <- p + geom_line(size=1)
+print(p)
+@
+\label{mkvcomp}
+\caption{Comparaison des tailles pour le format mkv}
+\end{figure}
+
+\section{Estimation de la durée de la vidéo}
+
+Nous avons mené une seconde étude portant sur la durée des vidéos. Nous voulions être
+certains que la durée estimée d'une vidéo, calculée en sommant la durée de ses
+composantes, était bien égale à la durée réelle de la vidéo générée.
+
+\begin{figure}[ht]
+<< compareDurations, echo=FALSE, fig=TRUE >>=
+library(ggplot2)
+
+data <- read.csv(file="playlist_mp4.csv", header=TRUE, sep=";")[,c("duration", "realduration")]
+p <- ggplot(data=data, aes(x=duration, y=realduration))
+p <- p + geom_line(size=1)
+print(p)
+@
+\label{durcomp}
+\caption{Comparaison entre la durée estimée et la durée réelle}
+\end{figure}
+
+Comme l'attestent les figures \ref{durcomp} et \ref{mkvdurcomp}, nous avons une
+correspondance parfaite entre la durée estimée d'une vidéo et la durée de la vidéo réelle.
+
+\begin{figure}[hb]
+<< compareDurationsMKV, echo=FALSE, fig=TRUE >>=
+library(ggplot2)
+
+data <- read.csv(file="playlist_mkv.csv", header=TRUE, sep=";")[,c("duration", "realduration")]
+p <- ggplot(data=data, aes(x=duration, y=realduration))
+p <- p + geom_line(size=1)
+print(p)
+@
+\label{mkvdurcomp}
+\caption{Comparaison des durées pour le format mkv}
+\end{figure}
+
+\end{document}

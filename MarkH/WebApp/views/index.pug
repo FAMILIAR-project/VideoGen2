@@ -1,0 +1,13 @@
+extends layout
+
+block content
+	div.title_panel
+		p #{title}
+	div.under_title
+		p Made by <a href="https://github.com/markHervagault/VideoGen2"><font color="red">#{author}</font></a>
+	div.content
+		button(class="button" onclick='{generate()}') Generate
+		div.graphic
+
+	div.footer
+		p IDM Project - ISTIC RENNES (FR) - 2017/2018

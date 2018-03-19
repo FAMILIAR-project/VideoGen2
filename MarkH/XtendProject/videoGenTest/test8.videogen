@@ -1,0 +1,24 @@
+@author "WANONOOOOOOOOO"
+@version "0.0.1"
+
+VideoGen {
+	mandatory videoseq v0 "video3.mp4"
+	optional videoseq v1 "video2.mp4"
+	optional videoseq v2 "video1.mp4"
+	optional videoseq v3 "video1.mp4"
+	mandatory videoseq v5 "video3.mp4"
+	mandatory videoseq v6 "video2.mp4"
+	optional videoseq v7 "video1.mp4"
+	optional videoseq v8 "video1.mp4"
+	alternatives v9 {
+		videoseq v91 "video1.mp4"
+		videoseq v92 "video1.mp4"
+		videoseq v93 "video1.mp4"
+		videoseq v94 "video1.mp4"
+		videoseq v95 "video1.mp4"
+		videoseq v96 "video1.mp4"
+		videoseq v97 "video1.mp4"
+		videoseq v98 "video1.mp4"
+		videoseq v99 "video1.mp4"
+	}
+}

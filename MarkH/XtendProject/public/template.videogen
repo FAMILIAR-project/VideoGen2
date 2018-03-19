@@ -1,0 +1,28 @@
+@author "Mark HERVAGAULT"
+@version "0.0.1"
+VideoGen {
+	mandatory videoseq v2 "../OriginVideo/bignoise.mp4"		
+
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/video1.mp4"
+		videoseq v32 "../OriginVideo/video2.mp4"	
+		videoseq v34 "../OriginVideo/video3.mp4"	
+	}
+	mandatory videoseq v4 "../OriginVideo/smallnoise.mp4"
+
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/video4.mp4"
+		videoseq v32 "../OriginVideo/video5.mp4"	
+		videoseq v34 "../OriginVideo/video6.mp4"	
+	}
+	mandatory videoseq v2 "../OriginVideo/smallnoise.mp4"
+
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/video7.mp4"
+		videoseq v32 "../OriginVideo/video8.mp4"	
+	}
+	mandatory videoseq v2 "../OriginVideo/smallnoise.mp4"
+	
+	mandatory videoseq v32 "../OriginVideo/close.mp4"		
+
+}
