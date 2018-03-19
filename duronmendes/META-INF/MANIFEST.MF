@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: duronmendes
+Bundle-SymbolicName: duronmendes
+Bundle-Version: 1.0.0.qualifier
+Export-Package: videoGen
+Import-Package: org.eclipse.emf.common.util
+Require-Bundle: org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.ecore.xmi,
+ VideoGenTools;bundle-version="1.0.0",
+ org.xtext.example.videogen;bundle-version="1.0.0"

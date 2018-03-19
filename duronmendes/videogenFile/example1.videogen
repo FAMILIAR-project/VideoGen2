@@ -1,0 +1,6 @@
+VideoGen {
+	mandatory videoseq v0 "videos/test.mp4" {filter flip h}
+	mandatory videoseq v13 "videos/stereogram.mp4" {filter b&w}
+	mandatory videoseq v14 "videos/test.mp4" {filter negate}
+	
+}
