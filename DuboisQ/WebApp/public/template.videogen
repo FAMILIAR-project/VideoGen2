@@ -1,0 +1,36 @@
+@author "Quentin Dubois"
+@version "0.0.1"
+VideoGen {
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/intro1.mp4"
+		videoseq v32 "../OriginVideo/intro2.mp4"	
+	}
+	mandatory videoseq v2 "../OriginVideo/bignoise.mp4"		
+
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/goat1.mp4"
+		videoseq v32 "../OriginVideo/goat2.mp4"	
+		videoseq v34 "../OriginVideo/goat3.mp4"	
+	}
+	mandatory videoseq v4 "../OriginVideo/smallnoise.mp4"
+
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/goat4.mp4"
+		videoseq v32 "../OriginVideo/goat5.mp4"	
+		videoseq v34 "../OriginVideo/goat6.mp4"	
+	}
+	mandatory videoseq v2 "../OriginVideo/smallnoise.mp4"
+
+	alternatives v3 {
+		videoseq v31 "../OriginVideo/goat7.mp4"
+		videoseq v32 "../OriginVideo/goat8.mp4"	
+		videoseq v34 "../OriginVideo/goat9.mp4"	
+	}
+	mandatory videoseq v2 "../OriginVideo/smallnoise.mp4"
+	
+	optional videoseq v2 "../OriginVideo/goat10.mp4"	
+	optional videoseq v2 "../OriginVideo/goat11.mp4"
+
+	mandatory videoseq v32 "../OriginVideo/close.mp4"		
+
+}
