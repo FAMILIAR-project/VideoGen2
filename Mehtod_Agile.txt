@@ -1,0 +1,18 @@
+# VideoGen2
+
+##Method Agile
+Yet another variant of a configurable generator of generator of video variants
+We need to add some very nice tools like : \n
+   
+    - import videos ? \n
+    - concat huge videos and insert short videos ? \n
+    - rapport ( Jules 2 ) \n
+    - dockerisation \n
+    - utilsiation de git large pour des push plus conséquent
+    - FAIRE une Version qui tourne vraiment ( a faire rapidement) avec changement  - home.component.html \n
+    
+    - creation nouvelles branches pour faire des v1.0, v1.1, v2.0 etc.... ( je ne sais pas du tout comment faire mais ca doit pas très compliqué ;) ) A faire plus tard
+    
+    
+    
+ Maël, Jules, Emmanuel ...& add your name___ _Here_ 

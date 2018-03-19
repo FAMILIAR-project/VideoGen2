@@ -1,0 +1,160 @@
+
+/* ==========================================================================
+Main page styles
+========================================================================== */
+
+.hipster {
+    display: block;
+    width: 1920px;
+    height: 1080px;
+    background: url("../../content/images/background_videos.jpg") no-repeat ;
+    background-size: cover;
+}
+
+.body{
+
+    height: 80vh;//TODO : que représente le vh ?
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-image: url("../../content/images/background_videos.jpg");
+    background-size: cover;
+}
+.divWelcome{
+    font-weight: bold;
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family: "C+BoldItal","Helvetica Neue", Arial, sans-serif;
+;
+}
+.Select_div{
+    margin:auto;
+    height: auto;
+    width: 50%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:"C+BoldItal",Arial, "Helvetica Neue",  sans-serif;
+    font-size: xx-large;
+}
+.select_gram{
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: xx-large;
+}
+.sign_in{
+    font-weight: bold;
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: xx-large;
+}
+.sign_option{
+    font-weight: normal;
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: medium;
+}
+.sign_option_italic{
+    font-weight: normal;
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: medium;
+    font-style: italic;
+}
+.register_home{
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family: Arial,"C+BoldItal","Helvetica Neue",  sans-serif;
+    font-size: medium;
+}
+#divIntroduction{
+    margin: auto;
+    width: 100%;
+}
+.divIntroductionUser{
+    margin: auto;
+}
+.loadVideos{
+    display:block;
+    select{
+        width: 80%;
+        margin: auto;
+    }
+}
+.if_videoGenModel{
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: xx-large;
+}
+.loadingString{
+    margin:auto;
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-family:Arial, "Helvetica Neue","C+BoldItal",  sans-serif;
+    font-size: xx-large;
+
+}
+.preload{
+    margin: auto;
+}
+/* wait autoprefixer update to allow simple generation of high pixel density media query */
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+    .hipster {
+        background: url("../../content/images/hipster2x.png") no-repeat center top;
+        background-size: contain;
+    }
+}
+
+.selected-thumbnail{
+    border: medium solid green;
+}
+
+.mandatory-thumbnail{
+    border: medium solid orange;
+}
+
+.unselected-thumbnail{
+    border: medium solid transparent;
+}

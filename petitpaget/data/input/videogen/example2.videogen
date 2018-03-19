@@ -1,0 +1,10 @@
+@author "IL(A)? students"
+VideoGen {
+
+	mandatory videoseq v1 "data/input/video/jaunatan.mp4"
+	optional videoseq v2 "data/input/video/sheep.mp4"
+	alternatives v3 {
+		videoseq v31 "data/input/video/sheep.mp4"
+		videoseq v32 "data/input/video/jaunatan.mp4"
+	}
+}

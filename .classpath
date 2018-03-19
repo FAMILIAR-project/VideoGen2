@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ide/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ide/xtend-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.tests/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.tests/xtend-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ui.tests/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ui/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen.ui/xtend-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen/src-gen"/>
+	<classpathentry kind="src" path="org.xtext.example.videogen/xtend-gen"/>
+	<classpathentry excluding="enumeration/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/domain"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/domain/enumeration"/>
+	<classpathentry excluding="search/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/repository"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/repository/search"/>
+	<classpathentry excluding="impl/|dto/|mapper/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/service"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/service/dto"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/service/impl"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/service/mapper"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/main/java/package/web/rest"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/entity/templates/server/src/test/java/package/web/rest"/>
+	<classpathentry excluding="service/dto/|service/mapper/|security/jwt/|security/social/|config/audit/|web/rest/vm/|gateway/accesscontrol/|gateway/ratelimiting/|config/social/|web/filter/|gateway/|service/util/|config/apidoc/|web/rest/|web/websocket/dto/|security/oauth2/|web/rest/errors/|web/websocket/|aop/logging/|web/rest/util/|domain/|client/|config/cassandra/|gateway/responserewriting/|config/metrics/|config/dbmigrations/|security/|service/|repository/|repository/search/|config/|config/oauth2/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/aop/logging"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/client"/>
+	<classpathentry excluding="audit/|social/|apidoc/|cassandra/|metrics/|dbmigrations/|oauth2/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/apidoc"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/audit"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/cassandra"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/dbmigrations"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/metrics"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/oauth2"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/config/social"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/domain"/>
+	<classpathentry excluding="accesscontrol/|ratelimiting/|responserewriting/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/gateway"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/gateway/accesscontrol"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/gateway/ratelimiting"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/gateway/responserewriting"/>
+	<classpathentry excluding="search/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/repository"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/repository/search"/>
+	<classpathentry excluding="jwt/|social/|oauth2/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/security"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/security/jwt"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/security/oauth2"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/security/social"/>
+	<classpathentry excluding="dto/|mapper/|util/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/service"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/service/dto"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/service/mapper"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/service/util"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/filter"/>
+	<classpathentry excluding="vm/|errors/|util/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/rest"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/rest/errors"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/rest/util"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/rest/vm"/>
+	<classpathentry excluding="dto/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/websocket"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/main/java/package/web/websocket/dto"/>
+	<classpathentry excluding="service/|cucumber/stepdefs/|gateway/responserewriting/|security/jwt/|cucumber/|web/rest/|repository/|config/|security/oauth2/|web/rest/errors/|web/rest/util/|config/elasticsearch/|security/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package"/>
+	<classpathentry excluding="elasticsearch/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/config"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/config/elasticsearch"/>
+	<classpathentry excluding="stepdefs/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/cucumber"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/cucumber/stepdefs"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/gateway/responserewriting"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/repository"/>
+	<classpathentry excluding="jwt/|oauth2/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/security"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/security/jwt"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/security/oauth2"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/service"/>
+	<classpathentry excluding="errors/|util/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/web/rest"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/web/rest/errors"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/src/test/java/package/web/rest/util"/>
+	<classpathentry excluding="impl/" kind="src" path="petitpaget/node_modules/generator-jhipster/generators/service/templates/src/main/java/package/service"/>
+	<classpathentry kind="src" path="petitpaget/node_modules/generator-jhipster/generators/service/templates/src/main/java/package/service/impl"/>
+	<classpathentry kind="src" path="petitpaget/src/main/java"/>
+	<classpathentry kind="src" path="petitpaget/src/test/java"/>
+	<classpathentry kind="src" path="petitpaget/target/generated-sources/annotations"/>
+	<classpathentry kind="src" path="VideoGenTools/src"/>
+	<classpathentry kind="src" path="VideoGenTools/xtend-gen"/>
+	<classpathentry kind="lib" path="org.xtext.example.videogen/.antlr-generator-3.2.0-patch.jar"/>
+	<classpathentry kind="lib" path="petitpaget/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="lib" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="lib" path="petitpaget/node_modules/generator-jhipster/generators/server/templates/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="VideoGenTools/bin"/>
+</classpath>

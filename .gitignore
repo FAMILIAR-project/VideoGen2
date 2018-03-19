@@ -1,0 +1,131 @@
+######################
+# Project Specific
+######################
+/petitpaget/src/main/webapp/content/css/main.css
+/petitpaget/target/www/**
+/petitpaget/src/test/javascript/coverage/
+
+######################
+# Node
+######################
+/petitpaget/node/
+/petitpaget/node_tmp/
+/petitpaget/node_modules/
+/petitpaget/npm-debug.log.*
+
+######################
+# SASS
+######################
+/petitpaget/.sass-cache/
+
+######################
+# Eclipse
+######################
+*.pydevproject
+/petitpaget/.project
+/petitpaget/.metadata
+/petitpaget/tmp/
+/petitpaget/tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+/petitpaget/local.properties
+/petitpaget/.classpath
+/petitpaget/.settings/
+/petitpaget/.loadpath
+/petitpaget/.factorypath
+/petitpaget/src/main/resources/rebel.xml
+
+# External tool builders
+/petitpaget/.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+/petitpaget/*.launch
+
+# CDT-specific
+/petitpaget/.cproject
+
+# PDT-specific
+/petitpaget/.buildpath
+
+######################
+# Intellij
+######################
+/petitpaget/.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+
+######################
+# Maven
+######################
+/petitpaget/log/
+/petitpaget/target/
+
+######################
+# Gradle
+######################
+/petitpaget/.gradle/
+/petitpaget/build/
+
+######################
+# Package Files
+######################
+*.war
+*.ear
+*.db
+
+######################
+# Directories
+######################
+/*/bin/
+/*/deploy/
+
+######################
+# Logs
+######################
+*.log
+
+######################
+# Others
+######################
+/petitpaget/.merge_file*
+*.class
+
+######################
+# Gradle Wrapper
+######################
+/petitpaget/!gradle/wrapper/gradle-wrapper.jar
+
+######################
+# Maven Wrapper
+######################
+/petitpaget/!.mvn/wrapper/maven-wrapper.jar
+
+######################
+# ESLint
+######################
+/petitpaget/.eslintcache
+/.metadata/
+
+VideoGenTools/xtend-gen/
+
+VideoGenTools/bin/
+
+*._trace
+
+*.xtendbin
+
+VideoGenTools/\.idea/
+
+\.idea/workspace\.xml
+
+
+petitpaget/\.mvn/wrapper/maven-wrapper\.jar
+
+\.idea/
+
+petitpaget/data/output/thumbnails/
