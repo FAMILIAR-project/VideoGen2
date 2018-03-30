@@ -1,0 +1,31 @@
+@author "Antoine Charpentier"
+@version "0.5.0"
+@creation "14/11/17"
+
+
+VideoGen {
+	mandatory image "chat1.jpg" {
+		toptext ""
+		bottomtext "On commence par un chat"	
+	}
+	
+	
+	optional videoseq "grb_2.mp4"
+	
+	alternatives videoseq {
+		videoseq "DLP_PART_2_768k.mp4"
+		videoseq "dolbycanyon.mp4"
+	}
+	
+	optional videoseq "P6090053.mp4"
+
+    optional image "chat1.jpg" {
+        toptext "On dit au revoir"
+        bottomtext: ""
+    }
+
+    mandatory image "chat2.jpg" {
+        toptext "Un dernier pour la route"
+        bottomtext: ""
+    }
+}

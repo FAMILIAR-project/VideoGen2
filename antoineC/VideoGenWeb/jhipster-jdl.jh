@@ -1,0 +1,7 @@
+entity VideoGen {
+	name String   
+}
+
+relationship ManyToOne{
+    VideoGen{owner} to User
+}
