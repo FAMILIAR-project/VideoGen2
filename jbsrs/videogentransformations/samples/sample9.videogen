@@ -1,0 +1,10 @@
+VideoGen {
+	mandatory videoseq v0 "/home/jnsll/Vidéos/clouds_over_the_mountain_hd_stock_video.mp4" {filter negate}
+	mandatory image i0 "/home/jnsll/Images/mur.jpg"
+	alternatives v1 {
+		videoseq v11 "/home/jnsll/Vidéos/clouds_over_the_mountain_hd_stock_video.mp4" {probability 20 filter flip h}
+		videoseq v12 "/home/jnsll/Vidéos/clouds_over_the_mountain_hd_stock_video.mp4" {probability 20}
+		videoseq v13 "/home/jnsll/Vidéos/clouds_over_the_mountain_hd_stock_video.mp4" {probability 50}
+	}
+	optional videoseq v2 "/home/jnsll/Vidéos/clouds_over_the_mountain_hd_stock_video.mp4" {filter b&w}
+}

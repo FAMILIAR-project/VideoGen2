@@ -1,0 +1,3 @@
+VideoGen {
+	optional videoseq v1 "/home/ismael/videogen/v0.mp4" {description "ceci est la description une video optionel"}
+}
