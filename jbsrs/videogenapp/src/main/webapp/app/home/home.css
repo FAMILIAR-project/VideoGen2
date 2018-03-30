@@ -1,0 +1,61 @@
+/* ==========================================================================
+Main page styles
+========================================================================== */
+
+
+.hipster {
+    display: inline-block;
+    width: 347px;
+    height: 497px;
+    background: url("../../content/images/hipster.png") no-repeat center top;
+    background-size: contain;
+}
+
+/* wait autoprefixer update to allow simple generation of high pixel density media query */
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+    .hipster {
+        background: url("../../content/images/hipster2x.png") no-repeat center top;
+        background-size: contain;
+    }
+}
+
+
+.bigTitleFirstLine {
+    font-family: LubalinGraphStd-Book,Arial,sans-serif;
+    font-size: 70px;
+    text-transform: lowercase;
+}
+
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+.videoGenCenter {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    max-width: 1280px;
+    margin-top: -180px;
+    font-size: 70.67%;
+}
+
+.content {
+    background-color: #000;
+    color: #fff;
+}
+
+.bigTitleOtherLines {
+    font-family: LubalinGraphStd-Book,Arial,sans-serif;
+    font-size: 70px;
+}

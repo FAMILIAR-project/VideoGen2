@@ -1,0 +1,11 @@
+VideoGen {
+
+	mandatory videoseq v0 "data/input/videos/mandatory/MrBean.mp4"
+	alternatives v1 {
+		videoseq v11 "data/input/videos/alternative/Moncuq.mp4" {probability 40}
+		videoseq v12 "data/input/videos/alternative/suisse.mp4" {probability 60}
+	}
+	optional videoseq v2 "data/input/videos/optional/Juste.mp4"
+	mandatory videoseq v3 "data/input/videos/mandatory/reponseD.mp4"
+
+}

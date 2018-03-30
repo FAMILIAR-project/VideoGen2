@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+  <div class="col-md-10">
+    <h1 class="display-4">Vidéo Generator</h1>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-12">
+    <h2>
+      Votre générateur de vidéos
+      <small class="text-muted">Configurable</small>
+    </h2>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md-12">
+    <h3>
+      Vivez une expérience unique
+      <small class="text-muted">A chaque vidéo visualisé</small>
+    </h3>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <form class="form-inline" name="guest_form" role="form" (ngSubmit)="validate()">
+    <div class="form-group">
+      <label for="mode">Choisir le mode</label>
+      <select  [(ngModel)]="selectedMode" name="selectedMode" class="form-control" id="mode">
+        <option *ngFor="let mode of modes" [ngValue]="mode"> {{ mode }} </option>
+     </select>
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="guest_name" class="sr-only">Entrer votre prénom</label>
+      <input type="text" class="form-control" [(ngModel)]="guestname" id="guestname" name="guestname" placeholder="Entrer votre prénom">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Valider</button>
+  </form>
+</div>

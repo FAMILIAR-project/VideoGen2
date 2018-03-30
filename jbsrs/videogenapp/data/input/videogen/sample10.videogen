@@ -1,0 +1,11 @@
+VideoGen {
+	mandatory videoseq v0 "data/input/videos/v01.mp4" {filter negate }
+	mandatory image i0 "data/input/images/i0.jpg"
+	alternatives v1 {
+		videoseq v11 "data/input/videos/v12.mp4" {probability 20}
+		videoseq v12 "data/input/videos/v2.mp4" {probability 20}
+		videoseq v13 "data/input/videos/v01.mp4" {probability 50}
+	}
+	optional videoseq v2 "data/input/videos/v01.mp4"
+
+}
